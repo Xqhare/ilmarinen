@@ -155,7 +155,7 @@
                  "bag", "food", "table", "acorn", "goggles", "glasses"
                  ],
 
-"timeline_qualifier": ["Some", "Over", "Just", "", ""
+"timeline_qualifiers": ["Some", "Over", "Just", "", ""
                       ],
 
 "ship_prefixes": ["HMS", "HMSS", "SS", "ARA", "GDV", "USN", "CRS", "SMS", "FGS", "RN", "RS"
