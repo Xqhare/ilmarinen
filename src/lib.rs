@@ -16,6 +16,7 @@ pub struct WordSmith {
 
 impl Default for WordSmith {
     fn default() -> Self {
+        let gen_lib_path = "lib/gen_lib.json";
         WordSmith { library_adj: LexicalUnitPool::default() }
     }
 }
