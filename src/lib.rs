@@ -1,12 +1,32 @@
 
-pub mod ilmarinen;
 mod json;
 mod lexical_unit_pool;
 
-use crate::ilmarinen::Ilmarinen;
+use ::json::JsonValue;
+
 use crate::json::read_json;
 
-impl Ilmarinen {
+use crate::lexical_unit_pool::LexicalUnitPool;
+
+
+#[derive(Debug, Clone)]
+pub struct WordSmith {
+    library_adj: LexicalUnitPool,
+}
+
+impl Default for WordSmith {
+    fn default() -> Self {
+        WordSmith { library_adj: LexicalUnitPool::default() }
+    }
+}
+
+impl From<JsonValue> for WordSmith {
+    fn from(value: JsonValue) -> Self {
+        todo!()
+    }
+}
+
+impl WordSmith {
     pub fn test_main() {
         let a = read_json("lib/gen_lib.json");
         println!("{:?}", a);
