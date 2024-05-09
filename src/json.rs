@@ -10,7 +10,12 @@ pub fn read_json<P>(file_path: P) -> Result<JsonValue, Error> where P: AsRef<Pat
     if out.is_ok() {
         Ok(out.expect("Is Ok checked!"))
     } else {
-        Err(Error::from(ErrorKind::InvalidData))
+        Err(Error::new(ErrorKind::InvalidData, out.err().unwrap()))
     }
 }
 
+pub fn construct_word_smith(data_path: &Path) -> Result<WordSmith, Error>{
+    let gen_lib_path = data_path.join("gen_lib.json");
+    let data = 
+}
+    
