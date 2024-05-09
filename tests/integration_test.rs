@@ -1,6 +1,7 @@
-extern crate ilmarinen;
+
 
 #[test]
 fn debug_test() {
-    unimplemented!();
+    let t = ilmarinen::default();
+    t.
 }
