@@ -1,19 +1,16 @@
 
 mod json;
-mod lexical_unit_pool;
-mod lexical_unit_lagoon;
+mod unit_pools;
 
-use std::io::{Error, ErrorKind};
-use std::path::Path;
+use std::{io::{Error, ErrorKind}, path::Path};
 
-use crate::json::{read_json, construct_word_smith};
+use unit_pools::UnitArchipelago;
 
-use crate::lexical_unit_pool::LexicalUnitPool;
-
+use crate::json::read_json;
 
 #[derive(Debug, Clone)]
 pub struct WordSmith {
-    lexical_unit_lagoon: LexicalUnitLagoon,
+    lexical_unit_lagoon: UnitArchipelago,
 }
 
 impl WordSmith {
@@ -41,8 +38,16 @@ impl WordSmith {
         } 
     }
 
-    pub fn test_main() {
-        let a = read_json("data/gen_lib.json");
-        println!("{:?}", a);
+    pub fn test_main(data_path: &Path) {
+        let gen_lib_path = data_path.join("gen_lib.json");
+        if let Ok(data) = read_json(gen_lib_path) {
+            for thing in data.entries() {
+                for entry in thing.1.entries() {
+                    println!("{:?}", entry);
+                }
+            }
+        } else {
+            println!("PANIK!");
+        }
     }
 }
