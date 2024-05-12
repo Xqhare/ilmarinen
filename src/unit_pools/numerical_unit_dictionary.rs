@@ -1,3 +1,5 @@
+use json::JsonValue;
+
 
 #[derive(Debug, Clone)]
 pub struct NumericalUnitDictionary {
@@ -10,22 +12,33 @@ impl Default for NumericalUnitDictionary {
         NumericalUnitDictionary { name: "Default_Numerical_Unit_Dictionary".to_string(), data: vec![NumericalUnitDictionaryEntry::default(), NumericalUnitDictionaryEntry::default()] }
     }
 }
+
+impl From<(&str, &JsonValue)> for NumericalUnitDictionary {
+    fn from(value: (&str, &JsonValue)) -> Self {
+        let name = value.0.to_string();
+        let mut data: Vec<NumericalUnitDictionaryEntry> = Default::default();
+        for entry in value.1.entries() {
+            data.push(NumericalUnitDictionaryEntry::from(entry));
+        }
+        NumericalUnitDictionary { name, data }
+    }
+}
    
 
 #[derive(Debug, Clone)]
 pub struct NumericalUnitDictionaryEntry {
     pub name: String,
-    pub entry: f32,
+    pub data: f32,
 }
 
 impl Default for NumericalUnitDictionaryEntry {
     fn default() -> Self {
-        NumericalUnitDictionaryEntry { name: "Default_Numerical_Unit_Dictionary_Entry".to_string(), entry: 1.0 }
+        NumericalUnitDictionaryEntry { name: "Default_Numerical_Unit_Dictionary_Entry".to_string(), data: 0.0 }
     }
 }
 
-impl NumericalUnitDictionaryEntry {
-    pub fn new(name: String, entry: f32) -> NumericalUnitDictionaryEntry {
-        NumericalUnitDictionaryEntry { name, entry }
+impl From<(&str, &JsonValue)> for NumericalUnitDictionaryEntry {
+    fn from(value: (&str, &JsonValue)) -> Self {
+        NumericalUnitDictionaryEntry { name: value.0.to_string(), data: value.1.as_f32().expect("Wrong json entry! Has to be f32!") }
     }
 }

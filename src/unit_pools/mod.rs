@@ -1,6 +1,5 @@
-use std::{path::Path, io::{Error, ErrorKind}};
+use std::{path::Path, io::Error};
 
-use crate::jisard::read_json;
 
 use self::{lexical_unit_lagoon::LexicalUnitLagoon, numerical_unit_lagoon::NumericalUnitLagoon};
 
@@ -23,10 +22,12 @@ pub struct UnitArchipelago {
 impl UnitArchipelago {
     pub fn new(data_path: &Path) -> Result<UnitArchipelago, Error> {
         let gen_lib_path = data_path.join(GEN_LIB_FILENAME);
-        let gen_lib_path = data_path.join(NUM_LIB_FILENAME);
+        let num_lib_path = data_path.join(NUM_LIB_FILENAME);
 
-        let lexical_unit_lagoon = LexicalUnitLagoon::new(&gen_lib_path);
+        let lexical_unit_lagoon = LexicalUnitLagoon::new(&gen_lib_path)?;
+        let numerical_unit_lagoon = NumericalUnitLagoon::new(&num_lib_path)?;
 
-        
+        Ok( UnitArchipelago { lexical_unit_lagoon, numerical_unit_lagoon } )
     }
 }
+
