@@ -7,7 +7,7 @@ mod numerical_unit_pool;
 mod numerical_unit_dictionary;
 mod numerical_unit_lagoon;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct UnitArchipelago {
     pub lexical_unit_lagoon: LexicalUnitLagoon,
     pub numerical_unit_lagoon: NumericalUnitLagoon,

@@ -1,6 +1,6 @@
 use super::lexical_unit_pool::LexicalUnitPool;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct LexicalUnitLagoon {
     pub abc: LexicalUnitPool,
 
