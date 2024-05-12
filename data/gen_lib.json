@@ -5,7 +5,7 @@
 
 "place_object": ["loch", "hill", "borough", "grave", "croft", "fjord", "sea", "land", "court", "way", "star", "maze", "arena", "arch", "cottage",
                 "vale", "valley", "way", "bridge", "cross", "manor", "field", "lane", "wharf", "junction", "quay", "river", "city",
-                "house", "castle", "mill", "mountain", "palace", "village", "town", "farm", "forrest", "mountain range", "mine", "region",
+                "house", "castle", "mill", "mountain", "palace", "village", "town", "farm", "forest", "mountain range", "mine", "region",
                 "capitol", "fort", "river", "stream", "floodplain", "canyon", "inland sea", "ocean", "street", "alley", "crossroads", "camp",
                 "dam", "hunters lodge", "lodge", "hideout", "manufactury", "town hall", "pub", "lake", "tavern", "ale house", "city hall",
                 "square", "promenade", "avenue", "country house", "county", "earldom", "fiefdom", "dukedom", "wood", "reserve"
@@ -43,7 +43,7 @@
                  "icia", "ecia", "ocia", "ucia", "ald", "hald", "owin", "gord", "awa", "vil", "hiel", "ewyr", "arian", "ham", "font", "wood", "worth",
                  "ford", "ley", "wood", "ner", "row", "rim", "cote", "cute", "lip", "eye", "toe", "nose", "finger", "arm", "leg", "head", "lingdon",
                  "don", "burry", "ton", "well", "low", "fields", "wick", "court", "way", "ney", "sea", "sons", "cham", "an", "se", "on", "de",
-                 "borough", "hithe", "gate", "aster", "caster", "ware", "stead", "burn", "den", "fosters", "forrest", "plains", "ish", "pike", "lop",
+                 "borough", "hithe", "gate", "aster", "caster", "ware", "stead", "burn", "den", "fosters", "forest", "plains", "ish", "pike", "lop",
                  "hurst", "ty", "horse", "end", "mill", "wynne", "beach", "shore", "rose", "wood", "wilde", "wlyn", "land", "crest", "hill",
                  "mountain", "fay", "flower", "rock", "hollow", "light", "dale", "heat", "bush", "creek", "govo", "done", "way", "mist", "field",
                  "forrest", "nesse", "stone", "apple", "loch", "vale", "dell", "bourne", "ani", "dia", "holt", "hold", "burn", "pond", "lake", "town",
@@ -127,14 +127,14 @@
                      "Mahogany", "Mangrove", "Rubber", "Coral", "Ivory", "Alpaca leather", "Cow leather", "Donkey leather", "Horse leather",
                      "Pig leather", "Yak leather", "Dog leather", "Crocodile leather", "Badger leather", "Bear leather", "Small bird feathers",
                      "Emu feathers", "Ceramic", "Earthenware", "Stoneware", "Porcelain", "Glass", "Crystal", "Opal", "Moonstone", "Jade", "Tigereye",
-                     "Black zircon", "Purple spindel", "Topaz", "Emerald", "Sapphire", "Diamond", "Ruby", "Bloodstone", "Amber"
+                     "Black zircon", "Purple spindle", "Topaz", "Emerald", "Sapphire", "Diamond", "Ruby", "Bloodstone", "Amber"
                      ],
                      
 "artifact_quality": ["Rubbish", "Tattered", "Awful", "Poor", "Normal", "Good", "Excellent", "Masterwork", "Legendary", "Fine", "Superior",
                     "Exceptional"
                     ],
 
-"artifact_art": ["a Pig", "Dancers", "Turkey", "a Box of dreams", "a dark alley", "a Vulcano", "a great battle", "a boy", "Children", "Lovers",
+"artifact_art": ["a Pig", "Dancers", "Turkey", "a Box of dreams", "a dark alley", "a Volcano", "a great battle", "a boy", "Children", "Lovers",
                 "a spy", "a bridge", "a Castle", "Heroes", "a town", "a village", "a country", "Insects", "Ruins", "a great mountain range", "an eye",
                 "a body", "abstract art", "a large city", "a portrait", "the king", "the president", "the mayor"
                 ],
@@ -213,7 +213,7 @@
                "Super Heavy Salvage vessel", "Titan Livestock Carrier", "Super Heavy Jump Ship", "Titan Gas Carrier", "Mega Heavy Lift Ship",
                "Titan Reefer vessel", "Fleet Tender"
                ],
-"ship_fame": ["Speed", "Armor", "Survivability", "Fortune", "Misfortune", "Accuracy", "Range", "Dependability", "Size", "Prestige", "Cost", "Safeness",
+"ship_fame": ["Speed", "Armor", "Surviveability", "Fortune", "Misfortune", "Accuracy", "Range", "Dependability", "Size", "Prestige", "Cost", "Safeness",
              "Repairability", "Design", "Comfort", "Discomfort", "Ugliness", "Spartanism", "Opulence", "Crampedness", "Spaciousness", "Armament",
              "Detectability", "Low Detectability", "Sensors", "Blindspots", "Emissions", "Fuel economy", "Bad Sensors", "Good Sensors",
              "Few Blindspots", "Many Blindspots", "Good Emissions", "Bad Emissions", "Good Fuel economy", "Bad Fuel economy"
@@ -273,7 +273,7 @@
 "currency_icon_incuse": ["Square", "Shield", "Helmet", "Sword"
                         ],
 
-"currency_icon_insignia": ["Diadem", "Headband", "Crown", "Hat", "Staff", "Sword", "Scale", "Jewellery", "Armour"
+"currency_icon_insignia": ["Diadem", "Headband", "Crown", "Hat", "Staff", "Sword", "Scale", "Jewelry", "Armour"
                           ],
 
 "currency_icon_mythical_creature": ["Shapeshifter", "Amphibious Bull", "Water Horse", "Vampire", "Hobgoblin", "Fenrir", "Hellhound", "Werewolf",
@@ -300,7 +300,7 @@
                     "Democratic"
                     ],
 
-"government_name1": ["Parliamentary", "Democratic", "Council", "Constitutionary", "Presidential", "Directoral"
+"government_name1": ["Parliamentary", "Democratic", "Council", "Constitutional", "Presidential", "Directorial"
                     ],
 
 "government_name_monarchy": ["Absolute", "Constitutional", "Crowned", "Elective"
@@ -322,10 +322,10 @@
 "story_government_type_adj_1": ["Peoples", "Collective", "Council"
                                ],
 
-"story_government_type_sec_0": ["Directoral"
+"story_government_type_sec_0": ["Directorial"
                                ],
 
-"story_government_type_sec_01": ["Parliamentary", "Democratic", "Constitutionary", "Presidential"
+"story_government_type_sec_01": ["Parliamentary", "Democratic", "Constitutional", "Presidential"
                                 ],
 
 "story_government_type_sec_1": ["Council"
@@ -340,7 +340,7 @@
 "story_government_leader_title_0_mon": ["King", "Queen", "Emperor", "Empress"],
 
 "story_government_leader_title_01": ["Chancellor", "Prime Minister", "Minister", "Supreme Minister", "Chief Chancellor", "Chairman", "President",
-                                    "High Councillor"],
+                                    "High Councilor"],
 
 "story_government_leader_title_1": ["Chairman", "Party Leader", "Supreme Leader"
                                    ]
