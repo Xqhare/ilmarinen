@@ -1,9 +1,11 @@
 
 mod jisard;
 mod unit_pools;
+mod minting_type;
 
 use std::{io::{Error, ErrorKind}, path::Path};
 
+pub use minting_type::MintingType;
 use unit_pools::UnitArchipelago;
 
 
@@ -35,8 +37,12 @@ impl WordSmith {
             Err(Error::other(format!("Invalid data. '{:?}' needs to exist and be a directory.", data_path)))
         } 
     }
+/* 
+    pub fn mint(minting_type: MintingType, mint_amount: usize) -> MintingResult {
+        unimplemented!();
+    } */
 
-    pub fn test_main(data_path: &Path) {
-        let _ = UnitArchipelago::new(data_path);
+    pub fn test_main(minting_type: MintingType) {
+        println!("{:?}", minting_type);
     }
 }
