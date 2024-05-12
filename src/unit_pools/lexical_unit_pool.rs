@@ -1,3 +1,5 @@
+use json::JsonValue;
+
 
 #[derive(Debug, Clone)]
 /// This is how a simple list of data is stored.
@@ -14,8 +16,13 @@ impl Default for LexicalUnitPool {
     }
 }
 
-impl From<(String, Vec<String>)> for LexicalUnitPool {
-    fn from(value: (String, Vec<String>)) -> Self {
-        LexicalUnitPool { name: value.0, unit_pool: value.1 }
+impl From<(&str, &JsonValue)> for LexicalUnitPool {
+    fn from(value: (&str, &JsonValue)) -> Self {
+        let name = value.0.to_string();
+        let mut unit_pool: Vec<String> = Default::default();
+        for entry in value.1.members() {
+            unit_pool.push(entry.to_string());
+        }
+        LexicalUnitPool {name, unit_pool}
     }
 }
