@@ -19,19 +19,6 @@ pub fn read_json<P>(file_path: P) -> Result<JsonValue, Error> where P: AsRef<Pat
 }
 
 pub fn construct_word_smith(data_path: &Path) -> Result<WordSmith, Error> {
-    let gen_lib_path = data_path.join("gen_lib.json");
-    match read_json(gen_lib_path) {
-        Ok(data) => {
-            for thing in data.entries() {
-                for entry in thing.1.entries() {
-                    println!("{:?}", entry);
-                }
-            }
-            Ok(WordSmith { lexical_unit_lagoon: crate::unit_pools::UnitArchipelago::default() })
-        },
-        Err(error) => {
-            Err(Error::new(ErrorKind::Other, error))
-        },
-    }
+    
 }
 
