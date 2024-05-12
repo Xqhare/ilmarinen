@@ -13,3 +13,5 @@ fn main() {
     let word_smith = WordSmith::new("data/"));
 }
 ```
+
+There is no `WordSmith::default()`, the path containing the libraries must be supplied.
