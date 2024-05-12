@@ -1,4 +1,4 @@
-{ "library": {  "abc": ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"],
+{ "abc": ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"],
                 "place_relatives": ["smaller than", "larger than", "a lot larger than", "a lot smaller than"],
                 "place_noun": ["love", "peace", "freedom", "virtue", "lust", "greed", "sin", "defensiveness", "fertility", "glory", "ruggedness", "fairness", "beauty", "ugliness", "quality", "style", "age", "builder", "builders", "mystique", "sanctity", "quietness", "hiddenness", "wideness", "obscurity", "remoteness", "secrecy", "isolation", "openness", "approachability", "unapproachability", "bigotry", "narrow-mindedness", "inhibition", "formality", "modesty", "coldness", "warmness", "wetness", "dryness", "normalcy", "artfulness", "sophistication", "cynicism", "piety", "grace", "misery", "violence", "sadness", "joy", "sorrow", "worry", "busyness", "happiness", "solidarity", "rebellion", "disobedience", "concealment", "cover", "protection", "safety", "surety", "covertness", "lightness", "darkness", "sensibility", "bluntness"],
                 "place_top_eng_nouns": ["people", "history", "way", "art", "world", "information", "map", "family", "government", "health", "meat", "music", "food", "understanding", "law", "literature", "control", "knowledge", "power", "product", "temperature", "society", "industry", "technology", "magic", "army", "militia", "university", "fishing", "medicine", "philosophy", "disease", "corruption"],
@@ -344,6 +344,4 @@
 
 "story_government_leader_title_1": ["Chairman", "Party Leader", "Supreme Leader"
                                    ]
-
- }
 }
