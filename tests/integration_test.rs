@@ -7,7 +7,8 @@ use ilmarinen::{WordSmith, MintingType};
 fn debug_test() {
     let tt = WordSmith::test_main(MintingType::People);
     let tm = WordSmith::test_main(MintingType::ShipName);
-    println!("FINAL RESULT : {:?} | {:?}", tt, tm);
+    let t = WordSmith::test_main(MintingType::Empire);
+    println!("FINAL RESULT : {:?} | {:?} | {:?}", tt, tm, t);
 }
 
 #[test]

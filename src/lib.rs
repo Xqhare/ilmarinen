@@ -1,11 +1,11 @@
 
 mod jisard;
 mod unit_pools;
-mod minting_type;
+mod minting;
 
 use std::{io::{Error, ErrorKind}, path::Path};
 
-pub use minting_type::MintingType;
+pub use crate::minting::minting_type::MintingType; 
 use unit_pools::UnitArchipelago;
 
 
