@@ -1,11 +1,10 @@
 [package]
 name = "ilmarinen"
-version = "0.3.0"
+version = "0.3.1"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 json = "0.12.4"
-
 tyche = {git = "https://github.com/Xqhare/tyche" }
