@@ -179,8 +179,6 @@ impl LexicalUnitLagoon {
         match read_json(gen_lib_path) {
             Ok(data) => {
                 for entry in data.entries() {
-                    println!("{:?}", entry);
-                    println!("");
                     match entry.0 {
                         "abc" => {
                             abc = LexicalUnitPool::from(entry);

@@ -24,8 +24,6 @@ impl NumericalUnitLagoon {
         match read_json(num_lib_path) {
             Ok(data) => {
                 for entry in data.entries() {
-                    println!("{:?}", entry);
-                    println!("");
                     match entry.0 {
                             "story_town_trade_goods_dict" => {
                             story_town_trade_goods_dict = NumericalUnitDictionary::from(entry);
