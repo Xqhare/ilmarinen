@@ -88,7 +88,7 @@ impl WordSmith {
                     loop {
                         // I really don't know how long this should be. Maybe 100,
                         // maybe 10, maybe mint_amount?
-                        thread::sleep(Duration::from_millis(10));
+                        thread::sleep(Duration::from_millis(1));
                         if let Ok(store) = self.result.try_lock() {
                             if store.result.len() == mint_amount {
                                 return Ok(());

@@ -13,7 +13,7 @@ pub mod minters {
                 store.result.push("test".to_string());
                 break;
             };
-            thread::sleep(Duration::from_millis(5));
+            thread::sleep(Duration::from_millis(1));
         }
             
     }
