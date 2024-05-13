@@ -13,12 +13,17 @@ pub mod minters {
                 store.result.push("test".to_string());
                 break;
             };
-            thread::sleep(Duration::from_millis(1));
+            thread::sleep(Duration::from_micros(100));
         }
-            
     }
 
     pub fn mint_people(data: Arc<UnitArchipelago>, out: Arc<Mutex<MintingResult>>) {
-        todo!("implement this")
+        loop {
+            if let Ok(mut store) = out.try_lock() {
+                store.result.push("test".to_string());
+                break;
+            };
+            thread::sleep(Duration::from_micros(100));
+        }
     }
 }
