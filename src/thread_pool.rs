@@ -31,6 +31,25 @@ impl ThreadPool {
         ThreadPool { workers, sender: Some(sender),}
     }
 
+    pub fn provision_thread_pool(mint_amount: usize) -> Result<ThreadPool, PoolCreationError> {
+        if mint_amount <= 10 {
+            ThreadPool::build(2)
+        } else if mint_amount <= 50 {
+            ThreadPool::build(10)
+        } else if mint_amount <= 100 {
+            ThreadPool::build(20)
+        } else {
+            let size = {
+                if mint_amount / 5 > 250 {
+                    250
+                } else {
+                    mint_amount / 5
+                }
+            };
+            ThreadPool::build(size)
+        }
+    }
+
     pub fn build(size: usize) -> Result<ThreadPool, PoolCreationError> {
        if size < 1 {
             let error_kind: Option<Box<dyn Error>> = Some(Box::new(std::io::Error::new(std::io::ErrorKind::Other, "size can't be less than 1")));
@@ -113,3 +132,5 @@ impl fmt::Display for PoolCreationError {
         write!(f, "({}, {:?})", message, cause)
     }
 }
+
+
