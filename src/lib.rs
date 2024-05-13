@@ -23,14 +23,13 @@ impl WordSmith {
     /// Takes in a folder path. It extends for the needed files on its own, they need to be present
     /// in the supplied path though.
     pub fn new(data_path: &Path) -> Result<WordSmith, Error> {
-        // I only check the path here, real logic is external in `construct_self()`.
         if data_path.is_dir() {
             if let Ok(answ) = data_path.try_exists() {
                 match answ {
                     true => { 
                         match UnitArchipelago::new(data_path) {
-                            Ok(unit_archipelago) => { Ok( WordSmith { unit_archipelago: unit_archipelago.into(), result: Arc::new(Mutex::new(MintingResult::default())) } ) },
-                            Err(error) => { Err(Error::new(ErrorKind::Other, error)) }
+                            Ok(unit_archipelago) => Ok( WordSmith { unit_archipelago: unit_archipelago.into(), result: Arc::new(Mutex::new(MintingResult::default())) } ),
+                            Err(error) => Err(Error::new(ErrorKind::Other, error))
                         }
                     }
                     false => { Err(Error::from(ErrorKind::NotFound)) },
@@ -44,27 +43,11 @@ impl WordSmith {
     }
 
     /// Will only mint if mint_amount is larger than 0.
-    pub fn mint(&self, minting_type: MintingType, mint_amount: usize) -> Result<(), Error> {
+    pub fn mint(&mut self, minting_type: MintingType, mint_amount: usize) -> Result<(), Error> {
         if mint_amount > 0 {
-                let thread_pool = {
-                    if mint_amount <= 10 {
-                        ThreadPool::build(2)
-                    } else if mint_amount <= 50 {
-                        ThreadPool::build(10)
-                    } else if mint_amount <= 100 {
-                        ThreadPool::build(20)
-                    } else {
-                        let size = {
-                            if mint_amount / 5 > 250 {
-                                250
-                            } else {
-                                mint_amount / 5
-                            }
-                        };
-                        ThreadPool::build(size)
-                    }
-                };
+                let thread_pool = ThreadPool::provision_thread_pool(mint_amount);
                 if let Ok(pool) = thread_pool {
+                    self.result = Default::default();
                     for _n in 0..mint_amount {
                         let data = self.unit_archipelago.clone();
                         let out = self.result.clone();
@@ -88,7 +71,10 @@ impl WordSmith {
                     loop {
                         // I really don't know how long this should be. Maybe 100,
                         // maybe 10, maybe mint_amount?
-                        thread::sleep(Duration::from_millis(1));
+                        // Sleeping for one millisecond means 4.2 million cpu cycles for
+                        // a 4.2 Ghz cpu.
+                        // Sleeping for 100 microseconds would allow 42k cpu cycles.
+                        thread::sleep(Duration::from_micros(100));
                         if let Ok(store) = self.result.try_lock() {
                             if store.result.len() == mint_amount {
                                 return Ok(());
@@ -102,7 +88,6 @@ impl WordSmith {
             Err(Error::other("Amount is less than 1!"))
         }
     }
-
 
     pub fn test_main(minting_type: MintingType) {
         println!("{:?}", minting_type);
