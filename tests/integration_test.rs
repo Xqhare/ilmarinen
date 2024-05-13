@@ -13,7 +13,7 @@ fn debug_test() {
 
 #[test]
 fn mint_place_name_test() {
-    let tmp = WordSmith::new(Path::new("data/")).unwrap();
+    let mut tmp = WordSmith::new(Path::new("data/")).unwrap();
     let tmp1 = tmp.mint(MintingType::PlaceName, 100000);
 }
 
