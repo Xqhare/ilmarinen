@@ -85,7 +85,7 @@ impl WordSmith {
                     Err(Error::other("Fatal runtime error, unable to create thread pool."))
                 }
         } else {
-            Err(Error::other("Amount is less than 1!"))
+            Err(Error::other(format!("mint_amount '{}' is less than 1!", mint_amount)))
         }
     }
 
