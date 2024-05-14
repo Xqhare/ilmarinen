@@ -80,6 +80,7 @@ impl Drop for ThreadPool {
     }
 }
 
+#[allow(dead_code)]
 #[derive(Debug)]
 struct Worker {
     id: usize,
