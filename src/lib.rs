@@ -43,7 +43,7 @@ impl WordSmith {
     }
 
     /// Will only mint if mint_amount is larger than 0.
-    pub fn mint(&mut self, minting_type: MintingType, mint_amount: usize) -> Result<(), Error> {
+    pub fn mint(&mut self, minting_type: MintingType, mint_amount: usize) -> Result<MintingResult, Error> {
         if mint_amount > 0 {
                 let thread_pool = ThreadPool::provision_thread_pool(mint_amount);
                 if let Ok(pool) = thread_pool {
@@ -77,7 +77,7 @@ impl WordSmith {
                         thread::sleep(Duration::from_micros(100));
                         if let Ok(store) = self.result.try_lock() {
                             if store.result.len() == mint_amount {
-                                return Ok(());
+                                return Ok(store.clone());
                             }
                         };
                     }
