@@ -12,6 +12,5 @@ pub enum MintingType {
     Empire,
     Government,
     Language,
-    Numbers,
 
 }

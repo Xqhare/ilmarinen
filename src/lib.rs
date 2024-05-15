@@ -73,7 +73,6 @@ impl WordSmith {
                             MintingType::Empire => {},
                             MintingType::Government => {},
                             MintingType::Language => pool.execute(move||{mint_language(data, out, sleep_duration, sleep_offset.try_into().expect("Sleep Offset is larger than u64!"))}),
-                            MintingType::Numbers => {},
                         }
                     }
                     // Don't have a better idea of waiting for all workers to finish.
