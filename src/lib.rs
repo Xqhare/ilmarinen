@@ -65,7 +65,7 @@ impl WordSmith {
                             MintingType::PlaceName => pool.execute(move||{mint_place(data, out, sleep_duration, sleep_offset.try_into().expect("Sleep Offset is larger than u64!"))}),
                             MintingType::People => pool.execute(move||{mint_people(data, out, sleep_duration, sleep_offset.try_into().expect("Sleep Offset is larger than u64!"))}),
                             MintingType::Artifact => pool.execute(move||{mint_artifact(data, out, sleep_duration, sleep_offset.try_into().expect("Sleep Offset is larger than u64!"))}),
-                            MintingType::Operation => {},
+                            MintingType::Operation => pool.execute(move||{mint_operation(data, out, sleep_duration, sleep_offset.try_into().expect("Sleep Offset is larger than u64!"))}),
                             MintingType::ShipName => {},
                             MintingType::ShipClass => {},
                             MintingType::Currency => {},
