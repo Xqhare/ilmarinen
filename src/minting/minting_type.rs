@@ -1,7 +1,7 @@
 
 #[derive(Debug, Clone, Copy)]
 pub enum MintingType {
-    PlaceName,
+    Place,
     People,
     Artifact,
     Operation,
