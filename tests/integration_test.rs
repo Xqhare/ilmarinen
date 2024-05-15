@@ -13,7 +13,9 @@ fn word_smith_main_test() {
     assert!(metal_alloy.is_ok());
     let language = word_smith.mint(MintingType::Language, 100000);
     assert!(language.is_ok());
-    for entry in metal_alloy.unwrap().result {
+    let artifact = word_smith.mint(MintingType::Artifact, 100000);
+    assert!(artifact.is_ok());
+    for entry in artifact.unwrap().result {
         println!("{}", entry)
     };
 }
