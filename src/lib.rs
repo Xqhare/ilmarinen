@@ -69,7 +69,7 @@ impl WordSmith {
                             MintingType::ShipName => {},
                             MintingType::ShipClass => {},
                             MintingType::Currency => {},
-                            MintingType::MetalAndAlloy => {},
+                            MintingType::MetalAndAlloy => pool.execute(move||{mint_metal_alloy(data, out, sleep_duration, sleep_offset.try_into().expect("Sleep Offset is larger than u64!"))}),
                             MintingType::Empire => {},
                             MintingType::Government => {},
                             MintingType::Language => pool.execute(move||{mint_language(data, out, sleep_duration, sleep_offset.try_into().expect("Sleep Offset is larger than u64!"))}),
