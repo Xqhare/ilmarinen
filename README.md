@@ -1,6 +1,6 @@
 # Ilmarinen: Random Name and Concept Generation
 
-Ilmarinen is an intermediate-level Rust library designed to provide a convinient and efficient way to generate random names and concepts for various purposes, including but not limited to:
+Ilmarinen is an intermediate-level Rust library designed to provide a convinient, lightweigt and maintainable way to generate random names and concepts for various purposes, including but not limited to:
 
 - Game Development (names for characters, locations and more)
 - Writing (creating fictional elements, currencies, empires and more)
@@ -21,7 +21,7 @@ Ilmarinen is an intermediate-level Rust library designed to provide a convinient
     - Governments
     - Languages
     - Numbers
-- Multi-Threading Support
+- Self-rolled Multi-Threading
 - Utilises an actual CSPRNG, meaning that the data is guaranteed to be random
 
 ### Further Development
