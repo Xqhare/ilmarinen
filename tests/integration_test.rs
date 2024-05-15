@@ -15,7 +15,9 @@ fn word_smith_main_test() {
     assert!(language.is_ok());
     let artifact = word_smith.mint(MintingType::Artifact, 100000);
     assert!(artifact.is_ok());
-    for entry in artifact.unwrap().result {
+    let operation = word_smith.mint(MintingType::Operation, 100000);
+    assert!(operation.is_ok());
+    for entry in operation.unwrap().result {
         println!("{}", entry)
     };
 }
