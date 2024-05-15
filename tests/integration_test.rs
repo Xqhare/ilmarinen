@@ -9,9 +9,11 @@ fn word_smith_main_test() {
     assert!(people.is_ok());
     let place = word_smith.mint(MintingType::PlaceName, 100000);
     assert!(place.is_ok());
+    let metal_alloy = word_smith.mint(MintingType::MetalAndAlloy, 100000);
+    assert!(metal_alloy.is_ok());
     let language = word_smith.mint(MintingType::Language, 100000);
     assert!(language.is_ok());
-    for entry in language.unwrap().result {
+    for entry in metal_alloy.unwrap().result {
         println!("{}", entry)
     };
 }
