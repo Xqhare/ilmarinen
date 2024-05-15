@@ -45,7 +45,17 @@ use ilmarinen::WordSmith;
 fn main() {
     // The json libraries need to be located inside to supplied path.
     let word_smith = WordSmith::new("data/"));
+    // You can supply any `MintingType` you choose, as well as any amount. As long as its larger than 0 and smaller than an u64.
+    let operation = word_smith.mint(MintingType::Operation, 100000);
+    assert!(operation.is_ok());
+    for entry in operation.unwrap().result {
+        println!("{}", entry)
+    };
 }
 ```
 
 There is no `WordSmith::default()`, the path containing the libraries must be supplied.
+
+## Making Ilmarinen your own
+
+You can very easily edit the `json` files contained in this repo and change the output of the library completely, without having to touch the codebase. Go wild!
