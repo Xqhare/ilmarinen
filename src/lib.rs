@@ -17,6 +17,7 @@ use unit_pools::UnitArchipelago;
 pub struct WordSmith {
     unit_archipelago: Arc<UnitArchipelago>,
     result: Arc<Mutex<MintingResult>>,
+    sleep_duration: Arc<Duration>,
 }
 
 impl WordSmith {
@@ -25,10 +26,11 @@ impl WordSmith {
     pub fn new(data_path: &Path) -> Result<WordSmith, Error> {
         if data_path.is_dir() {
             if let Ok(answ) = data_path.try_exists() {
+                let dur = Arc::new(Duration::from_micros(3300));
                 match answ {
                     true => { 
                         match UnitArchipelago::new(data_path) {
-                            Ok(unit_archipelago) => Ok( WordSmith { unit_archipelago: unit_archipelago.into(), result: Arc::new(Mutex::new(MintingResult::default())) } ),
+                            Ok(unit_archipelago) => Ok( WordSmith { unit_archipelago: unit_archipelago.into(), result: Arc::new(Mutex::new(MintingResult::default())), sleep_duration: dur } ),
                             Err(error) => Err(Error::new(ErrorKind::Other, error))
                         }
                     }
@@ -48,12 +50,20 @@ impl WordSmith {
                 let thread_pool = ThreadPool::provision_thread_pool(mint_amount);
                 if let Ok(pool) = thread_pool {
                     self.result = Default::default();
-                    for _n in 0..mint_amount {
+                    for n in 0..mint_amount {
                         let data = self.unit_archipelago.clone();
                         let out = self.result.clone();
+                        let sleep_duration = self.sleep_duration.clone();
+                        let sleep_offset = {
+                            if n < 3300 {
+                                n 
+                            } else {
+                                n % 3300
+                            }
+                        };
                         match minting_type {
-                            MintingType::PlaceName => pool.execute(|| {mint_place(data, out) }),
-                            MintingType::People => pool.execute(|| {mint_people(data, out)}),
+                            MintingType::PlaceName => pool.execute(move||{mint_place(data, out, sleep_duration, sleep_offset.try_into().expect("Sleep Offset is larger than u64!"))}),
+                            MintingType::People => pool.execute(move||{mint_people(data, out, sleep_duration, sleep_offset.try_into().expect("Sleep Offset is larger than u64!"))}),
                             MintingType::Artifact => {},
                             MintingType::Operation => {},
                             MintingType::ShipName => {},
@@ -74,12 +84,22 @@ impl WordSmith {
                         // Sleeping for one millisecond means 4.2 million cpu cycles for
                         // a 4.2 Ghz cpu.
                         // Sleeping for 100 microseconds would allow 42k cpu cycles.
-                        thread::sleep(Duration::from_micros(100));
+                        //
+                        // After some very sophisticated testing, 3300 micros seems to be near the
+                        // sweetspot.
+                        // After even more testing, this is better by a second! Still bad, but
+                        // hand-rolled!
+                        if mint_amount < 3300 {
+                            thread::sleep(*self.sleep_duration.clone());
+                        } else {
+                            thread::sleep(self.sleep_duration.clone().saturating_add(Duration::from_micros((mint_amount % 22000) as u64)))
+                        }
                         if let Ok(store) = self.result.try_lock() {
                             if store.result.len() == mint_amount {
                                 return Ok(store.clone());
                             }
                         };
+                        println!("BLOCKED MAIN");
                     }
                 } else {
                     Err(Error::other("Fatal runtime error, unable to create thread pool."))
