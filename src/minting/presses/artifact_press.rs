@@ -2,9 +2,9 @@ use std::{sync::Arc, io::Error};
 
 use crate::unit_pools::UnitArchipelago;
 
-use self::artifact::{material_type, artifact_type_type, name_type, quality_type, art_type, dedication_type};
+use self::artifact::{name_type, art_type, dedication_type};
 
-use super::common::comp_name_type;
+use super::common::{comp_name_type, artifact_type_type, material_type, quality_type};
 
 pub fn artifact_press(data: Arc<UnitArchipelago>) -> Result<String, Error> {
     let artifact_type = artifact_type_type(data.clone())?;
@@ -35,31 +35,7 @@ mod artifact {
     
     use tyche::prelude;
 
-    use crate::{unit_pools::UnitArchipelago, minting::presses::common::comp_name_type};
-
-    pub fn material_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
-        Ok(
-            data.lexical_unit_lagoon.artifact_material.unit_pool[prelude::random_index(data.lexical_unit_lagoon.artifact_material.unit_pool.len())?].clone()
-        )
-    }
-
-    pub fn artifact_type_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
-        Ok(
-            data.lexical_unit_lagoon.artifact_type.unit_pool[prelude::random_index(data.lexical_unit_lagoon.artifact_type.unit_pool.len())?].clone()
-        )
-    }
-
-    pub fn adjective_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
-        Ok(
-            data.lexical_unit_lagoon.artifact_adjective.unit_pool[prelude::random_index(data.lexical_unit_lagoon.artifact_adjective.unit_pool.len())?].clone()
-        )
-    }
-
-    pub fn quality_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
-        Ok(
-            data.lexical_unit_lagoon.artifact_quality.unit_pool[prelude::random_index(data.lexical_unit_lagoon.artifact_quality.unit_pool.len())?].clone()
-        )
-    }
+    use crate::{unit_pools::UnitArchipelago, minting::presses::common::{comp_name_type, adjective_type}};
 
     pub fn art_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
         Ok(
