@@ -99,7 +99,7 @@ impl WordSmith {
                                 return Ok(store.clone());
                             }
                         };
-                        println!("BLOCKED MAIN");
+                        //println!("BLOCKED MAIN");
                     }
                 } else {
                     Err(Error::other("Fatal runtime error, unable to create thread pool."))
