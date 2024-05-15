@@ -17,7 +17,7 @@ pub mod minters {
                 store.result.push(result);
                 break;
             };
-            //println!("MINT PLACE BLOCKED");
+            //println!("MINT place BLOCKED");
             thread::sleep(sleep_duration.saturating_add(Duration::from_micros(sleep_offset)));
         }
     }
@@ -29,8 +29,57 @@ pub mod minters {
                 store.result.push(result);
                 break;
             };
-            //println!("MINT PEOPLE BLOCKED");
+            //println!("MINT people BLOCKED");
+            thread::sleep(sleep_duration.saturating_add(Duration::from_micros(sleep_offset)));
+        }
+    }
+
+    pub fn mint_language(data: Arc<UnitArchipelago>, out: Arc<Mutex<MintingResult>>, sleep_duration: Arc<Duration>, sleep_offset: u64) {
+        loop {
+            if let Ok(mut store) = out.try_lock() {
+                let result = people_press(data).expect("SOMETHING WENT TERRIBLY WRONG!");
+                store.result.push(result);
+                break;
+            };
+            //println!("MINT language BLOCKED");
+            thread::sleep(sleep_duration.saturating_add(Duration::from_micros(sleep_offset)));
+        }
+    }
+
+    pub fn mint_metal_alloy(data: Arc<UnitArchipelago>, out: Arc<Mutex<MintingResult>>, sleep_duration: Arc<Duration>, sleep_offset: u64) {
+        loop {
+            if let Ok(mut store) = out.try_lock() {
+                let result = people_press(data).expect("SOMETHING WENT TERRIBLY WRONG!");
+                store.result.push(result);
+                break;
+            };
+            //println!("MINT metal_alloy BLOCKED");
+            thread::sleep(sleep_duration.saturating_add(Duration::from_micros(sleep_offset)));
+        }
+    }
+
+    pub fn mint_artifact(data: Arc<UnitArchipelago>, out: Arc<Mutex<MintingResult>>, sleep_duration: Arc<Duration>, sleep_offset: u64) {
+        loop {
+            if let Ok(mut store) = out.try_lock() {
+                let result = people_press(data).expect("SOMETHING WENT TERRIBLY WRONG!");
+                store.result.push(result);
+                break;
+            };
+            //println!("MINT artifact BLOCKED");
+            thread::sleep(sleep_duration.saturating_add(Duration::from_micros(sleep_offset)));
+        }
+    }
+
+    pub fn mint_operation(data: Arc<UnitArchipelago>, out: Arc<Mutex<MintingResult>>, sleep_duration: Arc<Duration>, sleep_offset: u64) {
+        loop {
+            if let Ok(mut store) = out.try_lock() {
+                let result = people_press(data).expect("SOMETHING WENT TERRIBLY WRONG!");
+                store.result.push(result);
+                break;
+            };
+            //println!("MINT operation BLOCKED");
             thread::sleep(sleep_duration.saturating_add(Duration::from_micros(sleep_offset)));
         }
     }
 }
+
