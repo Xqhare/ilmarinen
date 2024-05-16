@@ -13,6 +13,24 @@ pub fn comp_name_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
     )
 }
 
+pub fn formal_name_die(data: Arc<UnitArchipelago>) -> Result<String, Error> {
+    Ok(
+        format!("{}{}",
+            data.clone().lexical_unit_lagoon.people_title.unit_pool[prelude::random_index(data.lexical_unit_lagoon.people_title.unit_pool.len())?],
+            legal_name_die(data)?
+        )
+    )
+}
+
+pub fn legal_name_die(data: Arc<UnitArchipelago>) -> Result<String, Error> {
+    Ok(
+        format!("{} {}",
+            first_name_type(data.clone())?,
+            last_name_type(data)?
+        )
+    )
+}
+
 pub fn simple_name_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
     let seed = prelude::random_from_range(0, 2)?;
     if seed <= 2 {
@@ -23,6 +41,14 @@ pub fn simple_name_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
         Ok(
             data.lexical_unit_lagoon.people_nickname.unit_pool[prelude::random_index(data.lexical_unit_lagoon.people_nickname.unit_pool.len())?].clone()
         )
+    } else {
+        comp_name_type(data)
+    }
+}
+
+pub fn empire_name_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
+    if prelude::random_from_range(0, 1)? == 1 {
+        simple_name_type(data)
     } else {
         comp_name_type(data)
     }
