@@ -7,6 +7,7 @@ fn word_smith_main_test() {
     let mut word_smith = WordSmith::new(Path::new("data/")).unwrap();
     let people = word_smith.mint(MintingType::People, 100000);
     assert!(people.is_ok());
+
     let place = word_smith.mint(MintingType::Place, 100000);
     assert!(place.is_ok());
     let metal_alloy = word_smith.mint(MintingType::MetalAndAlloy, 100000);
@@ -17,7 +18,9 @@ fn word_smith_main_test() {
     assert!(artifact.is_ok());
     let operation = word_smith.mint(MintingType::Operation, 100000);
     assert!(operation.is_ok());
-    for entry in operation.unwrap().result {
+    let government = word_smith.mint(MintingType::Government, 100000);
+    assert!(government.is_ok());
+    for entry in government.unwrap().result {
         println!("{}", entry)
     };
 }
