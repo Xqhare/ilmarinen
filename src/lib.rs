@@ -54,13 +54,7 @@ impl WordSmith {
                         let data = self.unit_archipelago.clone();
                         let out = self.result.clone();
                         let sleep_duration = self.sleep_duration.clone();
-                        let sleep_offset = {
-                            if n < 3300 {
-                                n 
-                            } else {
-                                n % 3300
-                            }
-                        };
+                        let sleep_offset = n % 3300;
                         match minting_type {
                             MintingType::Place => pool.execute(move||{mint_place(data, out, sleep_duration, sleep_offset.try_into().expect("Sleep Offset is larger than u64!"))}),
                             MintingType::People => pool.execute(move||{mint_people(data, out, sleep_duration, sleep_offset.try_into().expect("Sleep Offset is larger than u64!"))}),
@@ -75,6 +69,9 @@ impl WordSmith {
                             MintingType::Language => pool.execute(move||{mint_language(data, out, sleep_duration, sleep_offset.try_into().expect("Sleep Offset is larger than u64!"))}),
                         }
                     }
+                    // Let the threads work for a bit first, no need to check.
+                    // PROVEN TO IMPROVE PERFORMANCE! By like .1 sec per 100k but hey!
+                    thread::sleep(self.sleep_duration.clone().saturating_add(Duration::from_micros((mint_amount % 35000) as u64)));
                     // Don't have a better idea of waiting for all workers to finish.
                     // Could check the length of the created result, that idea seems worse.
                     loop {
@@ -91,15 +88,15 @@ impl WordSmith {
                         if mint_amount < 3300 {
                             thread::sleep(*self.sleep_duration.clone());
                         } else {
-                            thread::sleep(self.sleep_duration.clone().saturating_add(Duration::from_micros((mint_amount % 22000) as u64)))
+                            thread::sleep(self.sleep_duration.clone().saturating_add(Duration::from_micros((mint_amount % 25000) as u64)));
                         }
                         if let Ok(store) = self.result.try_lock() {
                             if store.result.len() == mint_amount {
                                 return Ok(store.clone());
-                            }
+                            };
                         };
                         //println!("BLOCKED MAIN");
-                    }
+                    };
                 } else {
                     Err(Error::other("Fatal runtime error, unable to create thread pool."))
                 }
@@ -108,7 +105,4 @@ impl WordSmith {
         }
     }
 
-    pub fn test_main(minting_type: MintingType) {
-        println!("{:?}", minting_type);
-    }
 }
