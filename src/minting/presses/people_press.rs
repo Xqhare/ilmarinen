@@ -25,22 +25,13 @@ mod people {
     
     use tyche::prelude;
 
-    use crate::{unit_pools::UnitArchipelago, minting::presses::common::{nickname_type, first_name_type, last_name_type}};
+    use crate::{unit_pools::UnitArchipelago, minting::presses::common::{nickname_type, legal_name_die}};
 
     pub fn full_name_die(data: Arc<UnitArchipelago>) -> Result<String, Error> {
         Ok(
             format!("Name: {}. Nickname: {}",
                 legal_name_die(data.clone())?,
                 nickname_type(data)?
-            )
-        )
-    }
-
-    pub fn legal_name_die(data: Arc<UnitArchipelago>) -> Result<String, Error> {
-        Ok(
-            format!("{} {}",
-                first_name_type(data.clone())?,
-                last_name_type(data)?
             )
         )
     }
