@@ -38,7 +38,18 @@ The library's name, Ilmarinen, is drawn from the finnish god of the air, weather
 
 ## Usage
 
-To set up:
+### Cargo.toml
+
+To set up include it in your dependencies:
+```toml
+ilmarinen = {git = "https://github.com/Xqhare/ilmarinen" }
+```
+Then run `cargo update`.
+
+### main.rs
+
+In your `main.rs` you first construct the `WordSmith` by suppling it the path to the directory where the json libraries inside the `data` directory of this repo are on your system.
+Then it's just a matter of invoking `word_smit.mint(minting_type, mint_amount)` with a `MintingType` representing the type you are requesting, and `mint_amount` being the amount of results you want. Please not that suppling a `0` will produce an `Err()`. Only positive Integers above `0` and below `usize` are permitted.
 ```rust
 use ilmarinen::WordSmith;
 
