@@ -36,16 +36,16 @@ mod government {
             Ok(
                 format!("{} {} {}",
                     government_name0_type(data.clone())?,
-                    government_name1_type(data.clone())?,
-                    government_type_type(data)?
+                    government_name1_type(data)?,
+                    government_type_type()?
                 )
             )
 
         } else if seed == 1 {
             Ok(
                 format!("Semi-{} {}",
-                    government_name0_type(data.clone())?,
-                    government_type_type(data)?
+                    government_name0_type(data)?,
+                    government_type_type()?
                 )
             )
         } else {
@@ -57,7 +57,7 @@ mod government {
         }
     }
 
-    pub fn government_type_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
+    pub fn government_type_type() -> Result<String, Error> {
         let seed = prelude::random_from_range(0, 3)?;
         if seed == 0 {
             Ok("State".to_string())
