@@ -20,7 +20,9 @@ fn word_smith_main_test() {
     assert!(operation.is_ok());
     let government = word_smith.mint(MintingType::Government, 100000);
     assert!(government.is_ok());
-    for entry in government.unwrap().result {
+    let empire = word_smith.mint(MintingType::Empire, 100000);
+    assert!(empire.is_ok());
+    for entry in empire.unwrap().result {
         println!("{}", entry)
     };
 }
