@@ -15,7 +15,7 @@ pub fn comp_name_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
 
 pub fn formal_name_die(data: Arc<UnitArchipelago>) -> Result<String, Error> {
     Ok(
-        format!("{}{}",
+        format!("{} {}",
             data.clone().lexical_unit_lagoon.people_title.unit_pool[prelude::random_index(data.lexical_unit_lagoon.people_title.unit_pool.len())?],
             legal_name_die(data)?
         )
@@ -33,7 +33,7 @@ pub fn legal_name_die(data: Arc<UnitArchipelago>) -> Result<String, Error> {
 
 pub fn simple_name_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
     let seed = prelude::random_from_range(0, 2)?;
-    if seed <= 2 {
+    if seed >= 2 {
         Ok(
             data.lexical_unit_lagoon.place_single.unit_pool[prelude::random_index(data.lexical_unit_lagoon.place_single.unit_pool.len())?].clone()
         )
@@ -54,26 +54,22 @@ pub fn empire_name_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
     }
 }
 
-pub fn full_name_die(data: Arc<UnitArchipelago>) -> Result<String, Error> {
-    let seed = prelude::random_from_range(0, 3)?;
-    if seed <= 3 {
-        simple_name_type(data)
-    } else if seed == 2 {
-        Ok(
-            format!("{} {}",
-            simple_name_type(data.clone())?,
-            simple_name_type(data)?
-            )
-        )
-    } else if seed == 1 {
-        Ok(
-            format!("{}'s {}",
-                comp_name_type(data.clone())?,
+pub fn full_place_name_die(data: Arc<UnitArchipelago>) -> Result<String, Error> {
+    match prelude::random_from_range(0, 3)? {
+        3 => simple_name_type(data),
+        2 => Ok(
+                format!("{} {}",
+                simple_name_type(data.clone())?,
                 simple_name_type(data)?
-            )
-        )
-    } else {
-        comp_name_type(data)
+                )
+            ),
+        1 => Ok(
+                format!("{}'s {}",
+                    comp_name_type(data.clone())?,
+                    simple_name_type(data)?
+                )
+            ),
+        _ => comp_name_type(data),
     }
 }
 
@@ -141,3 +137,12 @@ pub fn quality_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
         data.lexical_unit_lagoon.artifact_quality.unit_pool[prelude::random_index(data.lexical_unit_lagoon.artifact_quality.unit_pool.len())?].clone()
     )
 }
+
+pub fn language_name_die(data: Arc<UnitArchipelago>) -> Result<String, Error> {
+    if prelude::random_from_range(0, 1)? == 0 {
+        simple_name_type(data)
+    } else {
+        comp_name_type(data)
+    }
+}
+
