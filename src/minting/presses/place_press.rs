@@ -4,14 +4,14 @@ use crate::unit_pools::UnitArchipelago;
 
 use self::place::{adj_die, place_description_die};
 
-use super::common::full_name_die;
+use super::common::full_place_name_die;
 
 
 pub fn place_press(data: Arc<UnitArchipelago>) -> Result<String, Error> {
     Ok(
         format!("{}{}. {}",
             adj_die(data.clone())?,
-            full_name_die(data.clone())?,
+            full_place_name_die(data.clone())?,
             place_description_die(data)?
         )
     )
