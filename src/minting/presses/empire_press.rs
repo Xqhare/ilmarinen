@@ -6,11 +6,10 @@ use crate::unit_pools::UnitArchipelago;
 
 use self::empire::empire_name_die;
 
-use super::{common::{formal_name_die, language_name_die, full_place_name_die}, government_press::government_press};
+use super::{common::{formal_name_die, language_name_die, full_place_name_die, general_currency_name_die}, government_press::government_press};
 
 pub fn empire_press(data: Arc<UnitArchipelago>) -> Result<String, Error> {
     let name = empire_name_die(data.clone())?;
-    let currency = "";
     let area = prelude::random_from_range(1, 10000000)?;
     let pop = prelude::random_from_range(1, 1000000)?;
     Ok(
@@ -21,7 +20,7 @@ pub fn empire_press(data: Arc<UnitArchipelago>) -> Result<String, Error> {
         language_name_die(data.clone())?,
         pop,
         area,
-        currency,
+        general_currency_name_die(data.clone())?,
         government_press(data, &name)?
         )
     )
