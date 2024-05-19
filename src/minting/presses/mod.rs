@@ -6,4 +6,5 @@ pub mod artifact_press;
 pub mod operation_press;
 pub mod government_press;
 pub mod empire_press;
+pub mod currency_press;
 mod common;
