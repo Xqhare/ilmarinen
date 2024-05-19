@@ -146,3 +146,80 @@ pub fn language_name_die(data: Arc<UnitArchipelago>) -> Result<String, Error> {
     }
 }
 
+pub fn general_currency_name_die(data: Arc<UnitArchipelago>) -> Result<String, Error> {
+    match prelude::random_from_range(0, 2)? {
+        0 => { 
+            match prelude::random_from_range(0, 2)? {
+                0 => return random_currency_name_type(data, 3),
+                1 => return random_currency_name_type(data, 4),
+                _ => return random_currency_name_type(data, 5),
+            }
+        },
+        _ => {
+            if prelude::random_from_range(0, 1)? == 0 {
+                random_currency_real_fractional_name_type(data)
+            } else {
+                random_currency_real_name_type(data)
+            }
+        }
+    }
+    
+}
+
+pub fn random_currency_name_type(data: Arc<UnitArchipelago>, random_letter_amount: usize) -> Result<String, Error> {
+    if random_letter_amount < 1 {
+        Err(Error::other(format!("random_letter_amount '{}' less than 1!", random_letter_amount)))
+    } else {
+        let mut out: String = Default::default();
+        for n in 0..random_letter_amount {
+            if n == 0 {
+                out.push_str(&random_abc_type(data.clone())?.to_uppercase())
+            } else {
+                out.push_str(&random_abc_type(data.clone())?);
+            }
+        }
+        out.push_str(&currency_name_ending_die(data)?);
+        Ok(
+            out
+        )    
+    }
+    
+}
+
+pub fn currency_name_ending_die(data: Arc<UnitArchipelago>) -> Result<String, Error> {
+    if prelude::random_from_range(0, 1)? == 0 {
+        random_currency_ending_type(data)
+    } else {
+        random_currency_second_word_type(data)
+    }
+}
+
+fn random_abc_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
+    Ok(
+        data.lexical_unit_lagoon.abc.unit_pool[prelude::random_index(data.lexical_unit_lagoon.abc.unit_pool.len())?].clone()
+    )
+}
+
+fn random_currency_ending_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
+    Ok(
+        data.lexical_unit_lagoon.currency_endings.unit_pool[prelude::random_index(data.lexical_unit_lagoon.currency_endings.unit_pool.len())?].clone()
+    )
+}
+
+fn random_currency_second_word_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
+    Ok(
+        data.lexical_unit_lagoon.currency_second_word.unit_pool[prelude::random_index(data.lexical_unit_lagoon.currency_second_word.unit_pool.len())?].clone()
+    )
+}
+
+fn random_currency_real_fractional_name_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
+    Ok(
+        data.lexical_unit_lagoon.currency_real_fractional_names.unit_pool[prelude::random_index(data.lexical_unit_lagoon.currency_real_fractional_names.unit_pool.len())?].clone()
+    )
+}
+
+fn random_currency_real_name_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
+    Ok(
+        data.lexical_unit_lagoon.currency_real_names.unit_pool[prelude::random_index(data.lexical_unit_lagoon.currency_real_names.unit_pool.len())?].clone()
+    )
+}
