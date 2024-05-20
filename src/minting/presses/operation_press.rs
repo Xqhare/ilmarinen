@@ -15,7 +15,7 @@ mod operation {
     
     use tyche::prelude;
 
-    use crate::{unit_pools::UnitArchipelago, minting::presses::common::{full_place_name_die, comp_name_type, nickname_type, first_name_type, last_name_type, skill_die, artifact_type_type, adjective_type, material_type, quality_type}};
+    use crate::{unit_pools::UnitArchipelago, minting::presses::common::{full_place_name_die, comp_name_type, nickname_type, first_name_type, last_name_type, skill_die, artifact_type_type, artifact_adjective_type, material_type, quality_type}};
 
     pub fn name_die(data: Arc<UnitArchipelago>) -> Result<String, Error> {
         if prelude::random_from_range(0, 1)? == 0 {
@@ -47,7 +47,7 @@ mod operation {
         let seed = prelude::random_from_range(0, 3)?;
         match seed {
             0 => return Ok(data.lexical_unit_lagoon.place_single.unit_pool[prelude::random_index(data.lexical_unit_lagoon.place_single.unit_pool.len())?].clone()),
-            1 => return adjective_type(data),
+            1 => return artifact_adjective_type(data),
             2 => return material_type(data),
             _ => return quality_type(data)
         }
