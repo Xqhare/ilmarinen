@@ -35,7 +35,7 @@ mod artifact {
     
     use tyche::prelude;
 
-    use crate::{unit_pools::UnitArchipelago, minting::presses::common::{comp_name_type, adjective_type}};
+    use crate::{unit_pools::UnitArchipelago, minting::presses::common::{comp_name_type, artifact_adjective_type}};
 
     pub fn art_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
         Ok(
@@ -52,7 +52,7 @@ mod artifact {
     pub fn name_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
         Ok(
             format!("{} {}",
-                adjective_type(data.clone())?,
+                artifact_adjective_type(data.clone())?,
                 comp_name_type(data)?
             )
         )
