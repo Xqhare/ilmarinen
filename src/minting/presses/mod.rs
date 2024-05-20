@@ -7,4 +7,6 @@ pub mod operation_press;
 pub mod government_press;
 pub mod empire_press;
 pub mod currency_press;
+pub mod ship_name_press;
+pub mod ship_class_press;
 mod common;
