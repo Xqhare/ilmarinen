@@ -22,6 +22,15 @@ pub fn formal_name_die(data: Arc<UnitArchipelago>) -> Result<String, Error> {
     )
 }
 
+pub fn formal_last_name_die(data: Arc<UnitArchipelago>) -> Result<String, Error> {
+    Ok(
+        format!("{} {}",
+            data.clone().lexical_unit_lagoon.people_title.unit_pool[prelude::random_index(data.lexical_unit_lagoon.people_title.unit_pool.len())?],
+            last_name_type(data)?
+        )
+    )
+}
+
 pub fn legal_name_die(data: Arc<UnitArchipelago>) -> Result<String, Error> {
     Ok(
         format!("{} {}",
@@ -126,7 +135,7 @@ pub fn artifact_type_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
     )
 }
 
-pub fn adjective_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
+pub fn artifact_adjective_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
     Ok(
         data.lexical_unit_lagoon.artifact_adjective.unit_pool[prelude::random_index(data.lexical_unit_lagoon.artifact_adjective.unit_pool.len())?].clone()
     )
@@ -194,7 +203,7 @@ pub fn currency_name_ending_die(data: Arc<UnitArchipelago>) -> Result<String, Er
     }
 }
 
-fn random_abc_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
+pub fn random_abc_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
     Ok(
         data.lexical_unit_lagoon.abc.unit_pool[prelude::random_index(data.lexical_unit_lagoon.abc.unit_pool.len())?].clone()
     )
@@ -221,5 +230,11 @@ fn random_currency_real_fractional_name_type(data: Arc<UnitArchipelago>) -> Resu
 fn random_currency_real_name_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
     Ok(
         data.lexical_unit_lagoon.currency_real_names.unit_pool[prelude::random_index(data.lexical_unit_lagoon.currency_real_names.unit_pool.len())?].clone()
+    )
+}
+
+pub fn random_place_noun_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
+    Ok(
+        data.lexical_unit_lagoon.place_noun.unit_pool[prelude::random_index(data.lexical_unit_lagoon.place_noun.unit_pool.len())?].clone()
     )
 }
