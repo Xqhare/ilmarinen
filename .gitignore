@@ -20,3 +20,6 @@ Cargo.lock
 
 # removing vim session file
 *.vim
+
+# removing .ods test timings
+*.ods
