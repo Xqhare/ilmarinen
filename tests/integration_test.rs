@@ -24,7 +24,9 @@ fn word_smith_main_test() {
     assert!(empire.is_ok());
     let ship_name = word_smith.mint(MintingType::ShipName, 100000);
     assert!(ship_name.is_ok());
-    for entry in ship_name.unwrap().result {
+    let ship_class = word_smith.mint(MintingType::ShipClass, 100000);
+    assert!(ship_class.is_ok());
+    for entry in ship_class.unwrap().result {
         println!("{}", entry)
     };
 }
