@@ -6,9 +6,11 @@ mod presses;
 pub mod minters {
     use std::{sync::{Arc, Mutex}, thread, time::Duration};
 
+    use tyche::prelude::random_from_f32range;
+
     use crate::{unit_pools::UnitArchipelago, MintingResult};
 
-    use super::presses::{people_press::people_press, place_press::place_press, language_press::language_press, metal_alloy_press::metal_alloy_press, artifact_press::artifact_press, operation_press::operation_press, government_press::government_press, empire_press::empire_press, ship_name_press::ship_name_press};
+    use super::presses::{people_press::people_press, place_press::place_press, language_press::language_press, metal_alloy_press::metal_alloy_press, artifact_press::artifact_press, operation_press::operation_press, government_press::government_press, empire_press::empire_press, ship_name_press::ship_name_press, ship_class_press::ship_class_press};
 
     pub fn mint_place(data: Arc<UnitArchipelago>, out: Arc<Mutex<MintingResult>>, sleep_duration: Arc<Duration>, sleep_offset: u64) {
         loop {
@@ -118,5 +120,18 @@ pub mod minters {
         }
     }
 
+    pub fn mint_ship_class(data: Arc<UnitArchipelago>, out: Arc<Mutex<MintingResult>>, sleep_duration: Arc<Duration>, sleep_offset: u64) {
+        loop {
+            if let Ok(mut store) = out.try_lock() {
+                let avg_speed = random_from_f32range(0.5, 5.5).expect("RANDOM BLOCK!");
+                let avg_range = random_from_f32range(100.5, 1000.5).expect("RANDOM BLOCK");
+                let result = ship_class_press(data, "", avg_speed, avg_range).expect("SOMETHING WENT TERRIBLY WRONG!");
+                store.result.push(result);
+                break;
+            };
+            //println!("MINT government BLOCKED");
+            thread::sleep(sleep_duration.saturating_add(Duration::from_micros(sleep_offset)));
+        }
+    }
 }
 
