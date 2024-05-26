@@ -8,7 +8,7 @@ Ilmarinen is an intermediate-level Rust library designed to provide a convinient
 - Anything else you can imagine!
 
 If you want a gui application, my [randomiserProject](https://github.com/Xqhare/randomiserProject) written in python. It should also run on windows, while Ilmarinen's implementation makes it Unix only.
-On that note, Ilmarinen is just a rewrite of that project in rust with badly handrolled multi-threading. It handles a few ten-thousand requests with grace, but the performance does gegin to drop if you move beyond that. Maybe I will rewrite that part once I actually know what I am doing, if I ever reach that point :).
+On that note, Ilmarinen is just a rewrite of that project in rust with badly handrolled multi-threading, as a learning and experimentation project. It actually runs faster by a second or two if executed sequentially. Maybe I will rewrite that part once I actually know what I am doing, if I ever reach that point :).
 
 ## Features and Roadmap for 1.0.0
 
