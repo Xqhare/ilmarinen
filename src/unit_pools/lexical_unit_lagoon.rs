@@ -89,6 +89,8 @@ pub struct LexicalUnitLagoon {
     pub story_government_leader_title_0_mon: LexicalUnitPool,
     pub story_government_leader_title_01: LexicalUnitPool,
     pub story_government_leader_title_1: LexicalUnitPool,
+
+    pub person_social_gender: LexicalUnitPool,
 }
 
 impl LexicalUnitLagoon {
@@ -175,6 +177,8 @@ impl LexicalUnitLagoon {
         let mut story_government_leader_title_0_mon: LexicalUnitPool = Default::default();
         let mut story_government_leader_title_01: LexicalUnitPool = Default::default();
         let mut story_government_leader_title_1: LexicalUnitPool = Default::default();
+
+        let mut person_social_gender: LexicalUnitPool = Default::default();
 
         match read_json(gen_lib_path) {
             Ok(data) => {
@@ -393,12 +397,15 @@ impl LexicalUnitLagoon {
                         "story_government_leader_title_1" => {
                             story_government_leader_title_1 = LexicalUnitPool::from(entry);
                         },
+                        "person_social_gender" => {
+                            person_social_gender = LexicalUnitPool::from(entry);
+                        }
                         _ => {
                             Err(Error::other(format!("Undeclared json list. {} (in {:?}) is not implemented!", entry.0, gen_lib_path )))
                         }?
                     };
                 }
-                Ok(LexicalUnitLagoon { abc, place_relatives, place_noun, place_top_eng_nouns, place_object, place_single, general_comp0, general_comp1, people_first_name, people_last_name, people_nickname, people_title, people_skill, people_skill_level, people_trait_ck2, people_trait_ck3, artifact_type, artifact_adjective, artifact_material, artifact_quality, artifact_art, artifact_dedication, scene_actors, scene_verbs, scene_objects, timeline_qualifiers, ship_prefixes, ship_long_names, ship_sizes, ship_type_ss, ship_type_xs, ship_type_s, ship_type_m, ship_type_l, ship_type_xl, ship_type_xxl, ship_type_u, ship_type_xu, ship_type_t, ship_fame, currency_real_names, currency_real_fractional_names, currency_endings, currency_second_word, currency_metals, currency_icon_inscription, currency_icon_figure, currency_icon_partial, currency_icon_incuse, currency_icon_insignia, currency_icon_mythical_creature, currency_icon_animal, currency_icon_plant, metals_list, metals_alloys_list: metals_alloy_list, government_name0, government_name1, government_name_monarchy, rep_or_state_list, story_empire_interactions, story_government_type_adj_0, story_government_type_adj_01, story_government_type_adj_1, story_government_type_sec_0, story_government_type_sec_01, story_government_type_sec_1, story_government_leader_title_0_reli, story_government_leader_title_0_cor, story_government_leader_title_0_mon, story_government_leader_title_01, story_government_leader_title_1 })
+                Ok(LexicalUnitLagoon { abc, place_relatives, place_noun, place_top_eng_nouns, place_object, place_single, general_comp0, general_comp1, people_first_name, people_last_name, people_nickname, people_title, people_skill, people_skill_level, people_trait_ck2, people_trait_ck3, artifact_type, artifact_adjective, artifact_material, artifact_quality, artifact_art, artifact_dedication, scene_actors, scene_verbs, scene_objects, timeline_qualifiers, ship_prefixes, ship_long_names, ship_sizes, ship_type_ss, ship_type_xs, ship_type_s, ship_type_m, ship_type_l, ship_type_xl, ship_type_xxl, ship_type_u, ship_type_xu, ship_type_t, ship_fame, currency_real_names, currency_real_fractional_names, currency_endings, currency_second_word, currency_metals, currency_icon_inscription, currency_icon_figure, currency_icon_partial, currency_icon_incuse, currency_icon_insignia, currency_icon_mythical_creature, currency_icon_animal, currency_icon_plant, metals_list, metals_alloys_list: metals_alloy_list, government_name0, government_name1, government_name_monarchy, rep_or_state_list, story_empire_interactions, story_government_type_adj_0, story_government_type_adj_01, story_government_type_adj_1, story_government_type_sec_0, story_government_type_sec_01, story_government_type_sec_1, story_government_leader_title_0_reli, story_government_leader_title_0_cor, story_government_leader_title_0_mon, story_government_leader_title_01, story_government_leader_title_1, person_social_gender })
             },
             Err(error) => {
                 Err(Error::new(ErrorKind::Other, error))
