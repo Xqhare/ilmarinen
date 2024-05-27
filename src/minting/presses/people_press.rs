@@ -2,14 +2,14 @@ use std::{sync::Arc, io::Error};
 
 use crate::unit_pools::UnitArchipelago;
 
-use self::people::{full_name_die, trait_die};
+use self::people::trait_die;
 
-use super::common::skill_die;
+use super::common::{skill_die, full_people_name_die};
 
 pub fn people_press(data: Arc<UnitArchipelago>) -> Result<String, Error> {
     Ok(
         format!("{} They are a {}, a {}, and a {}. They are {}, {} and {}.",
-            full_name_die(data.clone())?,
+            full_people_name_die(data.clone())?,
             skill_die(data.clone())?,
             skill_die(data.clone())?,
             skill_die(data.clone())?,
@@ -25,16 +25,7 @@ mod people {
     
     use tyche::prelude;
 
-    use crate::{unit_pools::UnitArchipelago, minting::presses::common::{nickname_type, legal_name_die}};
-
-    pub fn full_name_die(data: Arc<UnitArchipelago>) -> Result<String, Error> {
-        Ok(
-            format!("Name: {}. Nickname: {}",
-                legal_name_die(data.clone())?,
-                nickname_type(data)?
-            )
-        )
-    }
+    use crate::unit_pools::UnitArchipelago;    
 
     pub fn trait_die(data: Arc<UnitArchipelago>) -> Result<String, Error> {
         if prelude::random_from_range(0, 1)? == 0 {
