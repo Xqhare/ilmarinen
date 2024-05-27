@@ -347,5 +347,6 @@
                                     "High Councilor"],
 
 "story_government_leader_title_1": ["Chairman", "Party Leader", "Supreme Leader"
-                                   ]
+                                   ],
+"person_social_gender": ["male", "female", "indiscernible"]
 }
