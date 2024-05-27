@@ -26,7 +26,9 @@ fn word_smith_main_test() {
     assert!(ship_name.is_ok());
     let ship_class = word_smith.mint(MintingType::ShipClass, 100000);
     assert!(ship_class.is_ok());
-    for entry in ship_class.unwrap().result {
+    let currency = word_smith.mint(MintingType::Currency, 100000);
+    assert!(currency.is_ok());
+    for entry in currency.unwrap().result {
         println!("{}", entry)
     };
 }
