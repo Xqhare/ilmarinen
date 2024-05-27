@@ -32,7 +32,7 @@ mod currency {
     use tyche::prelude::{random_index, random_from_range};
     use unicode_segmentation::UnicodeSegmentation;
 
-    use crate::{unit_pools::UnitArchipelago, minting::{presses::{common::{general_currency_name_die, random_abc_type, formal_name_die, simple_name_type, full_people_name_die, artifact_type_type}, metal_alloy_press::metal_alloy_press}, minters::mint_metal_alloy}};
+    use crate::{unit_pools::UnitArchipelago, minting::presses::{common::{general_currency_name_die, random_abc_type, formal_name_die, full_people_name_die, artifact_type_type}, metal_alloy_press::metal_alloy_press}};
 
     pub fn non_decimal_currency_system_press(data: Arc<UnitArchipelago>, currency_name: String) -> Result<String, Error> {
         match random_from_range(0, 5)? {
@@ -275,7 +275,7 @@ mod currency {
     }
 
     pub fn currency_icon_figure_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
-        let type_to_check = currency_inscription_type(data.clone())?;
+        let type_to_check = currency_figure_type(data.clone())?;
         match type_to_check.as_str() {
             "Person" => {
                 let gender_to_check = currency_person_social_gender_type(data.clone())?;
@@ -288,7 +288,7 @@ mod currency {
                         Ok(
                             format!("a female figure with {}", currency_coin_bonus_iconography_type(data)?)
                         ),
-                    "indiscernable" => 
+                    "indiscernible" => 
                         Ok(
                             format!("a indiscernible figure with {}", currency_coin_bonus_iconography_type(data)?)
                         ),
@@ -340,7 +340,19 @@ mod currency {
                 }
             },
             "Object" => {
-                artifact_type_type(data)
+                match random_from_range(0, 4)? {
+                    0 => {
+                        Ok(
+                            format!("a {}", currency_figure_type(data)?)
+                        )
+                    },
+                    _ => {
+                        Ok(
+                            format!("a {}", artifact_type_type(data)?)
+                        )
+                    },
+                }
+                
             },
             _ => {
                 Err(Error::other(format!("{} from json library is not implemented in icon_figure_type!", type_to_check)))
