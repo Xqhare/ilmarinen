@@ -32,7 +32,7 @@ mod currency {
     use tyche::prelude::{random_index, random_from_range};
     use unicode_segmentation::UnicodeSegmentation;
 
-    use crate::{unit_pools::UnitArchipelago, minting::{presses::{common::{general_currency_name_die, random_abc_type, formal_name_die, simple_name_type, full_people_name_die}, metal_alloy_press::metal_alloy_press}, minters::mint_metal_alloy}};
+    use crate::{unit_pools::UnitArchipelago, minting::{presses::{common::{general_currency_name_die, random_abc_type, formal_name_die, simple_name_type, full_people_name_die, artifact_type_type}, metal_alloy_press::metal_alloy_press}, minters::mint_metal_alloy}};
 
     pub fn non_decimal_currency_system_press(data: Arc<UnitArchipelago>, currency_name: String) -> Result<String, Error> {
         match random_from_range(0, 5)? {
@@ -260,17 +260,118 @@ mod currency {
                 currency_icon_inscription_type(data)
             },
             1 => {
+                currency_icon_figure_type(data)
             },
             2 => {
+                currency_icon_partial_die(data)
             },
             3 => {
+                Ok(format!("a incuse of a {}",currency_icon_incuse_type(data)?))
             },
             _ => {
+                Ok(format!("the same motif repeated"))
             },
         }
     }
 
     pub fn currency_icon_figure_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
+        let type_to_check = currency_inscription_type(data.clone())?;
+        match type_to_check.as_str() {
+            "Person" => {
+                let gender_to_check = currency_person_social_gender_type(data.clone())?;
+                match gender_to_check.as_str() {
+                    "male" => 
+                        Ok(
+                            format!("a male figure with {}", currency_coin_bonus_iconography_type(data)?)
+                        ),
+                    "female" => 
+                        Ok(
+                            format!("a female figure with {}", currency_coin_bonus_iconography_type(data)?)
+                        ),
+                    "indiscernable" => 
+                        Ok(
+                            format!("a indiscernible figure with {}", currency_coin_bonus_iconography_type(data)?)
+                        ),
+                    _ => {
+                        Err(Error::other(format!("{} from json library is not implemented in icon_figure_type!", gender_to_check)))
+                    },
+                }
+            },
+            "Creature" => {
+                match random_from_range(0, 4)? {
+                    0 => {
+                        Ok(
+                            format!("a mythical {} and a {}", currency_icon_mythical_creature_type(data.clone())?, currency_coin_bonus_iconography_type(data)?)
+                        )
+                    },
+                    _ => {
+                        Ok(
+                            format!("a mythical {}", currency_icon_mythical_creature_type(data)?)
+                        )
+                    },
+                }
+            },
+            "Animal" => {
+                match random_from_range(0, 4)? {
+                    0 => {
+                        Ok(
+                            format!("a {} and a {}", currency_icon_animal_type(data.clone())?, currency_coin_bonus_iconography_type(data)?)
+                        )
+                    },
+                    _ => {
+                        Ok(
+                            format!("a {}", currency_icon_animal_type(data)?)
+                        )
+                    },
+                }
+            },
+            "Plant" => {
+                match random_from_range(0, 4)? {
+                    0 => {
+                        Ok(
+                            format!("a {} and a {}", currency_icon_plant_type(data.clone())?, currency_coin_bonus_iconography_type(data)?)
+                        )
+                    },
+                    _ => {
+                        Ok(
+                            format!("a {}", currency_icon_plant_type(data)?)
+                        )
+                    },
+                }
+            },
+            "Object" => {
+                artifact_type_type(data)
+            },
+            _ => {
+                Err(Error::other(format!("{} from json library is not implemented in icon_figure_type!", type_to_check)))
+            },
+        }
+    }
+    
+    pub fn currency_icon_partial_die(data: Arc<UnitArchipelago>) -> Result<String, Error> {
+        match random_from_range(0, 4)? {
+            0 => {
+                Ok(
+                    format!("a {} and a {}", currency_icon_partial_type(data.clone())?, currency_coin_bonus_iconography_type(data)?)
+                )
+            },
+            _ => {
+                Ok(
+                    format!("a {}", currency_icon_partial_type(data)?)
+                )
+            },
+        }
+    }
+    
+    pub fn currency_coin_bonus_iconography_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
+        let insignia = {
+            if random_from_range(0, 1)? == 0 {
+                artifact_type_type(data)?
+            } else {
+                currency_icon_insignia_type(data)?
+            }
+        };
+        Ok(format!("a {}", insignia))
     }
 
     pub fn currency_icon_inscription_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
@@ -362,6 +463,54 @@ mod currency {
     pub fn currency_inscription_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
         Ok(
             data.lexical_unit_lagoon.currency_icon_inscription.unit_pool[random_index(data.lexical_unit_lagoon.currency_icon_inscription.unit_pool.len())?].clone()
+        )
+    }
+
+    pub fn currency_figure_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
+        Ok(
+            data.lexical_unit_lagoon.currency_icon_figure.unit_pool[random_index(data.lexical_unit_lagoon.currency_icon_figure.unit_pool.len())?].clone()
+        )
+    }
+
+    pub fn currency_person_social_gender_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
+        Ok(
+            data.lexical_unit_lagoon.person_social_gender.unit_pool[random_index(data.lexical_unit_lagoon.person_social_gender.unit_pool.len())?].clone()
+        )
+    }
+
+    pub fn currency_icon_insignia_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
+        Ok(
+            data.lexical_unit_lagoon.currency_icon_insignia.unit_pool[random_index(data.lexical_unit_lagoon.currency_icon_insignia.unit_pool.len())?].clone()
+        )
+    }
+
+    pub fn currency_icon_mythical_creature_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
+        Ok(
+            data.lexical_unit_lagoon.currency_icon_mythical_creature.unit_pool[random_index(data.lexical_unit_lagoon.currency_icon_mythical_creature.unit_pool.len())?].clone()
+        )
+    }
+
+    pub fn currency_icon_animal_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
+        Ok(
+            data.lexical_unit_lagoon.currency_icon_animal.unit_pool[random_index(data.lexical_unit_lagoon.currency_icon_animal.unit_pool.len())?].clone()
+        )
+    }
+
+    pub fn currency_icon_plant_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
+        Ok(
+            data.lexical_unit_lagoon.currency_icon_plant.unit_pool[random_index(data.lexical_unit_lagoon.currency_icon_plant.unit_pool.len())?].clone()
+        )
+    }
+
+    pub fn currency_icon_partial_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
+        Ok(
+            data.lexical_unit_lagoon.currency_icon_partial.unit_pool[random_index(data.lexical_unit_lagoon.currency_icon_partial.unit_pool.len())?].clone()
+        )
+    }
+
+    pub fn currency_icon_incuse_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
+        Ok(
+            data.lexical_unit_lagoon.currency_icon_incuse.unit_pool[random_index(data.lexical_unit_lagoon.currency_icon_incuse.unit_pool.len())?].clone()
         )
     }
 
