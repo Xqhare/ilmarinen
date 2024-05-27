@@ -29,7 +29,8 @@ fn word_smith_main_test() {
     let currency = word_smith.mint(MintingType::Currency, 100000);
     assert!(currency.is_ok());
     for entry in currency.unwrap().result {
-        println!("{}", entry)
+        println!("{}", entry);
+        println!("");
     };
 }
 
