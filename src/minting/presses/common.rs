@@ -31,6 +31,15 @@ pub fn formal_last_name_die(data: Arc<UnitArchipelago>) -> Result<String, Error>
     )
 }
 
+pub fn full_people_name_die(data: Arc<UnitArchipelago>) -> Result<String, Error> {
+    Ok(
+        format!("Name: {}. Nickname: {}",
+            legal_name_die(data.clone())?,
+            nickname_type(data)?
+        )
+    )
+}
+
 pub fn legal_name_die(data: Arc<UnitArchipelago>) -> Result<String, Error> {
     Ok(
         format!("{} {}",
