@@ -1,5 +1,9 @@
 use core::fmt;
-use std::{error::Error, thread, sync::{mpsc, Arc, Mutex}};
+use std::{
+    error::Error,
+    sync::{mpsc, Arc, Mutex},
+    thread,
+};
 
 pub struct ThreadPool {
     workers: Vec<Worker>,
@@ -28,7 +32,10 @@ impl ThreadPool {
             workers.push(Worker::new(id, Arc::clone(&receiver)));
         }
 
-        ThreadPool { workers, sender: Some(sender),}
+        ThreadPool {
+            workers,
+            sender: Some(sender),
+        }
     }
 
     pub fn provision_thread_pool(mint_amount: usize) -> Result<ThreadPool, PoolCreationError> {
@@ -51,17 +58,23 @@ impl ThreadPool {
     }
 
     pub fn build(size: usize) -> Result<ThreadPool, PoolCreationError> {
-       if size < 1 {
-            let error_kind: Option<Box<dyn Error>> = Some(Box::new(std::io::Error::other("size can't be less than 1")));
-            Err(PoolCreationError { message: "Pool Creation Failed".to_string(), cause: error_kind})
+        if size < 1 {
+            let error_kind: Option<Box<dyn Error>> =
+                Some(Box::new(std::io::Error::other("size can't be less than 1")));
+            Err(PoolCreationError {
+                message: "Pool Creation Failed".to_string(),
+                cause: error_kind,
+            })
         } else {
             let output_pool = ThreadPool::new(size);
             Ok(output_pool)
         }
     }
 
-    pub fn execute<F>(&self, f: F) where F: FnOnce() + Send + 'static, 
-    {    
+    pub fn execute<F>(&self, f: F)
+    where
+        F: FnOnce() + Send + 'static,
+    {
         let job = Box::new(f);
         self.sender.as_ref().unwrap().send(job).unwrap();
     }
@@ -88,7 +101,7 @@ struct Worker {
 }
 
 impl Worker {
-    fn new(id: usize, reciever: Arc<Mutex<mpsc::Receiver<Job>>> ) -> Worker {
+    fn new(id: usize, reciever: Arc<Mutex<mpsc::Receiver<Job>>>) -> Worker {
         // move is capturing all variables from out of scope and move them into the scope
         // of the function.
         let thread = thread::spawn(move || loop {
@@ -105,10 +118,12 @@ impl Worker {
                 }
             }
         });
-        Worker { id, thread: Some(thread) }
+        Worker {
+            id,
+            thread: Some(thread),
+        }
     }
 }
-
 
 #[derive(Debug)]
 pub struct PoolCreationError {
@@ -133,5 +148,3 @@ impl fmt::Display for PoolCreationError {
         write!(f, "({message}, {cause:?})")
     }
 }
-
-

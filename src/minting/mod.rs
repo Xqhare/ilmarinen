@@ -1,18 +1,32 @@
-
-pub mod minting_type;
 pub mod minting_result;
+pub mod minting_type;
 mod presses;
 
 pub mod minters {
-    use std::{sync::{Arc, Mutex}, thread, time::Duration};
+    use std::{
+        sync::{Arc, Mutex},
+        thread,
+        time::Duration,
+    };
 
     use tyche::prelude::random_from_f32range;
 
     use crate::{unit_pools::UnitArchipelago, MintingResult};
 
-    use super::presses::{people_press::people_press, place_press::place_press, language_press::language_press, metal_alloy_press::metal_alloy_press, artifact_press::artifact_press, operation_press::operation_press, government_press::government_press, empire_press::empire_press, ship_name_press::ship_name_press, ship_class_press::ship_class_press, currency_press::currency_press};
+    use super::presses::{
+        artifact_press::artifact_press, currency_press::currency_press, empire_press::empire_press,
+        government_press::government_press, language_press::language_press,
+        metal_alloy_press::metal_alloy_press, operation_press::operation_press,
+        people_press::people_press, place_press::place_press, ship_class_press::ship_class_press,
+        ship_name_press::ship_name_press,
+    };
 
-    pub fn mint_place(data: Arc<UnitArchipelago>, out: Arc<Mutex<MintingResult>>, sleep_duration: Arc<Duration>, sleep_offset: u64) {
+    pub fn mint_place(
+        data: Arc<UnitArchipelago>,
+        out: Arc<Mutex<MintingResult>>,
+        sleep_duration: Arc<Duration>,
+        sleep_offset: u64,
+    ) {
         loop {
             if let Ok(mut store) = out.try_lock() {
                 let result = place_press(data).expect("SOMETHING WENT TERRIBLY WRONG!");
@@ -24,7 +38,12 @@ pub mod minters {
         }
     }
 
-    pub fn mint_people(data: Arc<UnitArchipelago>, out: Arc<Mutex<MintingResult>>, sleep_duration: Arc<Duration>, sleep_offset: u64) {
+    pub fn mint_people(
+        data: Arc<UnitArchipelago>,
+        out: Arc<Mutex<MintingResult>>,
+        sleep_duration: Arc<Duration>,
+        sleep_offset: u64,
+    ) {
         loop {
             if let Ok(mut store) = out.try_lock() {
                 let result = people_press(data).expect("SOMETHING WENT TERRIBLY WRONG!");
@@ -36,7 +55,12 @@ pub mod minters {
         }
     }
 
-    pub fn mint_language(data: Arc<UnitArchipelago>, out: Arc<Mutex<MintingResult>>, sleep_duration: Arc<Duration>, sleep_offset: u64) {
+    pub fn mint_language(
+        data: Arc<UnitArchipelago>,
+        out: Arc<Mutex<MintingResult>>,
+        sleep_duration: Arc<Duration>,
+        sleep_offset: u64,
+    ) {
         loop {
             if let Ok(mut store) = out.try_lock() {
                 let result = language_press(data).expect("SOMETHING WENT TERRIBLY WRONG!");
@@ -48,7 +72,12 @@ pub mod minters {
         }
     }
 
-    pub fn mint_metal_alloy(data: Arc<UnitArchipelago>, out: Arc<Mutex<MintingResult>>, sleep_duration: Arc<Duration>, sleep_offset: u64) {
+    pub fn mint_metal_alloy(
+        data: Arc<UnitArchipelago>,
+        out: Arc<Mutex<MintingResult>>,
+        sleep_duration: Arc<Duration>,
+        sleep_offset: u64,
+    ) {
         loop {
             if let Ok(mut store) = out.try_lock() {
                 let result = metal_alloy_press(data).expect("SOMETHING WENT TERRIBLY WRONG!");
@@ -60,7 +89,12 @@ pub mod minters {
         }
     }
 
-    pub fn mint_artifact(data: Arc<UnitArchipelago>, out: Arc<Mutex<MintingResult>>, sleep_duration: Arc<Duration>, sleep_offset: u64) {
+    pub fn mint_artifact(
+        data: Arc<UnitArchipelago>,
+        out: Arc<Mutex<MintingResult>>,
+        sleep_duration: Arc<Duration>,
+        sleep_offset: u64,
+    ) {
         loop {
             if let Ok(mut store) = out.try_lock() {
                 let result = artifact_press(data).expect("SOMETHING WENT TERRIBLY WRONG!");
@@ -72,7 +106,12 @@ pub mod minters {
         }
     }
 
-    pub fn mint_operation(data: Arc<UnitArchipelago>, out: Arc<Mutex<MintingResult>>, sleep_duration: Arc<Duration>, sleep_offset: u64) {
+    pub fn mint_operation(
+        data: Arc<UnitArchipelago>,
+        out: Arc<Mutex<MintingResult>>,
+        sleep_duration: Arc<Duration>,
+        sleep_offset: u64,
+    ) {
         loop {
             if let Ok(mut store) = out.try_lock() {
                 let result = operation_press(data).expect("SOMETHING WENT TERRIBLY WRONG!");
@@ -84,7 +123,12 @@ pub mod minters {
         }
     }
 
-    pub fn mint_government(data: Arc<UnitArchipelago>, out: Arc<Mutex<MintingResult>>, sleep_duration: Arc<Duration>, sleep_offset: u64) {
+    pub fn mint_government(
+        data: Arc<UnitArchipelago>,
+        out: Arc<Mutex<MintingResult>>,
+        sleep_duration: Arc<Duration>,
+        sleep_offset: u64,
+    ) {
         loop {
             if let Ok(mut store) = out.try_lock() {
                 let result = government_press(data, "").expect("SOMETHING WENT TERRIBLY WRONG!");
@@ -96,7 +140,12 @@ pub mod minters {
         }
     }
 
-    pub fn mint_empire(data: Arc<UnitArchipelago>, out: Arc<Mutex<MintingResult>>, sleep_duration: Arc<Duration>, sleep_offset: u64) {
+    pub fn mint_empire(
+        data: Arc<UnitArchipelago>,
+        out: Arc<Mutex<MintingResult>>,
+        sleep_duration: Arc<Duration>,
+        sleep_offset: u64,
+    ) {
         loop {
             if let Ok(mut store) = out.try_lock() {
                 let result = empire_press(data).expect("SOMETHING WENT TERRIBLY WRONG!");
@@ -108,7 +157,12 @@ pub mod minters {
         }
     }
 
-    pub fn mint_ship_name(data: Arc<UnitArchipelago>, out: Arc<Mutex<MintingResult>>, sleep_duration: Arc<Duration>, sleep_offset: u64) {
+    pub fn mint_ship_name(
+        data: Arc<UnitArchipelago>,
+        out: Arc<Mutex<MintingResult>>,
+        sleep_duration: Arc<Duration>,
+        sleep_offset: u64,
+    ) {
         loop {
             if let Ok(mut store) = out.try_lock() {
                 let result = ship_name_press(data, "").expect("SOMETHING WENT TERRIBLY WRONG!");
@@ -120,12 +174,18 @@ pub mod minters {
         }
     }
 
-    pub fn mint_ship_class(data: Arc<UnitArchipelago>, out: Arc<Mutex<MintingResult>>, sleep_duration: Arc<Duration>, sleep_offset: u64) {
+    pub fn mint_ship_class(
+        data: Arc<UnitArchipelago>,
+        out: Arc<Mutex<MintingResult>>,
+        sleep_duration: Arc<Duration>,
+        sleep_offset: u64,
+    ) {
         loop {
             if let Ok(mut store) = out.try_lock() {
                 let avg_speed = random_from_f32range(0.5, 5.5).expect("RANDOM BLOCK!");
                 let avg_range = random_from_f32range(100.5, 1000.5).expect("RANDOM BLOCK");
-                let result = ship_class_press(data, "", avg_speed, avg_range).expect("SOMETHING WENT TERRIBLY WRONG!");
+                let result = ship_class_press(data, "", avg_speed, avg_range)
+                    .expect("SOMETHING WENT TERRIBLY WRONG!");
                 store.result.push(result);
                 break;
             }
@@ -134,7 +194,12 @@ pub mod minters {
         }
     }
 
-    pub fn mint_currency(data: Arc<UnitArchipelago>, out: Arc<Mutex<MintingResult>>, sleep_duration: Arc<Duration>, sleep_offset: u64) {
+    pub fn mint_currency(
+        data: Arc<UnitArchipelago>,
+        out: Arc<Mutex<MintingResult>>,
+        sleep_duration: Arc<Duration>,
+        sleep_offset: u64,
+    ) {
         loop {
             if let Ok(mut store) = out.try_lock() {
                 let result = currency_press(data, "").expect("SOMETHING WENT TERRIBLY WRONG!");
@@ -146,4 +211,3 @@ pub mod minters {
         }
     }
 }
-

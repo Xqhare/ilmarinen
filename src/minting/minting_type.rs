@@ -1,4 +1,3 @@
-
 #[derive(Debug, Clone, Copy)]
 pub enum MintingType {
     Place,
@@ -12,5 +11,4 @@ pub enum MintingType {
     Empire,
     Government,
     Language,
-
 }

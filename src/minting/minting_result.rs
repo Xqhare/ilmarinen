@@ -1,7 +1,6 @@
-
 #[derive(Debug, Clone, Default)]
 pub struct MintingResult {
-    pub result: Vec<String>
+    pub result: Vec<String>,
 }
 
 impl From<Vec<String>> for MintingResult {

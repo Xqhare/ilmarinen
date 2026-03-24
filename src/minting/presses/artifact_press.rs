@@ -1,10 +1,10 @@
-use std::{sync::Arc, io::Error};
+use std::{io::Error, sync::Arc};
 
 use crate::unit_pools::UnitArchipelago;
 
-use self::artifact::{name_type, art_type, dedication_type};
+use self::artifact::{art_type, dedication_type, name_type};
 
-use super::common::{comp_name_type, artifact_type_type, material_type, quality_type};
+use super::common::{artifact_type_type, comp_name_type, material_type, quality_type};
 
 pub fn artifact_press(data: Arc<UnitArchipelago>) -> Result<String, Error> {
     let artifact_type = artifact_type_type(data.clone())?;
@@ -31,31 +31,32 @@ pub fn artifact_press(data: Arc<UnitArchipelago>) -> Result<String, Error> {
 }
 
 mod artifact {
-    use std::{sync::Arc, io::Error};
-    
+    use std::{io::Error, sync::Arc};
+
     use tyche::prelude;
 
-    use crate::{unit_pools::UnitArchipelago, minting::presses::common::{comp_name_type, artifact_adjective_type}};
+    use crate::{
+        minting::presses::common::{artifact_adjective_type, comp_name_type},
+        unit_pools::UnitArchipelago,
+    };
 
     pub fn art_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
-        Ok(
-            data.lexical_unit_lagoon.artifact_art.unit_pool[prelude::random_index(data.lexical_unit_lagoon.artifact_art.unit_pool.len())?].clone()
-        )
+        Ok(data.lexical_unit_lagoon.artifact_art.unit_pool
+            [prelude::random_index(data.lexical_unit_lagoon.artifact_art.unit_pool.len())?]
+        .clone())
     }
 
     pub fn dedication_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
-        Ok(
-            data.lexical_unit_lagoon.artifact_dedication.unit_pool[prelude::random_index(data.lexical_unit_lagoon.artifact_dedication.unit_pool.len())?].clone()
-        )
+        Ok(data.lexical_unit_lagoon.artifact_dedication.unit_pool
+            [prelude::random_index(data.lexical_unit_lagoon.artifact_dedication.unit_pool.len())?]
+        .clone())
     }
 
     pub fn name_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
-        Ok(
-            format!("{} {}",
-                artifact_adjective_type(data.clone())?,
-                comp_name_type(data)?
-            )
-        )
+        Ok(format!(
+            "{} {}",
+            artifact_adjective_type(data.clone())?,
+            comp_name_type(data)?
+        ))
     }
 }
-

@@ -1,4 +1,4 @@
-use std::{sync::Arc, io::Error};
+use std::{io::Error, sync::Arc};
 
 use crate::unit_pools::UnitArchipelago;
 
@@ -10,10 +10,10 @@ pub fn language_press(data: Arc<UnitArchipelago>) -> Result<String, Error> {
 
 /* mod language {
     use std::{sync::Arc, io::Error};
-    
+
     use tyche::prelude;
 
     use crate::{unit_pools::UnitArchipelago, minting::presses::common::{comp_name_type, simple_name_type}};
 
-    
+
 } */

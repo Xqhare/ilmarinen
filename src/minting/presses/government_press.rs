@@ -1,4 +1,4 @@
-use std::{sync::Arc, io::Error};
+use std::{io::Error, sync::Arc};
 
 use crate::unit_pools::UnitArchipelago;
 
@@ -8,18 +8,16 @@ use super::common::empire_name_type;
 
 pub fn government_press(data: Arc<UnitArchipelago>, empire_name: &str) -> Result<String, Error> {
     match empire_name {
-        "" => Ok(
-        format!("{} of {}",
+        "" => Ok(format!(
+            "{} of {}",
             government_form_die(data.clone())?,
             empire_name_type(data)?
-        )
-    ),
-        _ => Ok(
-            format!("{} of {}",
-                government_form_die(data.clone())?,
-                empire_name
-            ),
-        )
+        )),
+        _ => Ok(format!(
+            "{} of {}",
+            government_form_die(data.clone())?,
+            empire_name
+        )),
     }
 }
 
@@ -33,27 +31,20 @@ mod government {
     pub fn government_form_die(data: Arc<UnitArchipelago>) -> Result<String, Error> {
         let seed = prelude::random_from_range(0, 2)?;
         if seed == 0 {
-            Ok(
-                format!("{} {} {}",
-                    government_name0_type(data.clone())?,
-                    government_name1_type(data)?,
-                    government_type_type()?
-                )
-            )
-
+            Ok(format!(
+                "{} {} {}",
+                government_name0_type(data.clone())?,
+                government_name1_type(data)?,
+                government_type_type()?
+            ))
         } else if seed == 1 {
-            Ok(
-                format!("Semi-{} {}",
-                    government_name0_type(data)?,
-                    government_type_type()?
-                )
-            )
+            Ok(format!(
+                "Semi-{} {}",
+                government_name0_type(data)?,
+                government_type_type()?
+            ))
         } else {
-            Ok(
-                format!("{} Monarchy",
-                    government_name_monarchy_type(data)?
-                )
-            )
+            Ok(format!("{} Monarchy", government_name_monarchy_type(data)?))
         }
     }
 
@@ -71,21 +62,26 @@ mod government {
     }
 
     pub fn government_name0_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
-        Ok(
-            data.lexical_unit_lagoon.government_name0.unit_pool[prelude::random_index(data.lexical_unit_lagoon.government_name0.unit_pool.len())?].clone()
-        )
+        Ok(data.lexical_unit_lagoon.government_name0.unit_pool
+            [prelude::random_index(data.lexical_unit_lagoon.government_name0.unit_pool.len())?]
+        .clone())
     }
 
     pub fn government_name1_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
-        Ok(
-            data.lexical_unit_lagoon.government_name1.unit_pool[prelude::random_index(data.lexical_unit_lagoon.government_name1.unit_pool.len())?].clone()
-        )
+        Ok(data.lexical_unit_lagoon.government_name1.unit_pool
+            [prelude::random_index(data.lexical_unit_lagoon.government_name1.unit_pool.len())?]
+        .clone())
     }
 
     pub fn government_name_monarchy_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
         Ok(
-            data.lexical_unit_lagoon.government_name_monarchy.unit_pool[prelude::random_index(data.lexical_unit_lagoon.government_name_monarchy.unit_pool.len())?].clone()
+            data.lexical_unit_lagoon.government_name_monarchy.unit_pool[prelude::random_index(
+                data.lexical_unit_lagoon
+                    .government_name_monarchy
+                    .unit_pool
+                    .len(),
+            )?]
+            .clone(),
         )
     }
-
 }

@@ -1,6 +1,6 @@
 use std::path::Path;
 
-use ilmarinen::{WordSmith, MintingType};
+use ilmarinen::{MintingType, WordSmith};
 
 #[test]
 fn word_smith_main_test() {
@@ -33,4 +33,3 @@ fn word_smith_main_test() {
         println!("");
     }; */
 }
-

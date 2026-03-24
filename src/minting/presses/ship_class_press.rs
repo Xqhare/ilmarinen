@@ -1,8 +1,8 @@
-use std::{sync::Arc, io::Error};
+use std::{io::Error, sync::Arc};
 
 use crate::unit_pools::UnitArchipelago;
 
-use self::ship_class::{ship_size_type, ship_type_type, ship_tech_die, ship_fame_press};
+use self::ship_class::{ship_fame_press, ship_size_type, ship_tech_die, ship_type_type};
 
 use super::ship_name_press::ship_name_press;
 
@@ -19,33 +19,35 @@ use super::ship_name_press::ship_name_press;
 ///
 /// # Errors
 /// Io errors
-pub fn ship_class_press(data: Arc<UnitArchipelago>, ship_size: &str, avg_speed: f32, avg_range: f32) -> Result<String, Error> {
+pub fn ship_class_press(
+    data: Arc<UnitArchipelago>,
+    ship_size: &str,
+    avg_speed: f32,
+    avg_range: f32,
+) -> Result<String, Error> {
     let ship_name = ship_name_press(data.clone(), "")?;
     if ship_size.is_empty() || ship_size == " " {
         let ship_size_generated = ship_size_type(data.clone())?;
         let ship_type = ship_type_type(data.clone(), &ship_size_generated)?;
         let ship_tech = ship_tech_die(&ship_size_generated, avg_speed, avg_range)?;
         let ship_fame = ship_fame_press(data, &ship_size_generated)?;
-        Ok(
-            format!("{ship_name}-Class: It's a {ship_type}. {ship_tech} {ship_fame}"
-            )
-        )
+        Ok(format!(
+            "{ship_name}-Class: It's a {ship_type}. {ship_tech} {ship_fame}"
+        ))
     } else {
         let ship_type = ship_type_type(data.clone(), ship_size)?;
         let ship_tech = ship_tech_die(ship_size, avg_speed, avg_range)?;
         let ship_fame = ship_fame_press(data, ship_size)?;
-        Ok(
-            format!("{ship_name}-Class: It's a {ship_type}. {ship_tech} {ship_fame}"
-            )
-        )
+        Ok(format!(
+            "{ship_name}-Class: It's a {ship_type}. {ship_tech} {ship_fame}"
+        ))
     }
-    
 }
 
 mod ship_class {
-    use std::{sync::Arc, io::Error, ops::Mul};
-    
-    use tyche::prelude::{self, random_from_range, random_from_f32range};
+    use std::{io::Error, ops::Mul, sync::Arc};
+
+    use tyche::prelude::{self, random_from_f32range, random_from_range};
 
     use crate::unit_pools::UnitArchipelago;
 
@@ -150,45 +152,43 @@ mod ship_class {
         match ship_size {
             "L" => ship_fame_die(data, 1),
             "XL" => ship_fame_die(data, 1),
-            "XXL" => {
-                match random_from_range(0, 1)? {
-                    0 => ship_fame_die(data, 1),
-                    _ => ship_fame_die(data, 2),
-                }
+            "XXL" => match random_from_range(0, 1)? {
+                0 => ship_fame_die(data, 1),
+                _ => ship_fame_die(data, 2),
             },
-            "U" => {
-                match random_from_range(0, 2)? {
-                    0 => ship_fame_die(data, 1),
-                    1 => ship_fame_die(data, 2),
-                    _ => ship_fame_die(data, 3),
-                }
+            "U" => match random_from_range(0, 2)? {
+                0 => ship_fame_die(data, 1),
+                1 => ship_fame_die(data, 2),
+                _ => ship_fame_die(data, 3),
             },
-            "XU" => {
-                match random_from_range(0, 3)? {
-                    0 => ship_fame_die(data, 1),
-                    1 => ship_fame_die(data, 2),
-                    2 => ship_fame_die(data, 3),
-                    _ => ship_fame_die(data, 4),
-                }
+            "XU" => match random_from_range(0, 3)? {
+                0 => ship_fame_die(data, 1),
+                1 => ship_fame_die(data, 2),
+                2 => ship_fame_die(data, 3),
+                _ => ship_fame_die(data, 4),
             },
-            "T" => {
-                match random_from_range(0, 4)? {
-                    0 => ship_fame_die(data, 1),
-                    1 => ship_fame_die(data, 2),
-                    2 => ship_fame_die(data, 3),
-                    3 => ship_fame_die(data, 4),
-                    _ => ship_fame_die(data, 5),
-                }
+            "T" => match random_from_range(0, 4)? {
+                0 => ship_fame_die(data, 1),
+                1 => ship_fame_die(data, 2),
+                2 => ship_fame_die(data, 3),
+                3 => ship_fame_die(data, 4),
+                _ => ship_fame_die(data, 5),
             },
             _ => Ok(String::default()),
         }
     }
 
-    pub fn ship_fame_die(data: Arc<UnitArchipelago>, famous_attribute_amount: usize) -> Result<String, Error> {
+    pub fn ship_fame_die(
+        data: Arc<UnitArchipelago>,
+        famous_attribute_amount: usize,
+    ) -> Result<String, Error> {
         let mut out: String = Default::default();
         for attribute in 0..famous_attribute_amount {
             if attribute == 0 {
-                out.push_str(&format!("The Class gained notoriety for it's {}", ship_fame_type(data.clone())?));
+                out.push_str(&format!(
+                    "The Class gained notoriety for it's {}",
+                    ship_fame_type(data.clone())?
+                ));
             } else if attribute == famous_attribute_amount.saturating_sub(1) {
                 out.push_str(&format!(" and it's {}", ship_fame_type(data.clone())?));
             } else {
@@ -200,9 +200,9 @@ mod ship_class {
     }
 
     pub fn ship_fame_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
-        Ok(
-            data.lexical_unit_lagoon.ship_fame.unit_pool[prelude::random_index(data.lexical_unit_lagoon.ship_fame.unit_pool.len())?].clone()
-        )
+        Ok(data.lexical_unit_lagoon.ship_fame.unit_pool
+            [prelude::random_index(data.lexical_unit_lagoon.ship_fame.unit_pool.len())?]
+        .clone())
     }
 
     pub fn ship_type_type(data: Arc<UnitArchipelago>, ship_size: &str) -> Result<String, Error> {
@@ -232,15 +232,24 @@ mod ship_class {
     }
 
     pub fn ship_size_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
-        Ok(
-            data.lexical_unit_lagoon.ship_sizes.unit_pool[prelude::random_index(data.lexical_unit_lagoon.ship_sizes.unit_pool.len())?].clone()
-        )
+        Ok(data.lexical_unit_lagoon.ship_sizes.unit_pool
+            [prelude::random_index(data.lexical_unit_lagoon.ship_sizes.unit_pool.len())?]
+        .clone())
     }
 
-    fn ship_ftl_capability_type(avg_range: f32, lower_speed_bound: f32, upper_speed_bound: f32, ftl_chance: usize) -> Result<String, Error> {
-        
-        if random_from_range(0, ftl_chance)? == 0 { Ok("No FTL capability".to_string()) } else {
-            let range = avg_range.mul_add(random_from_f32range(lower_speed_bound, upper_speed_bound)?, random_from_f32range(lower_speed_bound, upper_speed_bound)?);
+    fn ship_ftl_capability_type(
+        avg_range: f32,
+        lower_speed_bound: f32,
+        upper_speed_bound: f32,
+        ftl_chance: usize,
+    ) -> Result<String, Error> {
+        if random_from_range(0, ftl_chance)? == 0 {
+            Ok("No FTL capability".to_string())
+        } else {
+            let range = avg_range.mul_add(
+                random_from_f32range(lower_speed_bound, upper_speed_bound)?,
+                random_from_f32range(lower_speed_bound, upper_speed_bound)?,
+            );
             Ok(format!("{range:.2}"))
         }
     }

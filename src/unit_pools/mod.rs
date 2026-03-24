@@ -1,14 +1,12 @@
-use std::{path::Path, io::Error};
-
+use std::{io::Error, path::Path};
 
 use self::{lexical_unit_lagoon::LexicalUnitLagoon, numerical_unit_lagoon::NumericalUnitLagoon};
 
-
-mod lexical_unit_pool;
 mod lexical_unit_lagoon;
-mod numerical_unit_pool;
+mod lexical_unit_pool;
 mod numerical_unit_dictionary;
 mod numerical_unit_lagoon;
+mod numerical_unit_pool;
 
 const GEN_LIB_FILENAME: &str = "gen_lib.json";
 const NUM_LIB_FILENAME: &str = "num_lib.json";
@@ -27,7 +25,9 @@ impl UnitArchipelago {
         let lexical_unit_lagoon = LexicalUnitLagoon::new(&gen_lib_path)?;
         let numerical_unit_lagoon = NumericalUnitLagoon::new(&num_lib_path)?;
 
-        Ok( UnitArchipelago { lexical_unit_lagoon, numerical_unit_lagoon } )
+        Ok(UnitArchipelago {
+            lexical_unit_lagoon,
+            numerical_unit_lagoon,
+        })
     }
 }
-

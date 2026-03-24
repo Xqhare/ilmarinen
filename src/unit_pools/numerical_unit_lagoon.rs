@@ -2,8 +2,9 @@ use std::{io::Error, path::Path};
 
 use crate::jisard::read_json;
 
-use super::{numerical_unit_pool::NumericalUnitPool, numerical_unit_dictionary::NumericalUnitDictionary};
-
+use super::{
+    numerical_unit_dictionary::NumericalUnitDictionary, numerical_unit_pool::NumericalUnitPool,
+};
 
 #[derive(Debug, Clone, Default)]
 pub struct NumericalUnitLagoon {
@@ -25,28 +26,34 @@ impl NumericalUnitLagoon {
             Ok(data) => {
                 for entry in data.entries() {
                     match entry.0 {
-                            "story_town_trade_goods_dict" => {
+                        "story_town_trade_goods_dict" => {
                             story_town_trade_goods_dict = NumericalUnitDictionary::from(entry);
-                        },
-                            "currency_time_fractions" => {
+                        }
+                        "currency_time_fractions" => {
                             currency_time_fractions = NumericalUnitPool::from(entry);
-                        },
-                            "currency_non_decimal_base_120" => {
+                        }
+                        "currency_non_decimal_base_120" => {
                             currency_non_decimal_base = NumericalUnitPool::from(entry);
-                        },
-                            "currency_coins_denomination" => {
+                        }
+                        "currency_coins_denomination" => {
                             currency_coins_denomination = NumericalUnitPool::from(entry);
-                        },
+                        }
                         _ => {
-                            Err(Error::other(format!("Undeclared json list. {} (in {:?}) is not implemented!", entry.0, num_lib_path )))?;
-                        },
+                            Err(Error::other(format!(
+                                "Undeclared json list. {} (in {:?}) is not implemented!",
+                                entry.0, num_lib_path
+                            )))?;
+                        }
                     }
                 }
-                Ok(NumericalUnitLagoon { currency_time_fractions, currency_non_decimal_base, currency_coins_denomination, story_town_trade_goods_dict })
-            },
-            Err(error) => {
-                Err(Error::other(error))
-            },
+                Ok(NumericalUnitLagoon {
+                    currency_time_fractions,
+                    currency_non_decimal_base,
+                    currency_coins_denomination,
+                    story_town_trade_goods_dict,
+                })
+            }
+            Err(error) => Err(Error::other(error)),
         }
     }
 }
