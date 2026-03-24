@@ -93,13 +93,11 @@ pub fn full_place_name_die(data: Arc<UnitArchipelago>) -> Result<String, Error> 
 
 pub fn nickname_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
     Ok(
-        format!("{}",
-            if prelude::random_from_range(0, 2)? == 0 {
+        (if prelude::random_from_range(0, 2)? == 0 {
                 data.lexical_unit_lagoon.people_nickname.unit_pool[prelude::random_index(data.lexical_unit_lagoon.people_nickname.unit_pool.len())?].clone()
             } else {
                 String::default()
-            }
-        )
+            }).clone()
     )
 }
 
@@ -168,9 +166,9 @@ pub fn general_currency_name_die(data: Arc<UnitArchipelago>) -> Result<String, E
     match prelude::random_from_range(0, 2)? {
         0 => { 
             match prelude::random_from_range(0, 2)? {
-                0 => return random_currency_name_type(data, 3),
-                1 => return random_currency_name_type(data, 4),
-                _ => return random_currency_name_type(data, 5),
+                0 => random_currency_name_type(data, 3),
+                1 => random_currency_name_type(data, 4),
+                _ => random_currency_name_type(data, 5),
             }
         },
         _ => {
@@ -186,12 +184,12 @@ pub fn general_currency_name_die(data: Arc<UnitArchipelago>) -> Result<String, E
 
 pub fn random_currency_name_type(data: Arc<UnitArchipelago>, random_letter_amount: usize) -> Result<String, Error> {
     if random_letter_amount < 1 {
-        Err(Error::other(format!("random_letter_amount '{}' less than 1!", random_letter_amount)))
+        Err(Error::other(format!("random_letter_amount '{random_letter_amount}' less than 1!")))
     } else {
         let mut out: String = Default::default();
         for n in 0..random_letter_amount {
             if n == 0 {
-                out.push_str(&random_abc_type(data.clone())?.to_uppercase())
+                out.push_str(&random_abc_type(data.clone())?.to_uppercase());
             } else {
                 out.push_str(&random_abc_type(data.clone())?);
             }

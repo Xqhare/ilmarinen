@@ -9,7 +9,7 @@ pub struct ThreadPool {
 type Job = Box<dyn FnOnce() + Send + 'static>;
 
 impl ThreadPool {
-    /// Create a new ThreadPool.
+    /// Create a new `ThreadPool`.
     ///
     /// The size is the number of threads that populate the pool.
     ///
@@ -25,7 +25,7 @@ impl ThreadPool {
 
         for id in 0..size {
             // create some threads and store them in the vector
-            workers.push(Worker::new(id, Arc::clone(&receiver)))
+            workers.push(Worker::new(id, Arc::clone(&receiver)));
         }
 
         ThreadPool { workers, sender: Some(sender),}
@@ -52,8 +52,8 @@ impl ThreadPool {
 
     pub fn build(size: usize) -> Result<ThreadPool, PoolCreationError> {
        if size < 1 {
-            let error_kind: Option<Box<dyn Error>> = Some(Box::new(std::io::Error::new(std::io::ErrorKind::Other, "size can't be less than 1")));
-            return Err(PoolCreationError { message: "Pool Creation Failed".to_string(), cause: error_kind})
+            let error_kind: Option<Box<dyn Error>> = Some(Box::new(std::io::Error::other("size can't be less than 1")));
+            Err(PoolCreationError { message: "Pool Creation Failed".to_string(), cause: error_kind})
         } else {
             let output_pool = ThreadPool::new(size);
             Ok(output_pool)
@@ -130,7 +130,7 @@ impl fmt::Display for PoolCreationError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let message = &self.message;
         let cause = &self.cause;
-        write!(f, "({}, {:?})", message, cause)
+        write!(f, "({message}, {cause:?})")
     }
 }
 

@@ -1,4 +1,4 @@
-use std::{io::{Error, ErrorKind}, path::Path};
+use std::{io::Error, path::Path};
 
 use crate::jisard::read_json;
 
@@ -38,14 +38,14 @@ impl NumericalUnitLagoon {
                             currency_coins_denomination = NumericalUnitPool::from(entry);
                         },
                         _ => {
-                            Err(Error::other(format!("Undeclared json list. {} (in {:?}) is not implemented!", entry.0, num_lib_path )))?
+                            Err(Error::other(format!("Undeclared json list. {} (in {:?}) is not implemented!", entry.0, num_lib_path )))?;
                         },
-                    };
+                    }
                 }
-                Ok(NumericalUnitLagoon { currency_time_fractions, story_town_trade_goods_dict, currency_non_decimal_base, currency_coins_denomination })
+                Ok(NumericalUnitLagoon { currency_time_fractions, currency_non_decimal_base, currency_coins_denomination, story_town_trade_goods_dict })
             },
             Err(error) => {
-                Err(Error::new(ErrorKind::Other, error))
+                Err(Error::other(error))
             },
         }
     }

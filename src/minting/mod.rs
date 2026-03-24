@@ -18,7 +18,7 @@ pub mod minters {
                 let result = place_press(data).expect("SOMETHING WENT TERRIBLY WRONG!");
                 store.result.push(result);
                 break;
-            };
+            }
             //println!("MINT place BLOCKED");
             thread::sleep(sleep_duration.saturating_add(Duration::from_micros(sleep_offset)));
         }
@@ -30,7 +30,7 @@ pub mod minters {
                 let result = people_press(data).expect("SOMETHING WENT TERRIBLY WRONG!");
                 store.result.push(result);
                 break;
-            };
+            }
             //println!("MINT people BLOCKED");
             thread::sleep(sleep_duration.saturating_add(Duration::from_micros(sleep_offset)));
         }
@@ -42,7 +42,7 @@ pub mod minters {
                 let result = language_press(data).expect("SOMETHING WENT TERRIBLY WRONG!");
                 store.result.push(result);
                 break;
-            };
+            }
             //println!("MINT language BLOCKED");
             thread::sleep(sleep_duration.saturating_add(Duration::from_micros(sleep_offset)));
         }
@@ -54,7 +54,7 @@ pub mod minters {
                 let result = metal_alloy_press(data).expect("SOMETHING WENT TERRIBLY WRONG!");
                 store.result.push(result);
                 break;
-            };
+            }
             //println!("MINT metal_alloy BLOCKED");
             thread::sleep(sleep_duration.saturating_add(Duration::from_micros(sleep_offset)));
         }
@@ -66,7 +66,7 @@ pub mod minters {
                 let result = artifact_press(data).expect("SOMETHING WENT TERRIBLY WRONG!");
                 store.result.push(result);
                 break;
-            };
+            }
             //println!("MINT artifact BLOCKED");
             thread::sleep(sleep_duration.saturating_add(Duration::from_micros(sleep_offset)));
         }
@@ -78,7 +78,7 @@ pub mod minters {
                 let result = operation_press(data).expect("SOMETHING WENT TERRIBLY WRONG!");
                 store.result.push(result);
                 break;
-            };
+            }
             //println!("MINT operation BLOCKED");
             thread::sleep(sleep_duration.saturating_add(Duration::from_micros(sleep_offset)));
         }
@@ -90,7 +90,7 @@ pub mod minters {
                 let result = government_press(data, "").expect("SOMETHING WENT TERRIBLY WRONG!");
                 store.result.push(result);
                 break;
-            };
+            }
             //println!("MINT government BLOCKED");
             thread::sleep(sleep_duration.saturating_add(Duration::from_micros(sleep_offset)));
         }
@@ -102,7 +102,7 @@ pub mod minters {
                 let result = empire_press(data).expect("SOMETHING WENT TERRIBLY WRONG!");
                 store.result.push(result);
                 break;
-            };
+            }
             //println!("MINT government BLOCKED");
             thread::sleep(sleep_duration.saturating_add(Duration::from_micros(sleep_offset)));
         }
@@ -114,7 +114,7 @@ pub mod minters {
                 let result = ship_name_press(data, "").expect("SOMETHING WENT TERRIBLY WRONG!");
                 store.result.push(result);
                 break;
-            };
+            }
             //println!("MINT government BLOCKED");
             thread::sleep(sleep_duration.saturating_add(Duration::from_micros(sleep_offset)));
         }
@@ -128,7 +128,7 @@ pub mod minters {
                 let result = ship_class_press(data, "", avg_speed, avg_range).expect("SOMETHING WENT TERRIBLY WRONG!");
                 store.result.push(result);
                 break;
-            };
+            }
             //println!("MINT government BLOCKED");
             thread::sleep(sleep_duration.saturating_add(Duration::from_micros(sleep_offset)));
         }
@@ -140,7 +140,7 @@ pub mod minters {
                 let result = currency_press(data, "").expect("SOMETHING WENT TERRIBLY WRONG!");
                 store.result.push(result);
                 break;
-            };
+            }
             //println!("MINT government BLOCKED");
             thread::sleep(sleep_duration.saturating_add(Duration::from_micros(sleep_offset)));
         }

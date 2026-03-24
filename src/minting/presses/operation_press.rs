@@ -33,23 +33,23 @@ mod operation {
     fn obj_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
         let seed = prelude::random_from_range(0, 6)?;
         match seed {
-            0 => return full_place_name_die(data),
-            1 => return comp_name_type(data),
-            2 => return nickname_type(data),
-            3 => return first_name_type(data),
-            4 => return last_name_type(data),
-            5 => return skill_die(data),
-            _ => return artifact_type_type(data),
+            0 => full_place_name_die(data),
+            1 => comp_name_type(data),
+            2 => nickname_type(data),
+            3 => first_name_type(data),
+            4 => last_name_type(data),
+            5 => skill_die(data),
+            _ => artifact_type_type(data),
         }
     }
 
     fn adj_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
         let seed = prelude::random_from_range(0, 3)?;
         match seed {
-            0 => return Ok(data.lexical_unit_lagoon.place_single.unit_pool[prelude::random_index(data.lexical_unit_lagoon.place_single.unit_pool.len())?].clone()),
-            1 => return artifact_adjective_type(data),
-            2 => return material_type(data),
-            _ => return quality_type(data)
+            0 => Ok(data.lexical_unit_lagoon.place_single.unit_pool[prelude::random_index(data.lexical_unit_lagoon.place_single.unit_pool.len())?].clone()),
+            1 => artifact_adjective_type(data),
+            2 => material_type(data),
+            _ => quality_type(data)
         }
     }
 

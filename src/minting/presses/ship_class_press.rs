@@ -10,7 +10,7 @@ use super::ship_name_press::ship_name_press;
 ///
 /// Arguments:
 ///
-/// * `ship_size`: &str, ship size as found in ship_sizes inside the UnitArchipelago
+/// * `ship_size`: &str, ship size as found in `ship_sizes` inside the `UnitArchipelago`
 /// * `avg_speed`: f32, the average speed relative to light-speed. 0.5 == light-speed*0.5; 1 == lightspeed
 /// * `avg_range`: f32, the average range in light-years
 ///
@@ -21,17 +21,13 @@ use super::ship_name_press::ship_name_press;
 /// Io errors
 pub fn ship_class_press(data: Arc<UnitArchipelago>, ship_size: &str, avg_speed: f32, avg_range: f32) -> Result<String, Error> {
     let ship_name = ship_name_press(data.clone(), "")?;
-    if ship_size == "" || ship_size == " " {
+    if ship_size.is_empty() || ship_size == " " {
         let ship_size_generated = ship_size_type(data.clone())?;
         let ship_type = ship_type_type(data.clone(), &ship_size_generated)?;
         let ship_tech = ship_tech_die(&ship_size_generated, avg_speed, avg_range)?;
         let ship_fame = ship_fame_press(data, &ship_size_generated)?;
         Ok(
-            format!("{}-Class: It's a {}. {} {}",
-            ship_name,
-            ship_type,
-            ship_tech,
-            ship_fame
+            format!("{ship_name}-Class: It's a {ship_type}. {ship_tech} {ship_fame}"
             )
         )
     } else {
@@ -39,11 +35,7 @@ pub fn ship_class_press(data: Arc<UnitArchipelago>, ship_size: &str, avg_speed: 
         let ship_tech = ship_tech_die(ship_size, avg_speed, avg_range)?;
         let ship_fame = ship_fame_press(data, ship_size)?;
         Ok(
-            format!("{}-Class: It's a {}. {} {}",
-            ship_name,
-            ship_type,
-            ship_tech,
-            ship_fame
+            format!("{ship_name}-Class: It's a {ship_type}. {ship_tech} {ship_fame}"
             )
         )
     }
@@ -146,17 +138,10 @@ mod ship_class {
                 crew_min = random_from_range(1000, 2000)?;
                 crew_max = random_from_range(crew_min, 1400000)?;
             },
-            _ => return Err(Error::other(format!("Unable to match supplied `ship_size` ({:?}). No arcm matching {:?}", ship_size, ship_size))),
+            _ => return Err(Error::other(format!("Unable to match supplied `ship_size` ({ship_size:?}). No arcm matching {ship_size:?}"))),
         }
         Ok(
-            format!("Tonnage: {:.2}. Length (m): {:.0}. Min. landing pad size: {}. Speed (c): {:.2}. Range (ly): {}. Minimum needed crew: {}. Maximum crew: {}.",
-                tonnage,
-                length_m,
-                ship_size,
-                speed_ls,
-                range_ly,
-                crew_min,
-                crew_max
+            format!("Tonnage: {tonnage:.2}. Length (m): {length_m:.0}. Min. landing pad size: {ship_size}. Speed (c): {speed_ls:.2}. Range (ly): {range_ly}. Minimum needed crew: {crew_min}. Maximum crew: {crew_max}."
             )
         )
     }
@@ -210,7 +195,7 @@ mod ship_class {
                 out.push_str(&format!(", it's {}", ship_fame_type(data.clone())?));
             }
         }
-        out.push_str(".");
+        out.push('.');
         Ok(out)
     }
 
@@ -242,7 +227,7 @@ mod ship_class {
             data.lexical_unit_lagoon.ship_type_xu.unit_pool[prelude::random_index(data.lexical_unit_lagoon.ship_type_xu.unit_pool.len())?].clone()),
             "T" => Ok(
             data.lexical_unit_lagoon.ship_type_t.unit_pool[prelude::random_index(data.lexical_unit_lagoon.ship_type_t.unit_pool.len())?].clone()),
-            _ => Err(Error::other(format!("Unable to match supplied `ship_size` ({:?}). No arcm matching {:?}", ship_size, ship_size))),
+            _ => Err(Error::other(format!("Unable to match supplied `ship_size` ({ship_size:?}). No arcm matching {ship_size:?}"))),
         }
     }
 
@@ -254,13 +239,9 @@ mod ship_class {
 
     fn ship_ftl_capability_type(avg_range: f32, lower_speed_bound: f32, upper_speed_bound: f32, ftl_chance: usize) -> Result<String, Error> {
         
-        match random_from_range(0, ftl_chance)? {
-            0 => Ok(format!("No FTL capability")),
-            
-            _ => {
-                let range = avg_range.mul_add(random_from_f32range(lower_speed_bound, upper_speed_bound)?, random_from_f32range(lower_speed_bound, upper_speed_bound)?);
-                Ok(format!("{:.2}", range))
-            }
+        if random_from_range(0, ftl_chance)? == 0 { Ok("No FTL capability".to_string()) } else {
+            let range = avg_range.mul_add(random_from_f32range(lower_speed_bound, upper_speed_bound)?, random_from_f32range(lower_speed_bound, upper_speed_bound)?);
+            Ok(format!("{range:.2}"))
         }
     }
 }

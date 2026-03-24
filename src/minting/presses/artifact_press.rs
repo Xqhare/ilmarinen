@@ -11,7 +11,7 @@ pub fn artifact_press(data: Arc<UnitArchipelago>) -> Result<String, Error> {
     let mat0 = material_type(data.clone())?;
     let mat1 = material_type(data.clone())?;
     let mat2 = material_type(data.clone())?;
-    let mat_full = format!("{}, {} and {}", mat0, mat1, mat2);
+    let mat_full = format!("{mat0}, {mat1} and {mat2}");
     let native_name = comp_name_type(data.clone())?;
     Ok(
         format!("This is {}, it is known in its native tounge as {}. It is a {} made of {} and is of {} quality. It shows {} in {} with highlights in {}. It also shows {} in {}. It is dedicated to {}.",

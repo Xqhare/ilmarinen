@@ -83,15 +83,15 @@ mod currency {
                     // It's rare in real life so 1 in 10 should suffice.
                     if random_from_range(0, 9)? == 0 {
                         let super_unit_name = general_currency_name_die(data.clone())?;
-                        out.insert(2, format!("The super-unit is called {}.", super_unit_name));
+                        out.insert(2, format!("The super-unit is called {super_unit_name}."));
                         out.insert(3, currency_coin_denomination_and_material_die(data.clone(), &super_unit_name)?);
                         out.insert(4, format!("The super unit {} exchanges for 1 {} = 100 {}.", super_unit_name, super_unit_name, currency_name.clone()));
                     } else {
                         // another sub unit instead, remember unit == 0!
                         let sub_unit_name = general_currency_name_die(data.clone())?;
-                        out.push(format!("The 1. sub-unit is called {}.", sub_unit_name));
+                        out.push(format!("The 1. sub-unit is called {sub_unit_name}."));
                         out.push(currency_coin_denomination_and_material_die(data.clone(), &sub_unit_name)?);
-                        out.push(format!("The 1. sub-unit {} exchanges for 100 {} = 1 {}", sub_unit_name, sub_unit_name, last_unit_name));
+                        out.push(format!("The 1. sub-unit {sub_unit_name} exchanges for 100 {sub_unit_name} = 1 {last_unit_name}"));
                         last_unit_name = sub_unit_name;
                         first_sub_unit_taken = true;
                     }
@@ -105,9 +105,9 @@ mod currency {
                         }
                     };
                     let sub_unit_name = general_currency_name_die(data.clone())?;
-                    out.push(format!("The {}. sub-unit is called {}.", actual_number, sub_unit_name));
+                    out.push(format!("The {actual_number}. sub-unit is called {sub_unit_name}."));
                     out.push(currency_coin_denomination_and_material_die(data.clone(), &sub_unit_name)?);
-                    out.push(format!("The {}. sub-unit {} exchanges for 100 {} = 1 {}", actual_number, sub_unit_name, sub_unit_name, last_unit_name));
+                    out.push(format!("The {actual_number}. sub-unit {sub_unit_name} exchanges for 100 {sub_unit_name} = 1 {last_unit_name}"));
                     last_unit_name = sub_unit_name;
                 }
             }
@@ -137,16 +137,16 @@ mod currency {
                     if random_from_range(0, 9)? == 0 {
                         let super_unit_name = general_currency_name_die(data.clone())?;
                         let super_base = bases.remove(random_index(bases.len())?);
-                        out.insert(2, format!("The super-unit is called {}.", super_unit_name));
+                        out.insert(2, format!("The super-unit is called {super_unit_name}."));
                         out.insert(3, currency_coin_denomination_and_material_die(data.clone(), &super_unit_name)?);
                         out.insert(4, format!("The super unit {} exchanges for 1 {} = {} {}.", super_unit_name, super_unit_name, super_base, currency_name.clone()));
                     } else {
                         // another sub unit instead, remember unit == 0!
                         let sub_unit_name = general_currency_name_die(data.clone())?;
                         let sub_base = bases.remove(random_index(bases.len())?);
-                        out.push(format!("The 1. sub-unit is called {}.", sub_unit_name));
+                        out.push(format!("The 1. sub-unit is called {sub_unit_name}."));
                         out.push(currency_coin_denomination_and_material_die(data.clone(), &sub_unit_name)?);
-                        out.push(format!("The 1. sub-unit {} exchanges for {} {} = 1 {}", sub_unit_name, sub_base, sub_unit_name, last_unit_name));
+                        out.push(format!("The 1. sub-unit {sub_unit_name} exchanges for {sub_base} {sub_unit_name} = 1 {last_unit_name}"));
                         last_unit_name = sub_unit_name;
                         first_sub_unit_taken = true;
                     }
@@ -161,9 +161,9 @@ mod currency {
                     };
                     let sub_unit_name = general_currency_name_die(data.clone())?;
                     let sub_base = bases.remove(random_index(bases.len())?);
-                    out.push(format!("The {}. sub-unit is called {}.", actual_number, sub_unit_name));
+                    out.push(format!("The {actual_number}. sub-unit is called {sub_unit_name}."));
                     out.push(currency_coin_denomination_and_material_die(data.clone(), &sub_unit_name)?);
-                    out.push(format!("The {}. sub-unit {} exchanges for {} {} = 1 {}", actual_number, sub_unit_name, sub_base, sub_unit_name, last_unit_name));
+                    out.push(format!("The {actual_number}. sub-unit {sub_unit_name} exchanges for {sub_base} {sub_unit_name} = 1 {last_unit_name}"));
                     last_unit_name = sub_unit_name;
                 }
             }
@@ -192,16 +192,16 @@ mod currency {
                     if random_from_range(0, 9)? == 0 {
                         let super_unit_name = general_currency_name_die(data.clone())?;
                         let super_base = bases.remove(random_index(bases.len())?);
-                        out.insert(2, format!("The super-unit is called {}.", super_unit_name));
+                        out.insert(2, format!("The super-unit is called {super_unit_name}."));
                         out.insert(3, currency_coin_denomination_and_material_die(data.clone(), &super_unit_name)?);
                         out.insert(4, format!("The super unit {} exchanges for 1 {} = {} {}.", super_unit_name, super_unit_name, super_base, currency_name.clone()));
                     } else {
                         // another sub unit instead, remember unit == 0!
                         let sub_unit_name = general_currency_name_die(data.clone())?;
                         let sub_base = bases.remove(random_index(bases.len())?);
-                        out.push(format!("The 1. sub-unit is called {}.", sub_unit_name));
+                        out.push(format!("The 1. sub-unit is called {sub_unit_name}."));
                         out.push(currency_coin_denomination_and_material_die(data.clone(), &sub_unit_name)?);
-                        out.push(format!("The 1. sub-unit {} exchanges for {} {} = 1 {}", sub_unit_name, sub_base, sub_unit_name, last_unit_name));
+                        out.push(format!("The 1. sub-unit {sub_unit_name} exchanges for {sub_base} {sub_unit_name} = 1 {last_unit_name}"));
                         last_unit_name = sub_unit_name;
                         first_sub_unit_taken = true;
                     }
@@ -216,9 +216,9 @@ mod currency {
                     };
                     let sub_unit_name = general_currency_name_die(data.clone())?;
                     let sub_base = bases.remove(random_index(bases.len())?);
-                    out.push(format!("The {}. sub-unit is called {}.", actual_number, sub_unit_name));
+                    out.push(format!("The {actual_number}. sub-unit is called {sub_unit_name}."));
                     out.push(currency_coin_denomination_and_material_die(data.clone(), &sub_unit_name)?);
-                    out.push(format!("The {}. sub-unit {} exchanges for {} {} = 1 {}", actual_number, sub_unit_name, sub_base, sub_unit_name, last_unit_name));
+                    out.push(format!("The {actual_number}. sub-unit {sub_unit_name} exchanges for {sub_base} {sub_unit_name} = 1 {last_unit_name}"));
                     last_unit_name = sub_unit_name;
                 }
             }
@@ -236,14 +236,14 @@ mod currency {
         for denomination in denominations {
             out.push(
                 format!("The {denomination} coin, {}. {}.", currency_material_type(data.clone())?, currency_coin_iconography_press(data.clone())?)
-            )
+            );
 
         }
         Ok(out.join("\n"))
     }
 
     pub fn currency_coin_iconography_press(data: Arc<UnitArchipelago>) -> Result<String, Error> {
-        let out = vec![format!("It shows {} on it's front,", currency_coin_iconography_die(data.clone(), false)?), format!("and it shows {} on it's back", currency_coin_iconography_die(data, true)?)];
+        let out = [format!("It shows {} on it's front,", currency_coin_iconography_die(data.clone(), false)?), format!("and it shows {} on it's back", currency_coin_iconography_die(data, true)?)];
         Ok(out.join("\n"))
     }
 
@@ -269,7 +269,7 @@ mod currency {
                 Ok(format!("a incuse of a {}",currency_icon_incuse_type(data)?))
             },
             _ => {
-                Ok(format!("the same motif repeated"))
+                Ok("the same motif repeated".to_string())
             },
         }
     }
@@ -293,7 +293,7 @@ mod currency {
                             format!("a indiscernible figure with {}", currency_coin_bonus_iconography_type(data)?)
                         ),
                     _ => {
-                        Err(Error::other(format!("{} from json library is not implemented in icon_figure_type!", gender_to_check)))
+                        Err(Error::other(format!("{gender_to_check} from json library is not implemented in icon_figure_type!")))
                     },
                 }
             },
@@ -355,7 +355,7 @@ mod currency {
                 
             },
             _ => {
-                Err(Error::other(format!("{} from json library is not implemented in icon_figure_type!", type_to_check)))
+                Err(Error::other(format!("{type_to_check} from json library is not implemented in icon_figure_type!")))
             },
         }
     }
@@ -383,7 +383,7 @@ mod currency {
                 currency_icon_insignia_type(data)?
             }
         };
-        Ok(format!("a {}", insignia))
+        Ok(format!("a {insignia}"))
     }
 
     pub fn currency_icon_inscription_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
@@ -403,7 +403,7 @@ mod currency {
                 }
             },
             _ => {
-                Err(Error::other(format!("{} from json library is not implemented in icon_inscription_type!", type_to_check)))
+                Err(Error::other(format!("{type_to_check} from json library is not implemented in icon_inscription_type!")))
             },
         }
 
@@ -438,7 +438,7 @@ mod currency {
                     )
                 )
             } else {
-                Err(Error::other(format!("Name ({}) is shorter than 3 letters!", currency_name)))
+                Err(Error::other(format!("Name ({currency_name}) is shorter than 3 letters!")))
             }
         } else {
             if currency_name.len() >= 3 {
@@ -454,7 +454,7 @@ mod currency {
                     )
                 )
             } else {
-                Err(Error::other(format!("Name ({}) is shorter than 3 letters!", currency_name)))
+                Err(Error::other(format!("Name ({currency_name}) is shorter than 3 letters!")))
             }
         }
         

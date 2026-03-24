@@ -4,7 +4,7 @@ use crate::unit_pools::UnitArchipelago;
 
 use self::ship_name::{ship_prefix_die, ship_name_die};
 
-/// ship_prefix == "" => random prefix; " " == empty prefix; anything else == custom prefix
+/// `ship_prefix` == "" => random prefix; " " == empty prefix; anything else == custom prefix
 pub fn ship_name_press(data: Arc<UnitArchipelago>, ship_prefix: &str) -> Result<String, Error> {
     Ok(
         format!("{} {}",
@@ -21,7 +21,7 @@ mod ship_name {
 
     use crate::{unit_pools::UnitArchipelago, minting::presses::common::{random_abc_type, formal_name_die, formal_last_name_die, random_place_noun_type, artifact_adjective_type}};
 
-    /// ship_prefix == "" => random prefix; " " == empty prefix; anything else == custom prefix
+    /// `ship_prefix` == "" => random prefix; " " == empty prefix; anything else == custom prefix
     pub fn ship_prefix_die(data: Arc<UnitArchipelago>, ship_prefix: &str) -> Result<String, Error> {
         match ship_prefix {
             "" => {
@@ -35,7 +35,7 @@ mod ship_name {
                     }
                 }
             },
-            " " => Ok("".to_string()),
+            " " => Ok(String::new()),
             _ => Ok(ship_prefix.to_string()),
         }
     }
