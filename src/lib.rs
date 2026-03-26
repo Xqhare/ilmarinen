@@ -80,7 +80,7 @@ impl WordSmith {
                                 sleep_offset
                                     .try_into()
                                     .expect("Sleep Offset is larger than u64!"),
-                            )
+                            );
                         }),
                         MintingType::People => pool.execute(move || {
                             mint_people(
@@ -90,7 +90,7 @@ impl WordSmith {
                                 sleep_offset
                                     .try_into()
                                     .expect("Sleep Offset is larger than u64!"),
-                            )
+                            );
                         }),
                         MintingType::Artifact => pool.execute(move || {
                             mint_artifact(
@@ -100,7 +100,7 @@ impl WordSmith {
                                 sleep_offset
                                     .try_into()
                                     .expect("Sleep Offset is larger than u64!"),
-                            )
+                            );
                         }),
                         MintingType::Operation => pool.execute(move || {
                             mint_operation(
@@ -110,7 +110,7 @@ impl WordSmith {
                                 sleep_offset
                                     .try_into()
                                     .expect("Sleep Offset is larger than u64!"),
-                            )
+                            );
                         }),
                         MintingType::ShipName => pool.execute(move || {
                             mint_ship_name(
@@ -120,7 +120,7 @@ impl WordSmith {
                                 sleep_offset
                                     .try_into()
                                     .expect("Sleep Offset is larger than u64!"),
-                            )
+                            );
                         }),
                         MintingType::ShipClass => pool.execute(move || {
                             mint_ship_class(
@@ -130,7 +130,7 @@ impl WordSmith {
                                 sleep_offset
                                     .try_into()
                                     .expect("Sleep Offset is larger than u64!"),
-                            )
+                            );
                         }),
                         MintingType::Currency => pool.execute(move || {
                             mint_currency(
@@ -140,7 +140,7 @@ impl WordSmith {
                                 sleep_offset
                                     .try_into()
                                     .expect("Sleep Offset is larger than u64!"),
-                            )
+                            );
                         }),
                         MintingType::MetalAndAlloy => pool.execute(move || {
                             mint_metal_alloy(
@@ -150,7 +150,7 @@ impl WordSmith {
                                 sleep_offset
                                     .try_into()
                                     .expect("Sleep Offset is larger than u64!"),
-                            )
+                            );
                         }),
                         MintingType::Empire => pool.execute(move || {
                             mint_empire(
@@ -160,7 +160,7 @@ impl WordSmith {
                                 sleep_offset
                                     .try_into()
                                     .expect("Sleep Offset is larger than u64!"),
-                            )
+                            );
                         }),
                         MintingType::Government => pool.execute(move || {
                             mint_government(
@@ -170,7 +170,7 @@ impl WordSmith {
                                 sleep_offset
                                     .try_into()
                                     .expect("Sleep Offset is larger than u64!"),
-                            )
+                            );
                         }),
                         MintingType::Language => pool.execute(move || {
                             mint_language(
@@ -180,7 +180,7 @@ impl WordSmith {
                                 sleep_offset
                                     .try_into()
                                     .expect("Sleep Offset is larger than u64!"),
-                            )
+                            );
                         }),
                     }
                 }
