@@ -130,7 +130,7 @@ mod ship_class {
                 speed_ls = avg_speed.mul(random_from_f32range(1.6, 1.65)?);
                 range_ly = ship_ftl_capability_type(avg_range, 1.4, 1.55, 20)?;
                 crew_min = random_from_range(800, 1500)?;
-                crew_max = random_from_range(crew_min, 14000)?;    
+                crew_max = random_from_range(crew_min, 14000)?;
             },
             "T" => {
                 tonnage = random_from_f32range(500000.0, 1000000000.0)?;
