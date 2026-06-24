@@ -27,10 +27,13 @@ Ilmarinen is considererd feature complete and stable though.
 - Self-rolled Multi-Threading
 - Utilises an actual CSPRNG, meaning that the data is guaranteed to be random
 
-### Further Development
+## Roadmap
 
-- Expaning the range of name and concept types (e.g. mythical creatures, organisations, companies, game titles, video ideas)
-- Make multi-threading work gooder
+`Ilmarinen` uses my [nomos](https://github.com/xqhare/nomos) project management system.
+
+The roadmap for this project can be found in the [nomos.md](nomos.md) file.
+
+All nomos files follow the syntax defined [here](https://github.com/Xqhare/nomos/blob/master/spec/).
 
 ## Inspired by Ancient Gods
 
