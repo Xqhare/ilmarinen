@@ -1,0 +1,6 @@
+- [ ] make a bin :: Like in Nomos
+* CLI interface is enough* TUI would be nice
+- [ ] More name and concept types :: 
+* mythical creatures* organisations* companies* game titles* video ideas
+- [ ] Make multi-threading work gooder :: dep=software_ideas:"Executor"
+- [ ] Bring performance up to at least the python version :: @randomiserProject
