@@ -2,6 +2,5 @@
 * CLI interface is enough* TUI would be nice
 - [ ] More name and concept types :: 
 * mythical creatures* organisations* companies* game titles* video ideas
-- [ ] Make multi-threading work gooder :: dep=software_ideas:"Executor"
-- [ ] Bring performance up to at least the python version :: @randomiserProject
-	- [ ] Switch from UnicodeSegmentation to Thoth :: dep=thoth:"Horrible Performance" slows down from 10s to 130s atm
+- [c] Make multi-threading work gooder :: dep=software_ideas:"Executor"
+- [c] Bring performance up to at least the python version :: @randomiserProject
