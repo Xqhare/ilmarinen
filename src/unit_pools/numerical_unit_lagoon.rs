@@ -16,44 +16,42 @@ pub struct NumericalUnitLagoon {
 
 impl NumericalUnitLagoon {
     pub fn new(num_lib_path: &Path) -> Result<NumericalUnitLagoon, Error> {
-        let mut story_town_trade_goods_dict: NumericalUnitDictionary = Default::default();
-
-        let mut currency_time_fractions: NumericalUnitPool = Default::default();
-        let mut currency_non_decimal_base: NumericalUnitPool = Default::default();
-        let mut currency_coins_denomination: NumericalUnitPool = Default::default();
+        let story_town_trade_goods_dict: NumericalUnitDictionary;
+        let currency_time_fractions: NumericalUnitPool;
+        let currency_non_decimal_base: NumericalUnitPool;
+        let currency_coins_denomination: NumericalUnitPool;
 
         match read_json(num_lib_path) {
             Ok(data) => {
-                for entry in data.entries() {
-                    match entry.0 {
-                        "story_town_trade_goods_dict" => {
-                            story_town_trade_goods_dict = NumericalUnitDictionary::from(entry);
-                        }
-                        "currency_time_fractions" => {
-                            currency_time_fractions = NumericalUnitPool::from(entry);
-                        }
-                        "currency_non_decimal_base_120" => {
-                            currency_non_decimal_base = NumericalUnitPool::from(entry);
-                        }
-                        "currency_coins_denomination" => {
-                            currency_coins_denomination = NumericalUnitPool::from(entry);
-                        }
-                        _ => {
-                            Err(Error::other(format!(
-                                "Undeclared json list. {} (in {:?}) is not implemented!",
-                                entry.0, num_lib_path
-                            )))?;
-                        }
-                    }
-                }
-                Ok(NumericalUnitLagoon {
-                    currency_time_fractions,
-                    currency_non_decimal_base,
-                    currency_coins_denomination,
-                    story_town_trade_goods_dict,
-                })
+                let obj = data.as_object().expect("JSON parent must be an object");
+                story_town_trade_goods_dict = NumericalUnitDictionary::from((
+                    "story_town_trade_goods_dict",
+                    obj.get("story_town_trade_goods_dict")
+                        .expect("Object must include key 'story_town_trade_goods_dict'"),
+                ));
+                currency_time_fractions = NumericalUnitPool::from((
+                    "currency_time_fractions",
+                    obj.get("currency_time_fractions")
+                        .expect("Object must include key 'currency_time_fractions'"),
+                ));
+                currency_non_decimal_base = NumericalUnitPool::from((
+                    "currency_non_decimal_base_120",
+                    obj.get("currency_non_decimal_base_120")
+                        .expect("Object must include key 'currency_non_decimal_base_120'"),
+                ));
+                currency_coins_denomination = NumericalUnitPool::from((
+                    "currency_coins_denomination",
+                    obj.get("currency_coins_denomination")
+                        .expect("Object must include key 'currency_coins_denomination'"),
+                ));
             }
-            Err(error) => Err(Error::other(error)),
+            Err(error) => return Err(Error::other(error)),
         }
+        Ok(NumericalUnitLagoon {
+            currency_time_fractions,
+            currency_non_decimal_base,
+            currency_coins_denomination,
+            story_town_trade_goods_dict,
+        })
     }
 }

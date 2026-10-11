@@ -1,4 +1,4 @@
-use json::JsonValue;
+use mawu::XffValue;
 
 #[derive(Debug, Clone)]
 pub struct NumericalUnitDictionary {
@@ -18,12 +18,12 @@ impl Default for NumericalUnitDictionary {
     }
 }
 
-impl From<(&str, &JsonValue)> for NumericalUnitDictionary {
-    fn from(value: (&str, &JsonValue)) -> Self {
+impl From<(&str, &XffValue)> for NumericalUnitDictionary {
+    fn from(value: (&str, &XffValue)) -> Self {
         let name = value.0.to_string();
         let mut data: Vec<NumericalUnitDictionaryEntry> = Default::default();
-        for entry in value.1.entries() {
-            data.push(NumericalUnitDictionaryEntry::from(entry));
+        for (key, value) in value.1.as_object().expect("Must be an array").iter() {
+            data.push(NumericalUnitDictionaryEntry::from((key.as_str(), value)));
         }
         NumericalUnitDictionary { name, data }
     }
@@ -44,11 +44,16 @@ impl Default for NumericalUnitDictionaryEntry {
     }
 }
 
-impl From<(&str, &JsonValue)> for NumericalUnitDictionaryEntry {
-    fn from(value: (&str, &JsonValue)) -> Self {
+impl From<(&str, &XffValue)> for NumericalUnitDictionaryEntry {
+    fn from(value: (&str, &XffValue)) -> Self {
         NumericalUnitDictionaryEntry {
             name: value.0.to_string(),
-            data: value.1.as_f32().expect("Wrong json entry! Has to be f32!"),
+            data: value
+                .1
+                .as_number()
+                .expect("Wrong json entry! Has to be f32!")
+                .into_f64()
+                .expect("Must be float") as f32,
         }
     }
 }

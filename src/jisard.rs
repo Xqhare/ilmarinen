@@ -1,22 +1,16 @@
 use std::{
-    fs::File,
-    io::{Error, ErrorKind, Read},
+    io::{Error, ErrorKind},
     path::Path,
 };
 
-use json::{parse, JsonValue};
+use mawu::XffValue;
 
-pub fn read_json<P>(file_path: P) -> Result<JsonValue, Error>
+pub fn read_json<P>(file_path: P) -> Result<XffValue, Error>
 where
     P: AsRef<Path>,
 {
-    let mut input = File::open(file_path)?;
-    let mut buffer: String = Default::default();
-    let _ = input.read_to_string(&mut buffer);
-    let out = parse(&buffer);
-    if out.is_ok() {
-        Ok(out.expect("Is Ok checked!"))
-    } else {
-        Err(Error::new(ErrorKind::InvalidData, out.err().unwrap()))
+    match mawu::read::json(file_path) {
+        Ok(out) => Ok(out),
+        Err(error) => Err(Error::new(ErrorKind::InvalidData, error)),
     }
 }
