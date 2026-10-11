@@ -1,4 +1,4 @@
-use json::JsonValue;
+use mawu::XffValue;
 
 #[derive(Debug, Clone)]
 /// This is how a simple list of data is stored.
@@ -20,12 +20,17 @@ impl Default for LexicalUnitPool {
     }
 }
 
-impl From<(&str, &JsonValue)> for LexicalUnitPool {
-    fn from(value: (&str, &JsonValue)) -> Self {
+impl From<(&str, &XffValue)> for LexicalUnitPool {
+    fn from(value: (&str, &XffValue)) -> Self {
         let name = value.0.to_string();
         let mut unit_pool: Vec<String> = Default::default();
-        for entry in value.1.members() {
-            unit_pool.push(entry.to_string());
+        for entry in value.1.as_array().expect("Must be an array") {
+            unit_pool.push(
+                entry
+                    .as_string()
+                    .expect("Wrong json entry! Has to be string!")
+                    .clone(),
+            );
         }
         LexicalUnitPool { name, unit_pool }
     }

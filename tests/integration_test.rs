@@ -2,7 +2,6 @@ use std::path::Path;
 
 use ilmarinen::{MintingType, WordSmith};
 
-#[ignore = "reason"]
 #[test]
 fn word_smith_main_test() {
     let mut word_smith = WordSmith::new(Path::new("data/")).unwrap();

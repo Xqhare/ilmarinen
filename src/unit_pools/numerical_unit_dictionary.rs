@@ -46,14 +46,19 @@ impl Default for NumericalUnitDictionaryEntry {
 
 impl From<(&str, &XffValue)> for NumericalUnitDictionaryEntry {
     fn from(value: (&str, &XffValue)) -> Self {
+        let num = value
+            .1
+            .as_number()
+            .expect("Wrong json entry! Has to be f32!");
+        let data = num.into_f64().unwrap_or_else(|| {
+            num.into_usize()
+                .map(|u| u as f64)
+                .or_else(|| num.into_isize().map(|i| i as f64))
+                .expect("Must be a number")
+        }) as f32;
         NumericalUnitDictionaryEntry {
             name: value.0.to_string(),
-            data: value
-                .1
-                .as_number()
-                .expect("Wrong json entry! Has to be f32!")
-                .into_f64()
-                .expect("Must be float") as f32,
+            data,
         }
     }
 }

@@ -6,9 +6,7 @@ edition = "2024"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-json = "0.12.4"
 mawu = {git = "https://github.com/Xqhare/mawu" }
 tyche = {git = "https://github.com/Xqhare/tyche" }
 fortuna = {git = "https://github.com/Xqhare/fortuna" }
 thoth = {git = "https://github.com/Xqhare/thoth" }
-unicode-segmentation = "1.13.3"
