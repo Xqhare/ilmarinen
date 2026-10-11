@@ -6,11 +6,11 @@ use self::place::{adj_die, place_description_die};
 
 use super::common::full_place_name_die;
 
-pub fn place_press(data: Arc<UnitArchipelago>) -> Result<String, Error> {
+pub fn place_press(data: &Arc<UnitArchipelago>) -> Result<String, Error> {
     Ok(format!(
         "{}{}. {}",
-        adj_die(data.clone())?,
-        full_place_name_die(data.clone())?,
+        adj_die(data)?,
+        full_place_name_die(data)?,
         place_description_die(data)?
     ))
 }
@@ -22,7 +22,7 @@ mod place {
 
     use crate::{minting::presses::common::simple_name_type, unit_pools::UnitArchipelago};
 
-    pub fn adj_die(data: Arc<UnitArchipelago>) -> Result<String, Error> {
+    pub fn adj_die(data: &Arc<UnitArchipelago>) -> Result<String, Error> {
         if prelude::random_from_range(0, 1)? == 0 {
             Ok(simple_name_type(data)?.add(" "))
         } else {
@@ -30,17 +30,17 @@ mod place {
         }
     }
 
-    pub fn place_description_die(data: Arc<UnitArchipelago>) -> Result<String, Error> {
+    pub fn place_description_die(data: &Arc<UnitArchipelago>) -> Result<String, Error> {
         Ok(format!(
             "It's a {}. {}{}",
             data.lexical_unit_lagoon.place_object.unit_pool
                 [prelude::random_index(data.lexical_unit_lagoon.place_object.unit_pool.len())?],
-            relative_type(data.clone())?,
-            fame_type(data.clone())?
+            relative_type(data)?,
+            fame_type(data)?
         ))
     }
 
-    fn fame_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
+    fn fame_type(data: &Arc<UnitArchipelago>) -> Result<String, Error> {
         if prelude::random_from_range(0, 2)? == 0 {
             if prelude::random_from_range(0, 1)? == 0 {
                 Ok(format!(
@@ -62,7 +62,7 @@ mod place {
         }
     }
 
-    fn relative_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
+    fn relative_type(data: &Arc<UnitArchipelago>) -> Result<String, Error> {
         if prelude::random_from_range(0, 2)? == 0 {
             Ok(format!(
                 "It's {} normal.",

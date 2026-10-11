@@ -4,7 +4,7 @@ use crate::unit_pools::UnitArchipelago;
 
 use self::operation::name_die;
 
-pub fn operation_press(data: Arc<UnitArchipelago>) -> Result<String, Error> {
+pub fn operation_press(data: &Arc<UnitArchipelago>) -> Result<String, Error> {
     Ok(format!("Operation {}", name_die(data)?))
 }
 
@@ -22,15 +22,15 @@ mod operation {
         unit_pools::UnitArchipelago,
     };
 
-    pub fn name_die(data: Arc<UnitArchipelago>) -> Result<String, Error> {
+    pub fn name_die(data: &Arc<UnitArchipelago>) -> Result<String, Error> {
         if prelude::random_from_range(0, 1)? == 0 {
             obj_type(data)
         } else {
-            Ok(format!("{} {}", adj_type(data.clone())?, obj_type(data)?))
+            Ok(format!("{} {}", adj_type(data)?, obj_type(data)?))
         }
     }
 
-    fn obj_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
+    fn obj_type(data: &Arc<UnitArchipelago>) -> Result<String, Error> {
         let seed = prelude::random_from_range(0, 6)?;
         match seed {
             0 => full_place_name_die(data),
@@ -39,16 +39,15 @@ mod operation {
             3 => first_name_type(data),
             4 => last_name_type(data),
             5 => skill_die(data),
-            _ => artifact_type_type(data),
+            _ => artifact_type_type(&data).map(|x| x.to_string()),
         }
     }
 
-    fn adj_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
+    fn adj_type(data: &Arc<UnitArchipelago>) -> Result<&str, Error> {
         let seed = prelude::random_from_range(0, 3)?;
         match seed {
-            0 => Ok(data.lexical_unit_lagoon.place_single.unit_pool
-                [prelude::random_index(data.lexical_unit_lagoon.place_single.unit_pool.len())?]
-            .clone()),
+            0 => Ok(&data.lexical_unit_lagoon.place_single.unit_pool
+                [prelude::random_index(data.lexical_unit_lagoon.place_single.unit_pool.len())?]),
             1 => artifact_adjective_type(data),
             2 => material_type(data),
             _ => quality_type(data),

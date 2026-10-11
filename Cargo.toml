@@ -9,4 +9,5 @@ rust-version = "1.93.0"
 [dependencies]
 json = "0.12.4"
 tyche = {git = "https://github.com/Xqhare/tyche" }
-unicode-segmentation = "1.11.0"
+thoth = {git = "https://github.com/Xqhare/thoth" }
+unicode-segmentation = "1.13.3"

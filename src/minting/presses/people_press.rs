@@ -6,15 +6,15 @@ use self::people::trait_die;
 
 use super::common::{full_people_name_die, skill_die};
 
-pub fn people_press(data: Arc<UnitArchipelago>) -> Result<String, Error> {
+pub fn people_press(data: &Arc<UnitArchipelago>) -> Result<String, Error> {
     Ok(format!(
         "{} They are a {}, a {}, and a {}. They are {}, {} and {}.",
-        full_people_name_die(data.clone())?,
-        skill_die(data.clone())?,
-        skill_die(data.clone())?,
-        skill_die(data.clone())?,
-        trait_die(data.clone())?,
-        trait_die(data.clone())?,
+        full_people_name_die(data)?,
+        skill_die(data)?,
+        skill_die(data)?,
+        skill_die(data)?,
+        trait_die(data)?,
+        trait_die(data)?,
         trait_die(data)?
     ))
 }
@@ -26,15 +26,13 @@ mod people {
 
     use crate::unit_pools::UnitArchipelago;
 
-    pub fn trait_die(data: Arc<UnitArchipelago>) -> Result<String, Error> {
+    pub fn trait_die(data: &Arc<UnitArchipelago>) -> Result<&str, Error> {
         if prelude::random_from_range(0, 1)? == 0 {
-            Ok(data.lexical_unit_lagoon.people_trait_ck3.unit_pool
-                [prelude::random_index(data.lexical_unit_lagoon.people_trait_ck3.unit_pool.len())?]
-            .clone())
+            Ok(&data.lexical_unit_lagoon.people_trait_ck3.unit_pool
+                [prelude::random_index(data.lexical_unit_lagoon.people_trait_ck3.unit_pool.len())?])
         } else {
-            Ok(data.lexical_unit_lagoon.people_trait_ck2.unit_pool
-                [prelude::random_index(data.lexical_unit_lagoon.people_trait_ck2.unit_pool.len())?]
-            .clone())
+            Ok(&data.lexical_unit_lagoon.people_trait_ck2.unit_pool
+                [prelude::random_index(data.lexical_unit_lagoon.people_trait_ck2.unit_pool.len())?])
         }
     }
 }

@@ -4,3 +4,4 @@
 * mythical creatures* organisations* companies* game titles* video ideas
 - [ ] Make multi-threading work gooder :: dep=software_ideas:"Executor"
 - [ ] Bring performance up to at least the python version :: @randomiserProject
+	- [ ] Switch from UnicodeSegmentation to Thoth :: dep=thoth:"Horrible Performance" slows down from 10s to 130s atm

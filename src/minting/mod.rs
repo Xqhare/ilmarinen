@@ -29,7 +29,7 @@ pub mod minters {
     ) {
         loop {
             if let Ok(mut store) = out.try_lock() {
-                let result = place_press(data).expect("SOMETHING WENT TERRIBLY WRONG!");
+                let result = place_press(&data).expect("SOMETHING WENT TERRIBLY WRONG!");
                 store.result.push(result);
                 break;
             }
@@ -46,7 +46,7 @@ pub mod minters {
     ) {
         loop {
             if let Ok(mut store) = out.try_lock() {
-                let result = people_press(data).expect("SOMETHING WENT TERRIBLY WRONG!");
+                let result = people_press(&data).expect("SOMETHING WENT TERRIBLY WRONG!");
                 store.result.push(result);
                 break;
             }
@@ -63,7 +63,7 @@ pub mod minters {
     ) {
         loop {
             if let Ok(mut store) = out.try_lock() {
-                let result = language_press(data).expect("SOMETHING WENT TERRIBLY WRONG!");
+                let result = language_press(&data).expect("SOMETHING WENT TERRIBLY WRONG!");
                 store.result.push(result);
                 break;
             }
@@ -80,7 +80,7 @@ pub mod minters {
     ) {
         loop {
             if let Ok(mut store) = out.try_lock() {
-                let result = metal_alloy_press(data).expect("SOMETHING WENT TERRIBLY WRONG!");
+                let result = metal_alloy_press(&data).expect("SOMETHING WENT TERRIBLY WRONG!");
                 store.result.push(result);
                 break;
             }
@@ -97,7 +97,7 @@ pub mod minters {
     ) {
         loop {
             if let Ok(mut store) = out.try_lock() {
-                let result = artifact_press(data).expect("SOMETHING WENT TERRIBLY WRONG!");
+                let result = artifact_press(&data).expect("SOMETHING WENT TERRIBLY WRONG!");
                 store.result.push(result);
                 break;
             }
@@ -114,7 +114,7 @@ pub mod minters {
     ) {
         loop {
             if let Ok(mut store) = out.try_lock() {
-                let result = operation_press(data).expect("SOMETHING WENT TERRIBLY WRONG!");
+                let result = operation_press(&data).expect("SOMETHING WENT TERRIBLY WRONG!");
                 store.result.push(result);
                 break;
             }
@@ -131,7 +131,7 @@ pub mod minters {
     ) {
         loop {
             if let Ok(mut store) = out.try_lock() {
-                let result = government_press(data, "").expect("SOMETHING WENT TERRIBLY WRONG!");
+                let result = government_press(&data, "").expect("SOMETHING WENT TERRIBLY WRONG!");
                 store.result.push(result);
                 break;
             }
@@ -148,7 +148,7 @@ pub mod minters {
     ) {
         loop {
             if let Ok(mut store) = out.try_lock() {
-                let result = empire_press(data).expect("SOMETHING WENT TERRIBLY WRONG!");
+                let result = empire_press(&data).expect("SOMETHING WENT TERRIBLY WRONG!");
                 store.result.push(result);
                 break;
             }
@@ -165,7 +165,7 @@ pub mod minters {
     ) {
         loop {
             if let Ok(mut store) = out.try_lock() {
-                let result = ship_name_press(data, "").expect("SOMETHING WENT TERRIBLY WRONG!");
+                let result = ship_name_press(&data, "").expect("SOMETHING WENT TERRIBLY WRONG!");
                 store.result.push(result);
                 break;
             }
@@ -184,7 +184,7 @@ pub mod minters {
             if let Ok(mut store) = out.try_lock() {
                 let avg_speed = random_from_f32range(0.5, 5.5).expect("RANDOM BLOCK!");
                 let avg_range = random_from_f32range(100.5, 1000.5).expect("RANDOM BLOCK");
-                let result = ship_class_press(data, "", avg_speed, avg_range)
+                let result = ship_class_press(&data, "", avg_speed, avg_range)
                     .expect("SOMETHING WENT TERRIBLY WRONG!");
                 store.result.push(result);
                 break;
@@ -202,7 +202,7 @@ pub mod minters {
     ) {
         loop {
             if let Ok(mut store) = out.try_lock() {
-                let result = currency_press(data, "").expect("SOMETHING WENT TERRIBLY WRONG!");
+                let result = currency_press(&data, "").expect("SOMETHING WENT TERRIBLY WRONG!");
                 store.result.push(result);
                 break;
             }

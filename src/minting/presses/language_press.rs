@@ -4,7 +4,7 @@ use crate::unit_pools::UnitArchipelago;
 
 use super::common::language_name_die;
 
-pub fn language_press(data: Arc<UnitArchipelago>) -> Result<String, Error> {
+pub fn language_press(data: &Arc<UnitArchipelago>) -> Result<String, Error> {
     language_name_die(data)
 }
 

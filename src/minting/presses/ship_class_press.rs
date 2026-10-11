@@ -20,22 +20,22 @@ use super::ship_name_press::ship_name_press;
 /// # Errors
 /// Io errors
 pub fn ship_class_press(
-    data: Arc<UnitArchipelago>,
+    data: &Arc<UnitArchipelago>,
     ship_size: &str,
     avg_speed: f32,
     avg_range: f32,
 ) -> Result<String, Error> {
-    let ship_name = ship_name_press(data.clone(), "")?;
+    let ship_name = ship_name_press(data, "")?;
     if ship_size.is_empty() || ship_size == " " {
-        let ship_size_generated = ship_size_type(data.clone())?;
-        let ship_type = ship_type_type(data.clone(), &ship_size_generated)?;
+        let ship_size_generated = ship_size_type(data)?;
+        let ship_type = ship_type_type(data, &ship_size_generated)?;
         let ship_tech = ship_tech_die(&ship_size_generated, avg_speed, avg_range)?;
         let ship_fame = ship_fame_press(data, &ship_size_generated)?;
         Ok(format!(
             "{ship_name}-Class: It's a {ship_type}. {ship_tech} {ship_fame}"
         ))
     } else {
-        let ship_type = ship_type_type(data.clone(), ship_size)?;
+        let ship_type = ship_type_type(data, ship_size)?;
         let ship_tech = ship_tech_die(ship_size, avg_speed, avg_range)?;
         let ship_fame = ship_fame_press(data, ship_size)?;
         Ok(format!(
@@ -148,7 +148,7 @@ mod ship_class {
         )
     }
 
-    pub fn ship_fame_press(data: Arc<UnitArchipelago>, ship_size: &str) -> Result<String, Error> {
+    pub fn ship_fame_press(data: &Arc<UnitArchipelago>, ship_size: &str) -> Result<String, Error> {
         match ship_size {
             "L" => ship_fame_die(data, 1),
             "XL" => ship_fame_die(data, 1),
@@ -179,7 +179,7 @@ mod ship_class {
     }
 
     pub fn ship_fame_die(
-        data: Arc<UnitArchipelago>,
+        data: &Arc<UnitArchipelago>,
         famous_attribute_amount: usize,
     ) -> Result<String, Error> {
         let mut out: String = Default::default();
@@ -187,54 +187,55 @@ mod ship_class {
             if attribute == 0 {
                 out.push_str(&format!(
                     "The Class gained notoriety for it's {}",
-                    ship_fame_type(data.clone())?
+                    ship_fame_type(data)?
                 ));
             } else if attribute == famous_attribute_amount.saturating_sub(1) {
-                out.push_str(&format!(" and it's {}", ship_fame_type(data.clone())?));
+                out.push_str(&format!(" and it's {}", ship_fame_type(data)?));
             } else {
-                out.push_str(&format!(", it's {}", ship_fame_type(data.clone())?));
+                out.push_str(&format!(", it's {}", ship_fame_type(data)?));
             }
         }
         out.push('.');
         Ok(out)
     }
 
-    pub fn ship_fame_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
-        Ok(data.lexical_unit_lagoon.ship_fame.unit_pool
-            [prelude::random_index(data.lexical_unit_lagoon.ship_fame.unit_pool.len())?]
-        .clone())
+    pub fn ship_fame_type(data: &Arc<UnitArchipelago>) -> Result<&str, Error> {
+        Ok(&data.lexical_unit_lagoon.ship_fame.unit_pool
+            [prelude::random_index(data.lexical_unit_lagoon.ship_fame.unit_pool.len())?])
     }
 
-    pub fn ship_type_type(data: Arc<UnitArchipelago>, ship_size: &str) -> Result<String, Error> {
+    pub fn ship_type_type<'a>(
+        data: &'a Arc<UnitArchipelago>,
+        ship_size: &str,
+    ) -> Result<&'a str, Error> {
         match ship_size {
             "SS" => Ok(
-            data.lexical_unit_lagoon.ship_type_ss.unit_pool[prelude::random_index(data.lexical_unit_lagoon.ship_type_ss.unit_pool.len())?].clone()),
+            &data.lexical_unit_lagoon.ship_type_ss.unit_pool[prelude::random_index(data.lexical_unit_lagoon.ship_type_ss.unit_pool.len())?]),
             "XS" => Ok(
-            data.lexical_unit_lagoon.ship_type_xs.unit_pool[prelude::random_index(data.lexical_unit_lagoon.ship_type_xs.unit_pool.len())?].clone()),
+            &data.lexical_unit_lagoon.ship_type_xs.unit_pool[prelude::random_index(data.lexical_unit_lagoon.ship_type_xs.unit_pool.len())?]),
             "S" => Ok(
-            data.lexical_unit_lagoon.ship_type_s.unit_pool[prelude::random_index(data.lexical_unit_lagoon.ship_type_s.unit_pool.len())?].clone()),
+            &data.lexical_unit_lagoon.ship_type_s.unit_pool[prelude::random_index(data.lexical_unit_lagoon.ship_type_s.unit_pool.len())?]),
             "M" => Ok(
-            data.lexical_unit_lagoon.ship_type_m.unit_pool[prelude::random_index(data.lexical_unit_lagoon.ship_type_m.unit_pool.len())?].clone()),
+            &data.lexical_unit_lagoon.ship_type_m.unit_pool[prelude::random_index(data.lexical_unit_lagoon.ship_type_m.unit_pool.len())?]),
             "L" => Ok(
-            data.lexical_unit_lagoon.ship_type_l.unit_pool[prelude::random_index(data.lexical_unit_lagoon.ship_type_l.unit_pool.len())?].clone()),
+            &data.lexical_unit_lagoon.ship_type_l.unit_pool[prelude::random_index(data.lexical_unit_lagoon.ship_type_l.unit_pool.len())?]),
             "XL" => Ok(
-            data.lexical_unit_lagoon.ship_type_xl.unit_pool[prelude::random_index(data.lexical_unit_lagoon.ship_type_xl.unit_pool.len())?].clone()),
+            &data.lexical_unit_lagoon.ship_type_xl.unit_pool[prelude::random_index(data.lexical_unit_lagoon.ship_type_xl.unit_pool.len())?]),
             "XXL" => Ok(
-            data.lexical_unit_lagoon.ship_type_xxl.unit_pool[prelude::random_index(data.lexical_unit_lagoon.ship_type_xxl.unit_pool.len())?].clone()),
+            &data.lexical_unit_lagoon.ship_type_xxl.unit_pool[prelude::random_index(data.lexical_unit_lagoon.ship_type_xxl.unit_pool.len())?]),
             "U" => Ok(
-            data.lexical_unit_lagoon.ship_type_u.unit_pool[prelude::random_index(data.lexical_unit_lagoon.ship_type_u.unit_pool.len())?].clone()),
+            &data.lexical_unit_lagoon.ship_type_u.unit_pool[prelude::random_index(data.lexical_unit_lagoon.ship_type_u.unit_pool.len())?]),
             "XU" => Ok(
-            data.lexical_unit_lagoon.ship_type_xu.unit_pool[prelude::random_index(data.lexical_unit_lagoon.ship_type_xu.unit_pool.len())?].clone()),
+            &data.lexical_unit_lagoon.ship_type_xu.unit_pool[prelude::random_index(data.lexical_unit_lagoon.ship_type_xu.unit_pool.len())?]),
             "T" => Ok(
-            data.lexical_unit_lagoon.ship_type_t.unit_pool[prelude::random_index(data.lexical_unit_lagoon.ship_type_t.unit_pool.len())?].clone()),
+            &data.lexical_unit_lagoon.ship_type_t.unit_pool[prelude::random_index(data.lexical_unit_lagoon.ship_type_t.unit_pool.len())?]),
             _ => Err(Error::other(format!("Unable to match supplied `ship_size` ({ship_size:?}). No arcm matching {ship_size:?}"))),
         }
     }
 
-    pub fn ship_size_type(data: Arc<UnitArchipelago>) -> Result<String, Error> {
-        Ok(data.lexical_unit_lagoon.ship_sizes.unit_pool
-            [prelude::random_index(data.lexical_unit_lagoon.ship_sizes.unit_pool.len())?]
-        .clone())
+    pub fn ship_size_type(data: &Arc<UnitArchipelago>) -> Result<&str, Error> {
+        Ok(&data.lexical_unit_lagoon.ship_sizes.unit_pool
+            [prelude::random_index(data.lexical_unit_lagoon.ship_sizes.unit_pool.len())?])
     }
 
     fn ship_ftl_capability_type(

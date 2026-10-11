@@ -11,19 +11,19 @@ use super::{
     government_press::government_press,
 };
 
-pub fn empire_press(data: Arc<UnitArchipelago>) -> Result<String, Error> {
-    let name = empire_name_die(data.clone())?;
+pub fn empire_press(data: &Arc<UnitArchipelago>) -> Result<String, Error> {
+    let name = empire_name_die(data)?;
     let area = prelude::random_from_range(1, 10000000)?;
     let pop = prelude::random_from_range(1, 1000000)?;
     Ok(
         format!("Name: {}; Leader: {}; Capital: {}; Official language: {}; Population: {}; Area: {}; Currency: {}; Government: {}",
         name,
-        formal_name_die(data.clone())?,
-        full_place_name_die(data.clone())?,
-        language_name_die(data.clone())?,
+        formal_name_die(data)?,
+        full_place_name_die(data)?,
+        language_name_die(data)?,
         pop,
         area,
-        general_currency_name_die(data.clone())?,
+        general_currency_name_die(data)?,
         government_press(data, &name)?
         )
     )
@@ -39,11 +39,11 @@ mod empire {
         unit_pools::UnitArchipelago,
     };
 
-    pub fn empire_name_die(data: Arc<UnitArchipelago>) -> Result<String, Error> {
+    pub fn empire_name_die(data: &Arc<UnitArchipelago>) -> Result<String, Error> {
         if prelude::random_from_range(0, 1)? == 0 {
             Ok(format!(
                 "{} {}",
-                simple_name_type(data.clone())?,
+                simple_name_type(data)?,
                 simple_name_type(data)?
             ))
         } else {
