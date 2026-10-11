@@ -1,17 +1,18 @@
-use std::{io::Error, sync::Arc};
+use std::io::Error;
+
+use fortuna::Fortuna;
 
 use crate::unit_pools::UnitArchipelago;
 
 use self::operation::name_die;
 
-pub fn operation_press(data: &Arc<UnitArchipelago>) -> Result<String, Error> {
-    Ok(format!("Operation {}", name_die(data)?))
+pub fn operation_press(data: &UnitArchipelago, rng: &mut Fortuna) -> Result<String, Error> {
+    Ok(format!("Operation {}", name_die(data, rng)?))
 }
 
 mod operation {
-    use std::{io::Error, sync::Arc};
-
-    use tyche::prelude;
+    use fortuna::{Fortuna, RngApi};
+    use std::io::Error;
 
     use crate::{
         minting::presses::common::{
@@ -22,35 +23,50 @@ mod operation {
         unit_pools::UnitArchipelago,
     };
 
-    pub fn name_die(data: &Arc<UnitArchipelago>) -> Result<String, Error> {
-        if prelude::random_from_range(0, 1)? == 0 {
-            obj_type(data)
+    pub fn name_die(data: &UnitArchipelago, rng: &mut Fortuna) -> Result<String, Error> {
+        if let Ok(n) = rng.random_from_range(0, 1)
+            && n == 0
+        {
+            obj_type(data, rng)
         } else {
-            Ok(format!("{} {}", adj_type(data)?, obj_type(data)?))
+            Ok(format!("{} {}", adj_type(data, rng)?, obj_type(data, rng)?))
         }
     }
 
-    fn obj_type(data: &Arc<UnitArchipelago>) -> Result<String, Error> {
-        let seed = prelude::random_from_range(0, 6)?;
-        match seed {
-            0 => full_place_name_die(data),
-            1 => comp_name_type(data),
-            2 => nickname_type(data),
-            3 => first_name_type(data),
-            4 => last_name_type(data),
-            5 => skill_die(data),
-            _ => artifact_type_type(&data).map(|x| x.to_string()),
+    fn obj_type(data: &UnitArchipelago, rng: &mut Fortuna) -> Result<String, Error> {
+        if let Ok(seed) = rng.random_from_range(0, 6) {
+            match seed {
+                0 => full_place_name_die(data, rng),
+                1 => comp_name_type(data, rng),
+                2 => nickname_type(data, rng),
+                3 => first_name_type(data, rng),
+                4 => last_name_type(data, rng),
+                5 => skill_die(data, rng),
+                _ => artifact_type_type(&data, rng).map(|x| x.to_string()),
+            }
+        } else {
+            Err(Error::other("obj_type failed"))
         }
     }
 
-    fn adj_type(data: &Arc<UnitArchipelago>) -> Result<&str, Error> {
-        let seed = prelude::random_from_range(0, 3)?;
-        match seed {
-            0 => Ok(&data.lexical_unit_lagoon.place_single.unit_pool
-                [prelude::random_index(data.lexical_unit_lagoon.place_single.unit_pool.len())?]),
-            1 => artifact_adjective_type(data),
-            2 => material_type(data),
-            _ => quality_type(data),
+    fn adj_type<'a>(data: &'a UnitArchipelago, rng: &mut Fortuna) -> Result<&'a str, Error> {
+        if let Ok(seed) = rng.random_from_range(0, 3) {
+            match seed {
+                0 => {
+                    if let Ok(idx) =
+                        rng.random_index(data.lexical_unit_lagoon.place_single.unit_pool.len())
+                    {
+                        Ok(&data.lexical_unit_lagoon.place_single.unit_pool[idx])
+                    } else {
+                        Err(Error::other("adj_type failed"))
+                    }
+                }
+                1 => artifact_adjective_type(data, rng),
+                2 => material_type(data, rng),
+                _ => quality_type(data, rng),
+            }
+        } else {
+            Err(Error::other("adj_type failed"))
         }
     }
 }

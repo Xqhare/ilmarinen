@@ -1,19 +1,11 @@
-use std::{io::Error, sync::Arc};
+use std::io::Error;
+
+use fortuna::Fortuna;
 
 use crate::unit_pools::UnitArchipelago;
 
 use super::common::language_name_die;
 
-pub fn language_press(data: &Arc<UnitArchipelago>) -> Result<String, Error> {
-    language_name_die(data)
+pub fn language_press(data: &UnitArchipelago, rng: &mut Fortuna) -> Result<String, Error> {
+    language_name_die(data, rng)
 }
-
-/* mod language {
-    use std::{sync::Arc, io::Error};
-
-    use tyche::prelude;
-
-    use crate::{unit_pools::UnitArchipelago, minting::presses::common::{comp_name_type, simple_name_type}};
-
-
-} */

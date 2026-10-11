@@ -1,53 +1,67 @@
 mod jisard;
 mod minting;
-mod thread_pool;
 mod unit_pools;
 
 use std::{
     io::{Error, ErrorKind},
     path::Path,
-    sync::{Arc, Mutex},
-    thread,
-    time::Duration,
 };
 
 pub use crate::minting::minting_result::MintingResult;
 pub use crate::minting::minting_type::MintingType;
+use fortuna::{Fortuna, RngApi};
 use minting::minters::{
     mint_artifact, mint_currency, mint_empire, mint_government, mint_language, mint_metal_alloy,
     mint_operation, mint_people, mint_place, mint_ship_class, mint_ship_name,
 };
-use thread_pool::ThreadPool;
+use thoth::Thoth;
+use tyche::Tyche;
 use unit_pools::UnitArchipelago;
 
-#[derive(Debug, Clone)]
 pub struct WordSmith {
-    unit_archipelago: Arc<UnitArchipelago>,
-    result: Arc<Mutex<MintingResult>>,
-    sleep_duration: Arc<Duration>,
+    unit_archipelago: UnitArchipelago,
+    rng: Fortuna,
+    unicode: Thoth,
 }
 
 impl WordSmith {
     /// Takes in a folder path. It extends for the needed files on its own, they need to be present
     /// in the supplied path though.
+    ///
+    /// This will seed the random number generator with a cryptographically secure random number.
+    ///
+    /// Use this if you don't need or want deterministic results.
     pub fn new(data_path: &Path) -> Result<WordSmith, Error> {
-        if data_path.is_dir() {
-            if let Ok(answ) = data_path.try_exists() {
-                let dur = Arc::new(Duration::from_micros(3300));
-                if answ {
-                    match UnitArchipelago::new(data_path) {
-                        Ok(unit_archipelago) => Ok(WordSmith {
-                            unit_archipelago: unit_archipelago.into(),
-                            result: Arc::new(Mutex::new(MintingResult::default())),
-                            sleep_duration: dur,
-                        }),
-                        Err(error) => Err(Error::other(error)),
-                    }
-                } else {
-                    Err(Error::from(ErrorKind::NotFound))
-                }
-            } else {
-                Err(Error::from(ErrorKind::PermissionDenied))
+        let seed = {
+            let mut tyche = match Tyche::new() {
+                Ok(tyche) => tyche,
+                Err(error) => return Err(Error::new(ErrorKind::Other, error)),
+            };
+            tyche
+                .random_bytes(64)
+                .map_err(|_| Error::new(ErrorKind::Other, "Error generating seed"))?
+        };
+        WordSmith::new_seeded(data_path, seed)
+    }
+
+    /// Takes in a folder path and a seed.
+    ///
+    /// The provided seed is used to seed the random number generator.
+    /// Using the same seed will result in the same generated words.
+    ///
+    /// Use this if deterministic results are desired.
+    pub fn new_seeded<V: Into<Vec<u8>>>(data_path: &Path, seed: V) -> Result<WordSmith, Error> {
+        if data_path.is_dir()
+            && let Ok(answ) = data_path.try_exists()
+            && answ
+        {
+            match UnitArchipelago::new(data_path) {
+                Ok(unit_archipelago) => Ok(WordSmith {
+                    unit_archipelago,
+                    rng: Fortuna::new(seed),
+                    unicode: Thoth::new().map_err(|error| Error::new(ErrorKind::Other, error))?,
+                }),
+                Err(error) => Err(Error::other(error)),
             }
         } else {
             Err(Error::other(format!(
@@ -56,181 +70,39 @@ impl WordSmith {
         }
     }
 
-    /// Will only mint if `mint_amount` is larger than 0.
     pub fn mint(
         &mut self,
         minting_type: MintingType,
         mint_amount: usize,
     ) -> Result<MintingResult, Error> {
+        let mut out = MintingResult::new();
         if mint_amount > 0 {
-            let thread_pool = ThreadPool::provision_thread_pool(mint_amount);
-            if let Ok(pool) = thread_pool {
-                self.result = Default::default();
-                for n in 0..mint_amount {
-                    let data = self.unit_archipelago.clone();
-                    let out = self.result.clone();
-                    let sleep_duration = self.sleep_duration.clone();
-                    let sleep_offset = n % 3300;
-                    match minting_type {
-                        MintingType::Place => pool.execute(move || {
-                            mint_place(
-                                data,
-                                out,
-                                sleep_duration,
-                                sleep_offset
-                                    .try_into()
-                                    .expect("Sleep Offset is larger than u64!"),
-                            );
-                        }),
-                        MintingType::People => pool.execute(move || {
-                            mint_people(
-                                data,
-                                out,
-                                sleep_duration,
-                                sleep_offset
-                                    .try_into()
-                                    .expect("Sleep Offset is larger than u64!"),
-                            );
-                        }),
-                        MintingType::Artifact => pool.execute(move || {
-                            mint_artifact(
-                                data,
-                                out,
-                                sleep_duration,
-                                sleep_offset
-                                    .try_into()
-                                    .expect("Sleep Offset is larger than u64!"),
-                            );
-                        }),
-                        MintingType::Operation => pool.execute(move || {
-                            mint_operation(
-                                data,
-                                out,
-                                sleep_duration,
-                                sleep_offset
-                                    .try_into()
-                                    .expect("Sleep Offset is larger than u64!"),
-                            );
-                        }),
-                        MintingType::ShipName => pool.execute(move || {
-                            mint_ship_name(
-                                data,
-                                out,
-                                sleep_duration,
-                                sleep_offset
-                                    .try_into()
-                                    .expect("Sleep Offset is larger than u64!"),
-                            );
-                        }),
-                        MintingType::ShipClass => pool.execute(move || {
-                            mint_ship_class(
-                                data,
-                                out,
-                                sleep_duration,
-                                sleep_offset
-                                    .try_into()
-                                    .expect("Sleep Offset is larger than u64!"),
-                            );
-                        }),
-                        MintingType::Currency => pool.execute(move || {
-                            mint_currency(
-                                data,
-                                out,
-                                sleep_duration,
-                                sleep_offset
-                                    .try_into()
-                                    .expect("Sleep Offset is larger than u64!"),
-                            );
-                        }),
-                        MintingType::MetalAndAlloy => pool.execute(move || {
-                            mint_metal_alloy(
-                                data,
-                                out,
-                                sleep_duration,
-                                sleep_offset
-                                    .try_into()
-                                    .expect("Sleep Offset is larger than u64!"),
-                            );
-                        }),
-                        MintingType::Empire => pool.execute(move || {
-                            mint_empire(
-                                data,
-                                out,
-                                sleep_duration,
-                                sleep_offset
-                                    .try_into()
-                                    .expect("Sleep Offset is larger than u64!"),
-                            );
-                        }),
-                        MintingType::Government => pool.execute(move || {
-                            mint_government(
-                                data,
-                                out,
-                                sleep_duration,
-                                sleep_offset
-                                    .try_into()
-                                    .expect("Sleep Offset is larger than u64!"),
-                            );
-                        }),
-                        MintingType::Language => pool.execute(move || {
-                            mint_language(
-                                data,
-                                out,
-                                sleep_duration,
-                                sleep_offset
-                                    .try_into()
-                                    .expect("Sleep Offset is larger than u64!"),
-                            );
-                        }),
+            for _ in 0..mint_amount {
+                let result = match minting_type {
+                    MintingType::Place => mint_place(&self.unit_archipelago, &mut self.rng),
+                    MintingType::People => mint_people(&self.unit_archipelago, &mut self.rng),
+                    MintingType::Artifact => mint_artifact(&self.unit_archipelago, &mut self.rng),
+                    MintingType::Operation => mint_operation(&self.unit_archipelago, &mut self.rng),
+                    MintingType::ShipName => mint_ship_name(&self.unit_archipelago, &mut self.rng),
+                    MintingType::ShipClass => {
+                        mint_ship_class(&self.unit_archipelago, &mut self.rng)
                     }
-                }
-                // Let the threads work for a bit first, no need to check.
-                // PROVEN TO IMPROVE PERFORMANCE! By like .1 sec per 100k but hey!
-                thread::sleep(
-                    self.sleep_duration
-                        .clone()
-                        .saturating_add(Duration::from_micros((mint_amount % 35000) as u64)),
-                );
-                // Don't have a better idea of waiting for all workers to finish.
-                // Could check the length of the created result, that idea seems worse.
-                loop {
-                    // I really don't know how long this should be. Maybe 100,
-                    // maybe 10, maybe mint_amount?
-                    // Sleeping for one millisecond means 4.2 million cpu cycles for
-                    // a 4.2 Ghz cpu.
-                    // Sleeping for 100 microseconds would allow 42k cpu cycles.
-                    //
-                    // After some very sophisticated testing, 3300 micros seems to be near the
-                    // sweetspot.
-                    // After even more testing, this is better by a second! Still bad, but
-                    // hand-rolled!
-                    if mint_amount < 3300 {
-                        thread::sleep(*self.sleep_duration.clone());
-                    } else {
-                        thread::sleep(
-                            self.sleep_duration
-                                .clone()
-                                .saturating_add(Duration::from_micros(
-                                    (mint_amount % 25000) as u64,
-                                )),
-                        );
+                    MintingType::Currency => {
+                        mint_currency(&self.unit_archipelago, &mut self.rng, &self.unicode)
                     }
-                    if let Ok(store) = self.result.try_lock() {
-                        if store.result.len() == mint_amount {
-                            return Ok(store.clone());
-                        }
-                    };
-                    //println!("BLOCKED MAIN");
-                }
-            } else {
-                Err(Error::other(
-                    "Fatal runtime error, unable to create thread pool.",
-                ))
+                    MintingType::MetalAndAlloy => {
+                        mint_metal_alloy(&self.unit_archipelago, &mut self.rng)
+                    }
+                    MintingType::Empire => mint_empire(&self.unit_archipelago, &mut self.rng),
+                    MintingType::Government => {
+                        mint_government(&self.unit_archipelago, &mut self.rng)
+                    }
+                    MintingType::Language => mint_language(&self.unit_archipelago, &mut self.rng),
+                };
+                let result = result?;
+                out.add_result(result);
             }
-        } else {
-            Err(Error::other(format!(
-                "mint_amount '{mint_amount}' is less than 1!"
-            )))
         }
+        Ok(out)
     }
 }
