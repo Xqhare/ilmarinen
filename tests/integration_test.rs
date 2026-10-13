@@ -1,6 +1,21 @@
-use std::path::Path;
+use std::{path::Path, rc::Rc};
 
+use fortuna::{Fortuna, RngApi};
 use ilmarinen::{MintingType, WordSmith};
+use thoth::Thoth;
+
+#[test]
+fn managed() {
+    let thoth = Rc::new(Thoth::new().unwrap());
+    let mut rng = Fortuna::new(vec![0, 1, 2]);
+    let word_smith = WordSmith::new_managed(Path::new("data/"), thoth).unwrap();
+    let people = word_smith.mint_managed(&mut rng, MintingType::People, 10000);
+    assert!(people.is_ok());
+    let people = people.unwrap();
+    let people = people.get_results();
+    assert!(people.len() == 10000);
+    assert!(rng.random_u8().is_ok());
+}
 
 #[test]
 fn word_smith_main_test() {
