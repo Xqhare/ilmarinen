@@ -8,7 +8,17 @@ pub mod minters {
     use fortuna::{Fortuna, RngApi};
     use thoth::Thoth;
 
-    use crate::unit_pools::UnitArchipelago;
+    use crate::{
+        minting::{
+            minting_type::{ObjectResult, SkillAmount, SkillLevel, TraitAmount},
+            presses::{
+                metal_alloy_press::metal_alloy_object_press,
+                operation_press::operation_object_press, people_press::people_object_press,
+                place_press::place_object_press,
+            },
+        },
+        unit_pools::UnitArchipelago,
+    };
 
     use super::presses::{
         artifact_press::artifact_press, currency_press::currency_press, empire_press::empire_press,
@@ -22,8 +32,24 @@ pub mod minters {
         place_press(data, rng)
     }
 
+    pub fn mint_place_object(
+        data: &UnitArchipelago,
+        rng: &mut Fortuna,
+    ) -> Result<ObjectResult, Error> {
+        place_object_press(data, rng)
+    }
+
     pub fn mint_people(data: &UnitArchipelago, rng: &mut Fortuna) -> Result<String, Error> {
         people_press(data, rng)
+    }
+    pub fn mint_people_object(
+        data: &UnitArchipelago,
+        rng: &mut Fortuna,
+        skill_amount: SkillAmount,
+        skill_level: SkillLevel,
+        trait_amount: TraitAmount,
+    ) -> Result<ObjectResult, Error> {
+        people_object_press(data, rng, skill_amount, skill_level, trait_amount)
     }
 
     pub fn mint_language(data: &UnitArchipelago, rng: &mut Fortuna) -> Result<String, Error> {
@@ -34,12 +60,26 @@ pub mod minters {
         metal_alloy_press(data, rng)
     }
 
+    pub fn mint_metal_alloy_object(
+        data: &UnitArchipelago,
+        rng: &mut Fortuna,
+    ) -> Result<ObjectResult, Error> {
+        metal_alloy_object_press(data, rng)
+    }
+
     pub fn mint_artifact(data: &UnitArchipelago, rng: &mut Fortuna) -> Result<String, Error> {
         artifact_press(data, rng)
     }
 
     pub fn mint_operation(data: &UnitArchipelago, rng: &mut Fortuna) -> Result<String, Error> {
         operation_press(data, rng)
+    }
+
+    pub fn mint_operation_object(
+        data: &UnitArchipelago,
+        rng: &mut Fortuna,
+    ) -> Result<ObjectResult, Error> {
+        operation_object_press(data, rng)
     }
 
     pub fn mint_government(data: &UnitArchipelago, rng: &mut Fortuna) -> Result<String, Error> {

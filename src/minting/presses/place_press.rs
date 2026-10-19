@@ -2,15 +2,34 @@ use std::io::Error;
 
 use fortuna::Fortuna;
 
-use crate::unit_pools::UnitArchipelago;
+use crate::{minting::minting_type::ObjectResult, unit_pools::UnitArchipelago};
 
 use self::place::{adj_die, place_description_die};
 
 use super::common::full_place_name_die;
 
+#[derive(Debug, Clone)]
+#[non_exhaustive]
+pub struct PlaceObject {
+    pub adjective: String,
+    pub full_name: String,
+    pub description: String,
+}
+
+pub fn place_object_press(
+    data: &UnitArchipelago,
+    rng: &mut Fortuna,
+) -> Result<ObjectResult, Error> {
+    Ok(ObjectResult::PlaceObject(PlaceObject {
+        adjective: adj_die(data, rng)?,
+        full_name: full_place_name_die(data, rng)?,
+        description: place_description_die(data, rng)?,
+    }))
+}
+
 pub fn place_press(data: &UnitArchipelago, rng: &mut Fortuna) -> Result<String, Error> {
     Ok(format!(
-        "{}{}. {}",
+        "{} {}. {}",
         adj_die(data, rng)?,
         full_place_name_die(data, rng)?,
         place_description_die(data, rng)?
@@ -18,10 +37,7 @@ pub fn place_press(data: &UnitArchipelago, rng: &mut Fortuna) -> Result<String, 
 }
 
 mod place {
-    use std::{
-        io::{Error, ErrorKind},
-        ops::Add,
-    };
+    use std::io::{Error, ErrorKind};
 
     use fortuna::{Fortuna, RngApi};
 
@@ -31,7 +47,7 @@ mod place {
         if let Ok(n) = rng.random_from_range(0, 1)
             && n == 0
         {
-            Ok(simple_name_type(data, rng)?.add(" "))
+            Ok(simple_name_type(data, rng)?)
         } else {
             Ok(String::default())
         }

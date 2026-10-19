@@ -23,7 +23,12 @@ pub struct LexicalUnitLagoon {
     pub people_nickname: LexicalUnitPool,
     pub people_title: LexicalUnitPool,
     pub people_skill: LexicalUnitPool,
-    pub people_skill_level: LexicalUnitPool,
+    /// Contains all skill levels, low to ultra
+    pub people_skill_level_all: LexicalUnitPool,
+    pub people_skill_level_low: LexicalUnitPool,
+    pub people_skill_level_medium: LexicalUnitPool,
+    pub people_skill_level_high: LexicalUnitPool,
+    pub people_skill_level_ultra: LexicalUnitPool,
     pub people_trait_ck2: LexicalUnitPool,
     pub people_trait_ck3: LexicalUnitPool,
 
@@ -111,7 +116,10 @@ impl LexicalUnitLagoon {
         let people_nickname: LexicalUnitPool;
         let people_title: LexicalUnitPool;
         let people_skill: LexicalUnitPool;
-        let people_skill_level: LexicalUnitPool;
+        let people_skill_level_low: LexicalUnitPool;
+        let people_skill_level_medium: LexicalUnitPool;
+        let people_skill_level_high: LexicalUnitPool;
+        let people_skill_level_ultra: LexicalUnitPool;
         let people_trait_ck2: LexicalUnitPool;
         let people_trait_ck3: LexicalUnitPool;
 
@@ -247,10 +255,25 @@ impl LexicalUnitLagoon {
                     obj.get("people_skill")
                         .expect("Object must include key 'people_skill'"),
                 ));
-                people_skill_level = LexicalUnitPool::from((
-                    "people_skill_level",
-                    obj.get("people_skill_level")
-                        .expect("Object must include key 'people_skill_level'"),
+                people_skill_level_low = LexicalUnitPool::from((
+                    "people_skill_level_low",
+                    obj.get("people_skill_level_low")
+                        .expect("Object must include key 'people_skill_level_low'"),
+                ));
+                people_skill_level_medium = LexicalUnitPool::from((
+                    "people_skill_level_medium",
+                    obj.get("people_skill_level_medium")
+                        .expect("Object must include key 'people_skill_level_medium'"),
+                ));
+                people_skill_level_high = LexicalUnitPool::from((
+                    "people_skill_level_high",
+                    obj.get("people_skill_level_high")
+                        .expect("Object must include key 'people_skill_level_high'"),
+                ));
+                people_skill_level_ultra = LexicalUnitPool::from((
+                    "people_skill_level_ultra",
+                    obj.get("people_skill_level_ultra")
+                        .expect("Object must include key 'people_skill_level_ultra'"),
                 ));
                 people_trait_ck2 = LexicalUnitPool::from((
                     "people_trait_ck2",
@@ -545,6 +568,11 @@ impl LexicalUnitLagoon {
             }
             Err(error) => return Err(Error::other(error)),
         }
+        let people_skill_level_all = LexicalUnitPool::new("people_skill_level")
+            .extend(people_skill_level_low.clone())
+            .extend(people_skill_level_medium.clone())
+            .extend(people_skill_level_high.clone())
+            .extend(people_skill_level_ultra.clone());
         Ok(LexicalUnitLagoon {
             abc,
             place_relatives,
@@ -559,7 +587,11 @@ impl LexicalUnitLagoon {
             people_nickname,
             people_title,
             people_skill,
-            people_skill_level,
+            people_skill_level_all,
+            people_skill_level_low,
+            people_skill_level_medium,
+            people_skill_level_high,
+            people_skill_level_ultra,
             people_trait_ck2,
             people_trait_ck3,
             artifact_type,

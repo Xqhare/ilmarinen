@@ -2,7 +2,7 @@ use std::io::Error;
 
 use fortuna::Fortuna;
 
-use crate::unit_pools::UnitArchipelago;
+use crate::{minting::minting_type::ObjectResult, unit_pools::UnitArchipelago};
 
 use self::operation::name_die;
 
@@ -10,15 +10,24 @@ pub fn operation_press(data: &UnitArchipelago, rng: &mut Fortuna) -> Result<Stri
     Ok(format!("Operation {}", name_die(data, rng)?))
 }
 
+pub fn operation_object_press(
+    data: &UnitArchipelago,
+    rng: &mut Fortuna,
+) -> Result<ObjectResult, Error> {
+    Ok(ObjectResult::OperationObject(name_die(data, rng)?))
+}
+
 mod operation {
     use fortuna::{Fortuna, RngApi};
     use std::io::Error;
 
     use crate::{
-        minting::presses::common::{
-            artifact_adjective_type, artifact_type_type, comp_name_type, first_name_type,
-            full_place_name_die, last_name_type, material_type, nickname_type, quality_type,
-            skill_die,
+        minting::presses::{
+            common::{
+                artifact_adjective_type, artifact_type_type, comp_name_type, first_name_type,
+                full_place_name_die, last_name_type, material_type, nickname_type, quality_type,
+            },
+            metal_alloy_press::metal_alloy_press,
         },
         unit_pools::UnitArchipelago,
     };
@@ -41,7 +50,7 @@ mod operation {
                 2 => nickname_type(data, rng),
                 3 => first_name_type(data, rng),
                 4 => last_name_type(data, rng),
-                5 => skill_die(data, rng),
+                5 => metal_alloy_press(data, rng),
                 _ => artifact_type_type(&data, rng).map(|x| x.to_string()),
             }
         } else {

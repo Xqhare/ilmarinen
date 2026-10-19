@@ -10,6 +10,12 @@ use std::{
 
 pub use crate::minting::minting_result::MintingResult;
 pub use crate::minting::minting_type::MintingType;
+use crate::minting::{
+    minters::{
+        mint_metal_alloy_object, mint_operation_object, mint_people_object, mint_place_object,
+    },
+    minting_type::{MintingObjectType, ObjectResult},
+};
 use fortuna::{Fortuna, RngApi};
 use minting::minters::{
     mint_artifact, mint_currency, mint_empire, mint_government, mint_language, mint_metal_alloy,
@@ -148,6 +154,19 @@ impl WordSmith {
         )
     }
 
+    pub fn mint_managed_object(
+        &self,
+        rng: &mut Fortuna,
+        minting_object_type: MintingObjectType,
+    ) -> Result<ObjectResult, Error> {
+        mint_object_helper(
+            &self.unit_archipelago,
+            rng,
+            &self.unicode,
+            minting_object_type,
+        )
+    }
+
     /// Use if `WordSmith` was constructed via [`WordSmith::new`].
     ///
     /// If you used [`WordSmith::new_managed`], use [`WordSmith::mint_managed`] instead as
@@ -171,6 +190,28 @@ impl WordSmith {
                 "No random number generator available",
             ))
         }
+    }
+}
+
+fn mint_object_helper(
+    unit_archipelago: &UnitArchipelago,
+    rng: &mut Fortuna,
+    _unicode: &Rc<Thoth>,
+    minting_object_type: MintingObjectType,
+) -> Result<ObjectResult, Error> {
+    match minting_object_type {
+        MintingObjectType::PlaceObject => mint_place_object(unit_archipelago, rng),
+        MintingObjectType::PeopleObject(skill_amount, skill_level, trait_amount) => {
+            mint_people_object(
+                unit_archipelago,
+                rng,
+                skill_amount,
+                skill_level,
+                trait_amount,
+            )
+        }
+        MintingObjectType::OperationObject => mint_operation_object(unit_archipelago, rng),
+        MintingObjectType::MetalAndAlloyObject => mint_metal_alloy_object(unit_archipelago, rng),
     }
 }
 

@@ -2,7 +2,7 @@ use std::io::Error;
 
 use fortuna::{Fortuna, RngApi};
 
-use crate::unit_pools::UnitArchipelago;
+use crate::{minting::minting_type::ObjectResult, unit_pools::UnitArchipelago};
 
 use self::metal_alloy::{alloy_die, metal_die};
 
@@ -14,6 +14,15 @@ pub fn metal_alloy_press(data: &UnitArchipelago, rng: &mut Fortuna) -> Result<St
     } else {
         alloy_die(data, rng)
     }
+}
+
+pub fn metal_alloy_object_press(
+    data: &UnitArchipelago,
+    rng: &mut Fortuna,
+) -> Result<ObjectResult, Error> {
+    Ok(ObjectResult::MetalAndAlloyObject(metal_alloy_press(
+        data, rng,
+    )?))
 }
 
 mod metal_alloy {

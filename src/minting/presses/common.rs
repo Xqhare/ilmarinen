@@ -2,7 +2,7 @@ use std::io::Error;
 
 use fortuna::{Fortuna, RngApi};
 
-use crate::unit_pools::UnitArchipelago;
+use crate::{minting::minting_type::SkillLevel, unit_pools::UnitArchipelago};
 
 pub fn comp_name_type(data: &UnitArchipelago, rng: &mut Fortuna) -> Result<String, Error> {
     if let Ok(comp0_idx) = rng.random_index(data.lexical_unit_lagoon.general_comp0.unit_pool.len())
@@ -148,15 +148,90 @@ pub fn last_name_type(data: &UnitArchipelago, rng: &mut Fortuna) -> Result<Strin
     }
 }
 
+pub fn level_capped_skill_die(
+    data: &UnitArchipelago,
+    rng: &mut Fortuna,
+    skill_level: SkillLevel,
+) -> Result<(String, String), Error> {
+    let level = match skill_level {
+        SkillLevel::Any => skill_die(data, rng)?,
+        SkillLevel::Low => low_skill_die(data, rng)?.to_string(),
+        SkillLevel::Medium => medium_skill_die(data, rng)?.to_string(),
+        SkillLevel::High => high_skill_die(data, rng)?.to_string(),
+        SkillLevel::Ultra => ultra_skill_die(data, rng)?.to_string(),
+    };
+    let skill =
+        if let Ok(idx) = rng.random_index(data.lexical_unit_lagoon.people_skill.unit_pool.len()) {
+            data.lexical_unit_lagoon.people_skill.unit_pool[idx].clone()
+        } else {
+            return Err(Error::other(
+                "level_capped_skill_die failed; Cannot get skill kind",
+            ));
+        };
+    Ok((level, skill))
+}
+
+fn low_skill_die<'a>(data: &'a UnitArchipelago, rng: &mut Fortuna) -> Result<&'a str, Error> {
+    if let Ok(idx) = rng.random_index(
+        data.lexical_unit_lagoon
+            .people_skill_level_low
+            .unit_pool
+            .len(),
+    ) {
+        Ok(&data.lexical_unit_lagoon.people_skill_level_low.unit_pool[idx])
+    } else {
+        Err(Error::other("low_skill_die failed"))
+    }
+}
+fn medium_skill_die<'a>(data: &'a UnitArchipelago, rng: &mut Fortuna) -> Result<&'a str, Error> {
+    if let Ok(idx) = rng.random_index(
+        data.lexical_unit_lagoon
+            .people_skill_level_medium
+            .unit_pool
+            .len(),
+    ) {
+        Ok(&data.lexical_unit_lagoon.people_skill_level_medium.unit_pool[idx])
+    } else {
+        Err(Error::other("medium_skill_die failed"))
+    }
+}
+fn high_skill_die<'a>(data: &'a UnitArchipelago, rng: &mut Fortuna) -> Result<&'a str, Error> {
+    if let Ok(idx) = rng.random_index(
+        data.lexical_unit_lagoon
+            .people_skill_level_high
+            .unit_pool
+            .len(),
+    ) {
+        Ok(&data.lexical_unit_lagoon.people_skill_level_high.unit_pool[idx])
+    } else {
+        Err(Error::other("high_skill_die failed"))
+    }
+}
+fn ultra_skill_die<'a>(data: &'a UnitArchipelago, rng: &mut Fortuna) -> Result<&'a str, Error> {
+    if let Ok(idx) = rng.random_index(
+        data.lexical_unit_lagoon
+            .people_skill_level_ultra
+            .unit_pool
+            .len(),
+    ) {
+        Ok(&data.lexical_unit_lagoon.people_skill_level_ultra.unit_pool[idx])
+    } else {
+        Err(Error::other("ultra_skill_die failed"))
+    }
+}
+
 pub fn skill_die(data: &UnitArchipelago, rng: &mut Fortuna) -> Result<String, Error> {
-    if let Ok(idx_skill_level) =
-        rng.random_index(data.lexical_unit_lagoon.people_skill_level.unit_pool.len())
-        && let Ok(idx_skill) =
-            rng.random_index(data.lexical_unit_lagoon.people_skill.unit_pool.len())
+    if let Ok(idx_skill_level) = rng.random_index(
+        data.lexical_unit_lagoon
+            .people_skill_level_all
+            .unit_pool
+            .len(),
+    ) && let Ok(idx_skill) =
+        rng.random_index(data.lexical_unit_lagoon.people_skill.unit_pool.len())
     {
         Ok(format!(
             "{} {}",
-            data.lexical_unit_lagoon.people_skill_level.unit_pool[idx_skill_level],
+            data.lexical_unit_lagoon.people_skill_level_all.unit_pool[idx_skill_level],
             data.lexical_unit_lagoon.people_skill.unit_pool[idx_skill]
         ))
     } else {

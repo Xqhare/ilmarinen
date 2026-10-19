@@ -81,11 +81,16 @@
                 "Mayor", "Politician", "Officer", "General", "Admiral", "Chancellor", "Minister", "Prime Minister", "Sheriff", "Guardian"
                 ],
 
-"people_skill_level": ["Novice", "Dabbling", "Beginner", "Capable beginner", "Weak amateur", "Amateur", "Capable amateur", "Weak professional",
-                      "Employable professional", "Solid professional", "Skilled professional", "Very skilled professional", "Expert", "Strong expert",
-                      "Master", "Strong Master", "Region-known master", "Region-leading master", "Planet-known master", "Planet-leading master",
-                      "Legendary Master"
-                      ],
+"people_skill_level_low": ["Unfamiliar", "Dabbling", "Weak Novice", "Novice", "Weak Beginner",  "Beginner", "Capable Beginner", "Weak Amateur", "Amateur", "Capable Amateur"],
+
+"people_skill_level_medium": ["Weak Trainee", "Trainee", "Capable Trainee", "Weak Apprentice", "Apprentice", "Capable Apprentice", "Weak Professional", "Professional", "Capable Professional", "Skilled Professional"],
+
+"people_skill_level_high": ["Specialist", "Capable Specialist", "Skilled Specialist",
+                "Expert", "Capable Expert", "Skilled Expert",
+                "Master", "Skilled Master", "Industry-known Master", "Industry-leading Master"],
+"people_skill_level_ultra": [
+
+                "Industry Legend", "Well-known Industry Legend", "Famous Industry Legend"],
 
 "people_skill": ["Miner", "Woodworker", "Bowyer", "Carpenter", "Wood cutter", "Engraver", "Stone worker", "Mason", "Ranger",
                 "Ambusher", "Caretaker", "Animal caretaker", "Dissector", "Animal trainer", "Trapper", "Metalsmith", "Armoursmith",

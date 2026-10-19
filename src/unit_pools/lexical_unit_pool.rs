@@ -7,6 +7,23 @@ pub struct LexicalUnitPool {
     pub unit_pool: Vec<String>,
 }
 
+impl LexicalUnitPool {
+    /// Extend the unit pool
+    ///
+    /// Does not change the name
+    pub fn extend(&mut self, other: LexicalUnitPool) -> Self {
+        self.unit_pool.extend(other.unit_pool);
+        self.clone()
+    }
+    /// Create a new, empty LexicalUnitPool
+    pub fn new(name: &str) -> Self {
+        LexicalUnitPool {
+            name: name.to_string(),
+            unit_pool: Vec::new(),
+        }
+    }
+}
+
 impl Default for LexicalUnitPool {
     fn default() -> Self {
         let name = "Default_Lexical_Unit_Pool".to_string();
