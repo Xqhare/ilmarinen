@@ -8,5 +8,6 @@ edition = "2024"
 [dependencies]
 fortuna = { git = "https://github.com/Xqhare/fortuna" }
 mawu = { git = "https://github.com/Xqhare/mawu" }
+nemesis = { git = "https://github.com/Xqhare/nemesis" }
 thoth = { git = "https://github.com/Xqhare/thoth" }
 tyche = { git = "https://github.com/Xqhare/tyche" }

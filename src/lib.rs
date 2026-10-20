@@ -2,11 +2,7 @@ mod jisard;
 mod minting;
 mod unit_pools;
 
-use std::{
-    io::{Error, ErrorKind},
-    path::Path,
-    rc::Rc,
-};
+use std::{path::Path, rc::Rc};
 
 pub use crate::minting::minting_result::MintingResult;
 pub use crate::minting::minting_type::MintingType;
@@ -16,13 +12,14 @@ use crate::minting::{
     },
     minting_type::{MintingObjectType, ObjectResult},
 };
-use fortuna::{Fortuna, RngApi};
+use fortuna::{Fortuna, RngApi, RngResult};
 use minting::minters::{
     mint_artifact, mint_currency, mint_empire, mint_government, mint_language, mint_metal_alloy,
     mint_operation, mint_people, mint_place, mint_ship_class, mint_ship_name,
 };
+use nemesis::NemesisError;
 use thoth::Thoth;
-use tyche::Tyche;
+use tyche::{RngError, Tyche};
 use unit_pools::UnitArchipelago;
 
 pub struct WordSmith {
@@ -70,7 +67,7 @@ impl WordSmith {
     ///
     /// assert!(rng.random_u8().is_ok());
     /// ```
-    pub fn new_managed(data_path: &Path, thoth: Rc<Thoth>) -> Result<WordSmith, Error> {
+    pub fn new_managed(data_path: &Path, thoth: Rc<Thoth>) -> RngResult<WordSmith> {
         if data_path.is_dir()
             && let Ok(answ) = data_path.try_exists()
             && answ
@@ -81,10 +78,10 @@ impl WordSmith {
                     rng: None,
                     unicode: thoth,
                 }),
-                Err(error) => Err(Error::other(error)),
+                Err(error) => Err(error.into()),
             }
         } else {
-            Err(Error::other(format!(
+            Err(RngError::Generic(format!(
                 "Invalid data. '{data_path:?}' needs to exist and be a directory."
             )))
         }
@@ -95,15 +92,10 @@ impl WordSmith {
     /// This will seed the random number generator with a cryptographically secure random number.
     ///
     /// Use this if you don't need or want deterministic results.
-    pub fn new(data_path: &Path) -> Result<WordSmith, Error> {
+    pub fn new(data_path: &Path) -> RngResult<WordSmith> {
         let seed = {
-            let mut tyche = match Tyche::new() {
-                Ok(tyche) => tyche,
-                Err(error) => return Err(Error::new(ErrorKind::Other, error)),
-            };
-            tyche
-                .random_bytes(64)
-                .map_err(|_| Error::new(ErrorKind::Other, "Error generating seed"))?
+            let mut tyche = Tyche::new()?;
+            tyche.random_bytes(64)?
         };
         WordSmith::new_seeded(data_path, seed)
     }
@@ -114,23 +106,19 @@ impl WordSmith {
     /// Using the same seed will result in the same generated words.
     ///
     /// Use this if deterministic results are desired.
-    pub fn new_seeded<V: Into<Vec<u8>>>(data_path: &Path, seed: V) -> Result<WordSmith, Error> {
+    pub fn new_seeded<V: Into<Vec<u8>>>(data_path: &Path, seed: V) -> RngResult<WordSmith> {
         if data_path.is_dir()
             && let Ok(answ) = data_path.try_exists()
             && answ
         {
-            match UnitArchipelago::new(data_path) {
-                Ok(unit_archipelago) => Ok(WordSmith {
-                    unit_archipelago,
-                    rng: Some(Fortuna::new(seed)),
-                    unicode: Rc::new(
-                        Thoth::new().map_err(|error| Error::new(ErrorKind::Other, error))?,
-                    ),
-                }),
-                Err(error) => Err(Error::other(error)),
-            }
+            let unit_archipelago = UnitArchipelago::new(data_path)?;
+            Ok(WordSmith {
+                unit_archipelago,
+                rng: Some(Fortuna::new(seed)),
+                unicode: Rc::new(Thoth::new()?),
+            })
         } else {
-            Err(Error::other(format!(
+            Err(RngError::Generic(format!(
                 "Invalid data. '{data_path:?}' needs to exist and be a directory."
             )))
         }
@@ -144,7 +132,7 @@ impl WordSmith {
         rng: &mut Fortuna,
         minting_type: MintingType,
         mint_amount: usize,
-    ) -> Result<MintingResult, Error> {
+    ) -> Result<MintingResult, RngError> {
         mint_helper(
             &self.unit_archipelago,
             rng,
@@ -158,7 +146,7 @@ impl WordSmith {
         &self,
         rng: &mut Fortuna,
         minting_object_type: MintingObjectType,
-    ) -> Result<ObjectResult, Error> {
+    ) -> Result<ObjectResult, RngError> {
         mint_object_helper(
             &self.unit_archipelago,
             rng,
@@ -175,7 +163,7 @@ impl WordSmith {
         &mut self,
         minting_type: MintingType,
         mint_amount: usize,
-    ) -> Result<MintingResult, Error> {
+    ) -> Result<MintingResult, RngError> {
         if let Some(rng) = &mut self.rng {
             mint_helper(
                 &self.unit_archipelago,
@@ -185,9 +173,8 @@ impl WordSmith {
                 mint_amount,
             )
         } else {
-            Err(Error::new(
-                ErrorKind::Other,
-                "No random number generator available",
+            Err(RngError::Generic(
+                "No random number generator available".to_string(),
             ))
         }
     }
@@ -198,9 +185,11 @@ fn mint_object_helper(
     rng: &mut Fortuna,
     _unicode: &Rc<Thoth>,
     minting_object_type: MintingObjectType,
-) -> Result<ObjectResult, Error> {
+) -> Result<ObjectResult, RngError> {
     match minting_object_type {
-        MintingObjectType::PlaceObject => mint_place_object(unit_archipelago, rng),
+        MintingObjectType::PlaceObject => mint_place_object(unit_archipelago, rng).map_err(|e| {
+            RngError::Nemesis(NemesisError::new("Ilmarinen Object creation helper", e))
+        }),
         MintingObjectType::PeopleObject(skill_amount, skill_level, trait_amount) => {
             mint_people_object(
                 unit_archipelago,
@@ -209,9 +198,19 @@ fn mint_object_helper(
                 skill_level,
                 trait_amount,
             )
+            .map_err(|e| {
+                RngError::Nemesis(NemesisError::new("Ilmarinen Object creation helper", e))
+            })
         }
-        MintingObjectType::OperationObject => mint_operation_object(unit_archipelago, rng),
-        MintingObjectType::MetalAndAlloyObject => mint_metal_alloy_object(unit_archipelago, rng),
+        MintingObjectType::OperationObject => {
+            mint_operation_object(unit_archipelago, rng).map_err(|e| {
+                RngError::Nemesis(NemesisError::new("Ilmarinen Object creation helper", e))
+            })
+        }
+        MintingObjectType::MetalAndAlloyObject => mint_metal_alloy_object(unit_archipelago, rng)
+            .map_err(|e| {
+                RngError::Nemesis(NemesisError::new("Ilmarinen Object creation helper", e))
+            }),
     }
 }
 
@@ -221,7 +220,7 @@ fn mint_helper(
     unicode: &Rc<Thoth>,
     minting_type: MintingType,
     mint_amount: usize,
-) -> Result<MintingResult, Error> {
+) -> Result<MintingResult, RngError> {
     let mut out = MintingResult::new();
     if mint_amount > 0 {
         for _ in 0..mint_amount {
