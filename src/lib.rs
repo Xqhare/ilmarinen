@@ -22,17 +22,17 @@ use thoth::Thoth;
 use tyche::{RngError, Tyche};
 use unit_pools::UnitArchipelago;
 
-pub struct WordSmith {
+pub struct Ilmarinen {
     unit_archipelago: UnitArchipelago,
     rng: Option<Fortuna>,
     unicode: Rc<Thoth>,
 }
 
-impl WordSmith {
+impl Ilmarinen {
     /// Takes in a folder path. It extends for the needed files on its own, they need to be present
     /// in the supplied path though.
     ///
-    /// This will create a `WordSmith` with externally managed random number generator and unicode
+    /// This will create a `Ilmarinen` with externally managed random number generator and unicode
     /// libraries.
     ///
     /// Use this constructor to manage the random number generator and unicode libraries on
@@ -46,11 +46,11 @@ impl WordSmith {
     ///
     /// use fortuna::{Fortuna, RngApi};
     /// use thoth::Thoth;
-    /// use ilmarinen::{MintingType, WordSmith};
+    /// use ilmarinen::{MintingType, Ilmarinen};
     ///
     /// let thoth = Rc::new(Thoth::new().unwrap());
     /// let mut rng = Fortuna::new(vec![0, 1, 2]);
-    /// let word_smith = WordSmith::new_managed(Path::new("data/"), thoth);
+    /// let word_smith = Ilmarinen::new_managed(Path::new("data/"), thoth);
     ///
     /// assert!(word_smith.is_ok());
     /// let word_smith = word_smith.unwrap();
@@ -67,13 +67,13 @@ impl WordSmith {
     ///
     /// assert!(rng.random_u8().is_ok());
     /// ```
-    pub fn new_managed(data_path: &Path, thoth: Rc<Thoth>) -> RngResult<WordSmith> {
+    pub fn new_managed(data_path: &Path, thoth: Rc<Thoth>) -> RngResult<Ilmarinen> {
         if data_path.is_dir()
             && let Ok(answ) = data_path.try_exists()
             && answ
         {
             match UnitArchipelago::new(data_path) {
-                Ok(unit_archipelago) => Ok(WordSmith {
+                Ok(unit_archipelago) => Ok(Ilmarinen {
                     unit_archipelago,
                     rng: None,
                     unicode: thoth,
@@ -92,12 +92,12 @@ impl WordSmith {
     /// This will seed the random number generator with a cryptographically secure random number.
     ///
     /// Use this if you don't need or want deterministic results.
-    pub fn new(data_path: &Path) -> RngResult<WordSmith> {
+    pub fn new(data_path: &Path) -> RngResult<Ilmarinen> {
         let seed = {
             let mut tyche = Tyche::new()?;
             tyche.random_bytes(64)?
         };
-        WordSmith::new_seeded(data_path, seed)
+        Ilmarinen::new_seeded(data_path, seed)
     }
 
     /// Takes in a folder path and a seed.
@@ -106,13 +106,13 @@ impl WordSmith {
     /// Using the same seed will result in the same generated words.
     ///
     /// Use this if deterministic results are desired.
-    pub fn new_seeded<V: Into<Vec<u8>>>(data_path: &Path, seed: V) -> RngResult<WordSmith> {
+    pub fn new_seeded<V: Into<Vec<u8>>>(data_path: &Path, seed: V) -> RngResult<Ilmarinen> {
         if data_path.is_dir()
             && let Ok(answ) = data_path.try_exists()
             && answ
         {
             let unit_archipelago = UnitArchipelago::new(data_path)?;
-            Ok(WordSmith {
+            Ok(Ilmarinen {
                 unit_archipelago,
                 rng: Some(Fortuna::new(seed)),
                 unicode: Rc::new(Thoth::new()?),
@@ -124,9 +124,9 @@ impl WordSmith {
         }
     }
 
-    /// Use if `WordSmith` was constructed via [`WordSmith::new_managed`].
+    /// Use if `Ilmarinen` was constructed via [`Ilmarinen::new_managed`].
     ///
-    /// If you used [`WordSmith::new`], use [`WordSmith::mint`] instead.
+    /// If you used [`Ilmarinen::new`], use [`Ilmarinen::mint`] instead.
     pub fn mint_managed(
         &self,
         rng: &mut Fortuna,
@@ -155,9 +155,9 @@ impl WordSmith {
         )
     }
 
-    /// Use if `WordSmith` was constructed via [`WordSmith::new`].
+    /// Use if `Ilmarinen` was constructed via [`Ilmarinen::new`].
     ///
-    /// If you used [`WordSmith::new_managed`], use [`WordSmith::mint_managed`] instead as
+    /// If you used [`Ilmarinen::new_managed`], use [`Ilmarinen::mint_managed`] instead as
     /// calling this will error.
     pub fn mint(
         &mut self,
