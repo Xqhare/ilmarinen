@@ -4,14 +4,11 @@ mod unit_pools;
 
 use std::{path::Path, rc::Rc};
 
-pub use crate::minting::minting_result::MintingResult;
-pub use crate::minting::minting_type::MintingType;
-use crate::minting::{
-    minters::{
-        mint_metal_alloy_object, mint_operation_object, mint_people_object, mint_place_object,
-    },
-    minting_type::{MintingObjectType, ObjectResult},
+use crate::minting::minters::{
+    mint_metal_alloy_object, mint_operation_object, mint_people_object, mint_place_object,
 };
+pub use crate::minting::minting_result::MintingResult;
+pub use crate::minting::minting_type::{MintingObjectType, MintingType, ObjectResult};
 use fortuna::{Fortuna, RngApi, RngResult};
 use minting::minters::{
     mint_artifact, mint_currency, mint_empire, mint_government, mint_language, mint_metal_alloy,
