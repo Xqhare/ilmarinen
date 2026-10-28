@@ -8,7 +8,9 @@ use crate::minting::minters::{
     mint_metal_alloy_object, mint_operation_object, mint_people_object, mint_place_object,
 };
 pub use crate::minting::minting_result::MintingResult;
-pub use crate::minting::minting_type::{MintingObjectType, MintingType, ObjectResult};
+pub use crate::minting::minting_type::{
+    MintingObjectType, MintingType, ObjectResult, SkillAmount, SkillLevel, TraitAmount,
+};
 use fortuna::{Fortuna, RngApi, RngResult};
 use minting::minters::{
     mint_artifact, mint_currency, mint_empire, mint_government, mint_language, mint_metal_alloy,
