@@ -26,7 +26,7 @@ pub enum SkillLevel {
 }
 pub type TraitAmount = u8;
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone)]
 pub enum MintingObjectType {
     PlaceObject,
     /// To Create a Person Object.
@@ -39,7 +39,7 @@ pub enum MintingObjectType {
     ///     - `High` means high skill level. (e.g. master)
     ///     - `Ultra` means ultra skill level. (e.g. legend)
     /// `TraitAmount` is the amount of traits the person has.
-    PeopleObject(SkillAmount, SkillLevel, TraitAmount),
+    PeopleObject(Vec<(SkillAmount, SkillLevel)>, TraitAmount),
     OperationObject,
     MetalAndAlloyObject,
 }

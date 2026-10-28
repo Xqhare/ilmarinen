@@ -118,6 +118,8 @@
                     "Uncouth", "Charitable", "Kind", "Wroth", "Proud", "Erudite", "Decadent"
                     ],
 
+"people_trait_rolls_ck2_mod": ["Bright", "Smart", "Astute", "Prodigy", "Dim", "Foolish", "Dense", "Ignorant", "Numberphile", "Machiavellian", "Tactician", "Strategist", "Conciliatory", "Savant", "Sagacious", "Aberrant", "Fertile", "Bountiful", "Prolific", "Unfruitful", "Sparse", "Barren", "Appealing", "Charming", "Plain", "Unsightly", "Powerful", "Puny", "Tall", "Short", "Giant", "Dwarf", "Silver Tongue", "Booming Voice", "Mute"],
+
 "artifact_type": ["Statue", "War-axe", "Crown", "Barrel", "Bucket", "Bin", "Goblet", "Mug", "Cup", "Figurine", "Ring", "Earring", "Amulet", "Bracelet",
                  "Scepter", "Book", "Sword", "Shield", "Skull", "Coin", "Backpack", "Coffin", "Flask", "Fork", "Knife", "Jug", "Quiver",
                  "Scroll Roller", "Scroll", "Glove", "Hat", "Shoe", "Bell", "Sigil", "Longsword", "Gun", "Cube", "Slab", "Sphere", "Pendant", "Idol",

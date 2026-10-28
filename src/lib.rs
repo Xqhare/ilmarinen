@@ -187,15 +187,8 @@ fn mint_object_helper(
         MintingObjectType::PlaceObject => mint_place_object(unit_archipelago, rng).map_err(|e| {
             RngError::Nemesis(NemesisError::new("Ilmarinen Object creation helper", e))
         }),
-        MintingObjectType::PeopleObject(skill_amount, skill_level, trait_amount) => {
-            mint_people_object(
-                unit_archipelago,
-                rng,
-                skill_amount,
-                skill_level,
-                trait_amount,
-            )
-            .map_err(|e| {
+        MintingObjectType::PeopleObject(skills, trait_amount) => {
+            mint_people_object(unit_archipelago, rng, skills, trait_amount).map_err(|e| {
                 RngError::Nemesis(NemesisError::new("Ilmarinen Object creation helper", e))
             })
         }

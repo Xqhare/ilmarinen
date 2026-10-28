@@ -45,11 +45,10 @@ pub mod minters {
     pub fn mint_people_object(
         data: &UnitArchipelago,
         rng: &mut Fortuna,
-        skill_amount: SkillAmount,
-        skill_level: SkillLevel,
+        skills: Vec<(SkillAmount, SkillLevel)>,
         trait_amount: TraitAmount,
     ) -> Result<ObjectResult, Error> {
-        people_object_press(data, rng, skill_amount, skill_level, trait_amount)
+        people_object_press(data, rng, skills, trait_amount)
     }
 
     pub fn mint_language(data: &UnitArchipelago, rng: &mut Fortuna) -> Result<String, Error> {

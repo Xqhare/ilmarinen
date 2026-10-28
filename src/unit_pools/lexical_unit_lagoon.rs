@@ -31,6 +31,7 @@ pub struct LexicalUnitLagoon {
     pub people_skill_level_ultra: LexicalUnitPool,
     pub people_trait_ck2: LexicalUnitPool,
     pub people_trait_ck3: LexicalUnitPool,
+    pub people_trait_rolls_ck2_mod: LexicalUnitPool,
 
     pub artifact_type: LexicalUnitPool,
     pub artifact_adjective: LexicalUnitPool,
@@ -122,6 +123,7 @@ impl LexicalUnitLagoon {
         let people_skill_level_ultra: LexicalUnitPool;
         let people_trait_ck2: LexicalUnitPool;
         let people_trait_ck3: LexicalUnitPool;
+        let people_trait_rolls_ck2_mod: LexicalUnitPool;
 
         let artifact_type: LexicalUnitPool;
         let artifact_adjective: LexicalUnitPool;
@@ -284,6 +286,11 @@ impl LexicalUnitLagoon {
                     "people_trait_ck3",
                     obj.get("people_trait_ck3")
                         .expect("Object must include key 'people_trait_ck3'"),
+                ));
+                people_trait_rolls_ck2_mod = LexicalUnitPool::from((
+                    "people_trait_rolls_ck2_mod",
+                    obj.get("people_trait_rolls_ck2_mod")
+                        .expect("Object must include key 'people_trait_rolls_ck2_mod'"),
                 ));
                 artifact_type = LexicalUnitPool::from((
                     "artifact_type",
@@ -594,6 +601,7 @@ impl LexicalUnitLagoon {
             people_skill_level_ultra,
             people_trait_ck2,
             people_trait_ck3,
+            people_trait_rolls_ck2_mod,
             artifact_type,
             artifact_adjective,
             artifact_material,

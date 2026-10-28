@@ -1,4 +1,7 @@
-use std::io::Error;
+use std::{
+    collections::{HashMap, HashSet},
+    io::Error,
+};
 
 use fortuna::Fortuna;
 
@@ -26,27 +29,75 @@ pub struct PeopleObject {
     pub traits: Vec<String>,
 }
 
+/// Create a new person.
+///
+/// # Arguments
+///
+/// * `data` - Unit archipelago
+/// * `rng` - Random number generator
+/// * `skills` - Vec of (skill amount, skill level)
+/// * `trait_amount` - Amount of traits
+///
+/// # Notes
+/// Skills and traits are unique.
+///
+/// The amount of skills and traits may be, seldom, lower than the amount specified.
 pub fn people_object_press(
     data: &UnitArchipelago,
     rng: &mut Fortuna,
-    skill_amount: SkillAmount,
-    skill_level: SkillLevel,
+    skills: Vec<(SkillAmount, SkillLevel)>,
     trait_amount: TraitAmount,
 ) -> Result<ObjectResult, Error> {
     let first_name = first_name_type(data, rng)?;
     let last_name = last_name_type(data, rng)?;
     let legal_name = format!("{} {}", first_name, last_name);
     let skills = {
-        let mut tmp = Vec::with_capacity(skill_amount as usize);
-        for _ in 0..skill_amount {
-            tmp.push(level_capped_skill_die(data, rng, skill_level)?);
+        let mut tmp_map: HashMap<String, String> = HashMap::new();
+        for (skill_amount, skill_level) in skills {
+            for _ in 0..skill_amount {
+                // NOTE: Not that happy with this loop structure
+                // But it works and is simple
+                let mut tries = 0;
+
+                loop {
+                    let (level, skill) = level_capped_skill_die(data, rng, skill_level)?;
+                    if !tmp_map.contains_key(&skill) {
+                        tmp_map.insert(skill, level);
+                        break;
+                    } else if tries > 10 {
+                        break;
+                    }
+                    tries += 1;
+                }
+            }
+        }
+        let mut tmp: Vec<(String, String)> = Vec::new();
+        for (skill, level) in tmp_map {
+            tmp.push((skill, level));
         }
         tmp
     };
     let traits = {
-        let mut tmp = Vec::with_capacity(trait_amount as usize);
+        let mut tmp_map = HashSet::new();
         for _ in 0..trait_amount {
-            tmp.push(trait_die(data, rng)?.to_string());
+            // NOTE: Again, not that happy with this loop structure
+            // But it works and is simple
+            let mut tries = 0;
+
+            loop {
+                let trait_name = trait_die(data, rng)?;
+                if !tmp_map.contains(&trait_name) {
+                    tmp_map.insert(trait_name);
+                    break;
+                } else if tries > 10 {
+                    break;
+                }
+                tries += 1;
+            }
+        }
+        let mut tmp: Vec<String> = Vec::new();
+        for trait_name in tmp_map {
+            tmp.push(trait_name.to_string());
         }
         tmp
     };
@@ -81,16 +132,31 @@ mod people {
     use crate::unit_pools::UnitArchipelago;
 
     pub fn trait_die<'a>(data: &'a UnitArchipelago, rng: &mut Fortuna) -> Result<&'a str, Error> {
-        if let Ok(n) = rng.random_from_range(0, 1)
-            && n == 0
-            && let Ok(idx) =
-                rng.random_index(data.lexical_unit_lagoon.people_trait_ck3.unit_pool.len())
-        {
-            Ok(&data.lexical_unit_lagoon.people_trait_ck3.unit_pool[idx])
-        } else if let Ok(idx) =
-            rng.random_index(data.lexical_unit_lagoon.people_trait_ck2.unit_pool.len())
-        {
-            Ok(&data.lexical_unit_lagoon.people_trait_ck2.unit_pool[idx])
+        if let Ok(n) = rng.random_from_range(0, 2) {
+            if n == 0
+                && let Ok(idx) =
+                    rng.random_index(data.lexical_unit_lagoon.people_trait_ck3.unit_pool.len())
+            {
+                Ok(&data.lexical_unit_lagoon.people_trait_ck3.unit_pool[idx])
+            } else if n == 1
+                && let Ok(idx) = rng.random_index(
+                    data.lexical_unit_lagoon
+                        .people_trait_rolls_ck2_mod
+                        .unit_pool
+                        .len(),
+                )
+            {
+                Ok(&data
+                    .lexical_unit_lagoon
+                    .people_trait_rolls_ck2_mod
+                    .unit_pool[idx])
+            } else if let Ok(idx) =
+                rng.random_index(data.lexical_unit_lagoon.people_trait_ck2.unit_pool.len())
+            {
+                Ok(&data.lexical_unit_lagoon.people_trait_ck2.unit_pool[idx])
+            } else {
+                Err(Error::other("trait_die failed"))
+            }
         } else {
             Err(Error::other("trait_die failed"))
         }
