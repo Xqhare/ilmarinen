@@ -4,6 +4,7 @@ use std::{
 };
 
 use fortuna::Fortuna;
+use tyche::RngApi;
 
 use crate::{
     minting::{
@@ -23,6 +24,7 @@ pub struct PeopleObject {
     pub legal_name: String,
     pub nick_name: String,
     pub first_name: String,
+    pub middle_name: Option<String>,
     pub last_name: String,
     /// Vec of (skill name, skill level)
     pub skills: Vec<(String, String)>,
@@ -49,8 +51,19 @@ pub fn people_object_press(
     trait_amount: TraitAmount,
 ) -> Result<ObjectResult, Error> {
     let first_name = first_name_type(data, rng)?;
+    let middle_name = {
+        if let Ok(1) = rng.random_from_range(0, 4) {
+            Some(first_name_type(data, rng)?)
+        } else {
+            None
+        }
+    };
     let last_name = last_name_type(data, rng)?;
-    let legal_name = format!("{} {}", first_name, last_name);
+    let legal_name = if let Some(middle_name) = &middle_name {
+        format!("{} {} {}", first_name, middle_name, last_name)
+    } else {
+        format!("{} {}", first_name, last_name)
+    };
     let skills = {
         let mut tmp_map: HashMap<String, String> = HashMap::new();
         for (skill_amount, skill_level) in skills {
@@ -106,6 +119,7 @@ pub fn people_object_press(
         nick_name: nickname_type(data, rng)?,
         first_name,
         last_name,
+        middle_name,
         skills,
         traits,
     }))
